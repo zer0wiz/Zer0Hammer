@@ -36,6 +36,7 @@ Macros to create advisable functions or register advice for advisable functions
     (f))
   "
   (assert body1 "advisable function expected body")
+  (print "#######_---#####")
   (let [fn-name-str (tostring fn-name)]
     `(let [adv# (require :lib.advice)]
        (adv#.make-advisable ,fn-name-str (fn ,args ,body1 ,...)))))

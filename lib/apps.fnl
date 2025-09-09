@@ -1,6 +1,5 @@
 "
-Creates a finite state machine to handle app-specific events.
-A user may specify app-specific key bindings or menu items in their config.fnl
+Creates a finite state machine to handle app-specific events. A user may specify app-specific key bindings or menu items in their config.fnl
 
 Uses a state machine to better organize logic for entering apps we have config
 for, versus switching between apps, versus exiting apps, versus activating apps.
@@ -21,8 +20,11 @@ This module works mechanically similar to lib/modal.fnl.
        (require :lib.bind))
 (local lifecycle (require :lib.lifecycle))
 
-
-(local log (hs.logger.new "apps.fnl" "debug"))
+(local elogger (require :elogger))
+(local elog (elogger.new "apps.fnl" "error"))
+; (local {:bind-keys bind-keys} (require :lib.bind))
+; (local {:new ("apps.fnl" "debug") log}
+       ; (require :modules.elogger))
 
 (local actions (atom.new nil))
 ;; Create a dynamic var to hold an accessible instance of our finite state
@@ -46,6 +48,7 @@ This module works mechanically similar to lib/modal.fnl.
   (for [i 1 7]
     (set nums (.. nums (math.random 0 9))))
   (string.sub (hs.base64.encode nums) 1 7))
+
 
 (fn emit
   [action data]
@@ -81,6 +84,8 @@ This module works mechanically similar to lib/modal.fnl.
   Transition the state machine to idle from active app state.
   Returns nil.
   "
+  (elog.dbgf "----## leave-app event" )
+  (elog.dbgf app-name)
   (fsm.send :leave-app app-name))
 
 (fn launch
@@ -288,11 +293,16 @@ Assign some simple keywords for each hs.application.watcher event type.
   Debugging handler to add a watcher to the apps finite-state-machine
   state atom to log changes over time.
   "
+  (elog.dbgs "start-logger")
   (atom.add-watch
    fsm.state :log-state
    (fn log-state
      [state]
-     (log.df "app is now: %s" (and state.context.app state.context.app.key)))))
+     (if state.context
+       (if state.context.app
+         (elog.df "#### ---- Add watcher to the [%s] app is to log changes over time." (and state.context.app state.context.app.key)))
+       ))))
+
 
 (fn watch-actions
   [{: prev-state : next-state : action : effect : extra}]
@@ -304,6 +314,15 @@ Assign some simple keywords for each hs.application.watcher event type.
   Takes a transition record from the FSM.
   Returns nil.
   "
+  (elog.dbgs "watch-actions")
+  (elog.dbgf "action :::: %s" action)
+  (elog.dbgf "effect :::: %s" effect)
+  (elog.dbgf "extra :::: %s" extra)
+  ; (print (.. "prev-state :::: " (hs.inspect prev-state)))
+  (elog.dbgf "prev-state.prev-app :::: %s" prev-state.prev-app)
+  (elog.dbgf "prev-state.current-state :::: %s" prev-state.current-state)
+  ; (print (.. "prev-state :::: " (hs.inspect prev-state.context.app)))
+  ; (print (.. "next-state ::::" (hs.inspect next-state.context.app)))
   (emit action next-state.context.app))
 
 
@@ -333,11 +352,13 @@ Assign some simple keywords for each hs.application.watcher event type.
   Takes a function to call on each action update.
   Returns a function to remove the subscription to actions stream.
   "
+  (elog.dbgf "###### apps.subscribe start~~!!! :: %s" (tostring f))
   (let [key (gen-key)]
     (atom.add-watch actions key f)
     (fn unsubscribe
       []
-      (atom.remove-watch actions key))))
+      (atom.remove-watch actions key)))
+  (elog.dbgf "##############################subscribe end ~~~ #############"))
 
 (fn enter-app-effect
   [context]
@@ -376,6 +397,7 @@ Assign some simple keywords for each hs.application.watcher event type.
   These functions must return their own cleanup function or nil.
   "
   ;; Create a one-time atom used to store the cleanup function map
+  (elog.dbgs "app-effect-handler")
   (let [cleanup-ref (atom.new {})]
     ;; Return a subscriber function
     (fn [{: prev-state : next-state : action : effect : extra}]
@@ -389,19 +411,19 @@ Assign some simple keywords for each hs.application.watcher event type.
                             {extra (call-when effect-func next-state extra)}))))))
 
 (local apps-effect
-       (app-effect-handler
-         {:enter-app-effect (fn [state extra]
-                              (enter-app-effect state.context))
-          :leave-app-effect (fn [state extra]
-                              (when state.context.prev-app
-                                (lifecycle.deactivate-app state.context.prev-app))
-                              nil)
-          :launch-app-effect (fn [state extra]
-                               (launch-app-effect state.context))
-          :close-app-effect (fn [state extra]
-                              (when state.context.prev-app
-                                (lifecycle.close-app state.context.prev-app))
-                              nil)}))
+  (app-effect-handler
+    {:enter-app-effect (fn [state extra]
+                        (enter-app-effect state.context))
+    :leave-app-effect (fn [state extra]
+                        (when state.context.prev-app
+                        (lifecycle.deactivate-app state.context.prev-app))
+                        nil)
+    :launch-app-effect (fn [state extra]
+                        (launch-app-effect state.context))
+    :close-app-effect (fn [state extra]
+                        (when state.context.prev-app
+                        (lifecycle.close-app state.context.prev-app))
+                        nil)}))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -416,6 +438,7 @@ Assign some simple keywords for each hs.application.watcher event type.
   Takes the current config.fnl table
   Returns a function to cleanup the hs.application.watcher.
   "
+  (elog.dbgf "fnl init()")
   (let [active-app (active-app-name)
         initial-context {:apps config.apps
                          :app nil}
@@ -424,11 +447,17 @@ Assign some simple keywords for each hs.application.watcher event type.
                   :states states
                   :log "apps"}
         app-watcher (hs.application.watcher.new watch-apps)]
+    (elog.dbgf "set fsm (statemachine.new template)")
     (set fsm (statemachine.new template))
+    (elog.dbgf "fsm.subscribe apps-effect")
     (fsm.subscribe apps-effect)
+    (elog.dbgf "start-logger fsm")
     (start-logger fsm)
+    (elog.dbgf "fsm.subscribe watch-actions")
     (fsm.subscribe watch-actions)
+    (elog.dbgf "enter active-app")
     (enter active-app)
+    (elog.dbgf ": app-watcher :start")
     (: app-watcher :start)
     (fn cleanup []
       (: app-watcher :stop))))

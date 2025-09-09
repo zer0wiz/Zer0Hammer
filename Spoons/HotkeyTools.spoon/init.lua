@@ -1,0 +1,103 @@
+local HotkeyTools = {}
+
+-- local isEnabled = false
+-- local clickWatcher
+-- local gestureEventtap, escapeEventtap
+--
+-- HotkeyTools.config = {
+-- 	showKeyPreview = true,
+-- 	keyPreviewDuration = 1,
+-- 	cornerActivationArea = 0.15,
+-- 	messageDuration = 1,
+-- 	debug = true
+-- }
+
+-- local function getKeyPreviewPosition()
+-- 	local screenSize = hs.screen.mainScreen():frame()
+-- 	return (screenSize.w - 30) / 2, screenSize.h - 100
+-- end
+--
+-- local keyPreviewX, keyPreviewY = getKeyPreviewPosition()
+--
+-- local keyPreview = hs.canvas.new({ x = keyPreviewX, y = keyPreviewY, w = 250, h = 50 })
+-- keyPreview[1] = {
+-- 	type = "rectangle",
+-- 	action = "fill",
+-- 	roundedRectRadii = { xRadius = 4, yRadius = 4 },
+-- 	fillColor = { white = 0, alpha = 0.75 }
+-- }
+--
+-- for i = 1, 5 do
+-- 	keyPreview[i + 1] = {
+-- 		type = "text",
+-- 		text = "",
+-- 		textColor = { white = 1, alpha = 1 },
+-- 		textAlignment = "center",
+-- 		textSize = 20,
+-- 		frame = { x = (i - 1) * 50, y = 10, w = 50, h = 30 }
+-- 	}
+-- end
+--
+-- keyPreview[7] = {
+-- 	type = "circle",
+-- 	action = "stroke",
+-- 	strokeColor = { red = 1, green = 1, blue = 0, alpha = 1 },
+-- 	strokeWidth = 2,
+-- 	center = { x = 125, y = 25 },
+-- 	radius = 0
+-- }
+--
+-- function HotkeyTools.toggle()
+    -- hs.alert("HotkeyTools toggle....")
+	-- if clickWatcher then
+	-- 	clickWatcher:stop()
+	-- 	clickWatcher = nil
+	-- 	if gestureEventtap then
+	-- 		gestureEventtap:stop()
+	-- 	end
+	-- 	if escapeEventtap then
+	-- 		escapeEventtap:stop()
+	-- 	end
+	-- 	isEnabled = false
+	-- 	debugPrint(" HotkeyTools stopped")
+	-- 	showMessage(" HotkeyTools Stopped")
+	-- else
+	-- 	clickWatcher = hs.eventtap.new({ hs.eventtap.event.types.leftMouseDown, hs.eventtap.event.types.rightMouseDown },
+	-- 		function(event)
+	-- 			debugPrint("Mouse click detected")
+	-- 			hs.timer.doAfter(0.3, function()
+	-- 				for i = 1, 3 do
+	-- 					hs.timer.doAfter(i * 0.3, checkInputFocus)
+	-- 				end
+	-- 			end)
+	-- 			return false
+	-- 		end)
+	-- 	clickWatcher:start()
+	--
+	-- 	gestureEventtap = hs.eventtap.new({ hs.eventtap.event.types.gesture }, function(e)
+	-- 		local touches = e:getTouches()
+	-- 		if touches and isEnabled then
+	--                dbg(touches)
+	-- 			handleTouches(touches)
+	-- 		end
+	-- 	end)
+	--
+	-- 	-- escapeEventtap = hs.eventtap.new({ hs.eventtap.event.types.keyDown }, function(e)
+	-- 	-- 	local keyCode = e:getKeyCode()
+	-- 	-- 	if keyCode == hs.keycodes.map.escape then
+	-- 	-- 		resetState()
+	-- 	-- 		return true
+	-- 	-- 	end
+	-- 	-- 	return false
+	-- 	-- end)
+	--
+	-- 	gestureEventtap:start()
+	-- 	-- escapeEventtap:start()
+	-- 	debugPrint("HotkeyTools started")
+	-- 	showMessage("HotkeyTools Started")
+	-- 	checkInputFocus()
+	-- end
+-- end
+
+
+return HotkeyTools

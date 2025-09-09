@@ -31,7 +31,10 @@ switching menus in one place which is then powered by config.fnl.
        (require :lib.bind))
 (local lifecycle (require :lib.lifecycle))
 
-(local log (hs.logger.new "modal.fnl" "debug"))
+; (local log (hs.logger.new "modal.fnl" "debug"))
+(local elogger (require :elogger))
+(local elog (elogger.new "modal.fnl" "debug"))
+
 (var fsm nil)
 (local default-style {:textFont "Menlo"
                       :textSize 16
@@ -51,6 +54,8 @@ switching menus in one place which is then powered by config.fnl.
   Takes a function to call after 2 seconds.
   Returns a function to destroy the timeout task.
   "
+  (print "#####timout:::#### " )
+  ; (print hs.inspect f)
   (let [task (hs.timer.doAfter 2 f)]
     (fn destroy-task
       []
@@ -69,6 +74,8 @@ switching menus in one place which is then powered by config.fnl.
   modal on screen)
   Side effectful
   "
+  (print "################11111")
+  (print menu-key)
   (fsm.send :activate menu-key))
 
 (fn enter-modal
@@ -115,6 +122,7 @@ switching menus in one place which is then powered by config.fnl.
   Takes no arguments.
   Side effectful
   "
+  (print "start-modal-timeout =============================")
   (fsm.send :start-timeout))
 
 
@@ -139,6 +147,8 @@ switching menus in one place which is then powered by config.fnl.
 
   Returns a function to execute the action-fn async.
   "
+  (print "create-action-trigger")
+  ; (print timeout)
   (let [action-fn (action->fn action)]
     (fn []
       (if (and repeatable (~= timeout false))
@@ -170,6 +180,7 @@ switching menus in one place which is then powered by config.fnl.
   Takes a menu item from config.fnl
   Returns a function to perform the action associated with menu item.
   "
+  ; (prints.inspect item)
   (if (and item.action (= item.action :previous))
       previous-modal
       item.action
@@ -177,7 +188,7 @@ switching menus in one place which is then powered by config.fnl.
       item.items
       (create-menu-trigger item)
       (fn []
-        (log.w "No trigger could be found for item: "
+        (elog.w "No trigger could be found for item: "
                (hs.inspect item)))))
 
 
@@ -252,10 +263,12 @@ switching menus in one place which is then powered by config.fnl.
                           [(format-key item) (. item :title)]))
                    (align-columns))
         text (join "\n" items)]
-    (hs.alert.closeAll)
+    (hs.alert.closeAll 0)
+    ; (elog.dbgf "----## modal-alert --style" )
+    ; (elog.dbgf style)
     (alert text
            style
-           99999)))
+           9999)))
 
 (fn show-modal-menu
   [state]
@@ -267,6 +280,7 @@ switching menus in one place which is then powered by config.fnl.
   "
   (lifecycle.enter-menu state.context.menu)
   (modal-alert state.context.menu)
+  (print "show-modal-menu")
   (let [unbind-keys (bind-menu-keys state.context.menu.items)
         stop-timeout state.context.stop-timeout]
     (fn []
@@ -443,7 +457,7 @@ switching menus in one place which is then powered by config.fnl.
    (fn log-state
      [state]
      (when state.context.history
-       (log.df (hs.inspect (map #(. $1 :title) state.context.history)))))))
+       (elog.df (hs.inspect (map #(. $1 :title) state.context.history)))))))
 
 (local modal-effect
        (statemachine.effect-handler
@@ -459,6 +473,7 @@ switching menus in one place which is then powered by config.fnl.
   Executes a side-effect
   Returns nil
   "
+  (print "proxy-app-action --- fsm.send action data")
   (fsm.send action data))
 
 
@@ -484,8 +499,11 @@ switching menus in one place which is then powered by config.fnl.
                   :log "modal"}
         unsubscribe (apps.subscribe proxy-app-action)]
     (set style (merge default-style (?. config :modal-style)))
+    (print "set fsm (statemachine.new template)")
     (set fsm (statemachine.new template))
+    (print "fsm.subscribe modal-effect")
     (fsm.subscribe modal-effect)
+    (elog.dbgf "start-logger fsm")
     (start-logger fsm)
     (fn cleanup []
       (unsubscribe))))

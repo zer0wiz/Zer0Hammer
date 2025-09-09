@@ -1,3 +1,5 @@
+(local elogger (require :elogger))
+(local elog (elogger.new "atom.fnl" "error"))
 "
 Atoms are the functional-programming answer to a variable except better
 because you can subscribe to changes.
@@ -107,6 +109,10 @@ Example:
   (swap! x - 1)
   ;; => 4 5
   "
+  (elog.dbgs "add-watch")
+  ; (elog.dbgf "atom.add-watch atom:::: %s" atom)
+  (elog.dbgf "atom.add-watch key:::: %s" key)
+  (elog.dbgf "atom.add-watch f:::: %s" f)
   (tset atom :watchers key f))
 
 (fn remove-watch
@@ -149,6 +155,9 @@ Example:
   (let [prev-value (deref atom)
         next-value (f (copy prev-value) (table.unpack [...]))]
     (set atom.state next-value)
+    (elog.dbgs "notify-watchers")
+    ; (elog.dbgf next-value)
+    ; (elog.dbgf prev-value)
     (notify-watchers atom next-value prev-value)
     atom))
 

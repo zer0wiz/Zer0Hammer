@@ -1,0 +1,9 @@
+{
+    "Lua.diagnostics.globals": [
+        "fennel",
+        "hs"
+    ],
+    "pieces.cloudCapabilities": "Local",
+    "bevel.largeLanguageModel": "LOCAL",
+    "bevel.java": "/Users/aaron.lee/.cursor/extensions/bevel-software.bevel-1.3.0-universal/backend/amazon-corretto-17.jdk/Contents/Home/bin/java"
+}

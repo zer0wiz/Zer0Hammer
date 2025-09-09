@@ -37,6 +37,8 @@ the keys and returns an unbind function. The unbind function will be called on
 the next transition.
 "
 
+(local elogger (require :elogger))
+(local elog (elogger.new "statemachine.fnl" "error"))
 
 (require-macros :lib.macros)
 (local atom (require :lib.atom))
@@ -51,6 +53,7 @@ the next transition.
 
 (fn update-state
   [fsm state]
+  (elog.dbgf "#### update-state")
   (atom.swap! fsm.state (fn [_ state] state) state))
 
 (fn get-transition-function
@@ -67,6 +70,12 @@ the next transition.
   Based on the action and the fsm's current-state, set the new state and call
   all subscribers with the previous state, new state, action, and extra.
   "
+  ; (elog.dbgs "send")
+  ; (elog.dbgf "################")
+  ; (elog.dbgf "send - action:::")
+  ; (elog.dbgf action)
+  ; (elog.dbgf "send - extra:::")
+  ; (elog.dbgf extra)
   (let [state (get-state fsm)
         {: current-state : context} state]
     (if-let [tx-fn (get-transition-function fsm current-state action)]
@@ -74,9 +83,18 @@ the next transition.
                   transition (tx-fn state action extra)
                   new-state (if transition transition.state state)
                   effect (if transition transition.effect nil)]
-
+              (elog.dbgf "#### prev-state:::" )
+              (if state.context
+                (if state.context.app
+                    (elog.dbgf state.context.app.key)))
+              (elog.dbgf "#### new-state:::" )
+              (if new-state.context
+                (if new-state.context.app
+                    (elog.dbgf new-state.context.app.key)))
               (update-state fsm new-state)
               ; Call all subscribers
+              (elog.dbgf "subscribers:::" fsm.subscribers)
+              (elog.dbgf fsm.subscribers)
               (each [_ sub (pairs (atom.deref fsm.subscribers))]
                 (sub {:prev-state state :next-state new-state : action : effect : extra}))
               true)

@@ -1,6 +1,7 @@
 (hs.ipc.cliInstall) ; ensure CLI installed
 
 (local fennel (require :fennel))
+(local extensions (require :extensions))
 (require :lib.globals)
 (local {:contains? contains?
         :for-each  for-each
@@ -24,6 +25,9 @@
 (local customdir (.. homedir "/.spacehammer"))
 (tset fennel :path (.. customdir "/?.fnl;" fennel.path))
 
+(local elogger (require :elogger))
+(local elog (elogger.new "core.fnl" "debug"))
+
 (local log (hs.logger.new "\tcore.fnl\t" "debug"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -42,6 +46,8 @@ Shortcut for showing an alert on the primary screen for a specified duration
 Takes a message string, a style table, and the number of seconds to show alert
 Returns nil. This function causes side-effects.
 "
+(global fw hs.window.focusedWindow)
+
 (global alert
         (afn
          alert
@@ -52,10 +58,8 @@ Returns nil. This function causes side-effects.
          "
          (hs.alert.show str
                         style
-                        (hs.screen.primaryScreen)
+                        nil
                         seconds)))
-
-(global fw hs.window.focusedWindow)
 
 (global pprint (fn [x] (print (fennel.view x))))
 
@@ -66,6 +70,7 @@ Returns nil. This function causes side-effects.
           Returns the global config object, or error if called early
           "
           (error "get-config can only be called after all modules have initialized")))
+(global windows-list [])
 
 (fn file-exists?
   [filepath]
@@ -156,7 +161,80 @@ Returns nil. This function causes side-effects.
   "
   (when (some source-updated? files)
     (hs.console.clearConsole)
-    (hs.reload)))
+    (hs.reload)
+  )
+ )
+
+(fn get-info
+  [cw]
+  (
+    (log.d (.. "***** get-info ********"))
+    ; (let [ app (: cw :application)
+    ;        pid (.. "\"" (: app :pid) "\"")
+    ; ;       title       (.. "\"" (: current-app :title) "\"")
+    ; ;       screen      (.. "\"" (: (hs.screen.mainscreen) :id) "\"")]
+    ;        win (: app :mainwindow)
+    ;        frame (: win :frame)
+    ;        {:_x x :_y y} frame
+    ;        coords  {:x (+ x 100) :y (+ y 100)}]
+    ;     (when cw
+    ;         (log.f "### app pid : [%s]" (: app :pid))
+    ;         (log.w "### window info : " cw)
+    ;     )
+    ; )
+  )
+)
+
+(fn change-before-focused
+    []
+    (log.d (.. "**** chchange-before-focused *********"))
+  (let [current-win (-> (hs.window.focusedWindow) )
+        app (: current-win :application)
+        win (: app :mainWindow)
+        frame (: win :frame)
+        {:_x x :_y y} frame
+        coords  {:x (+ x 100) :y (+ y 100)}]
+    ; (let [current-win (-> (hs.window.focusedwindow))
+    ; ;       pid         (.. "\"" (: current-app :pid) "\"")
+    ; ;       title       (.. "\"" (: current-app :title) "\"")
+    ; ;       screen      (.. "\"" (: (hs.screen.mainscreen) :id) "\"")]
+    ;         app (: current-win :application)
+    ;         win (: app :mainwindow)
+    ;         frame (: win :frame)
+    ;         {:_x x :_y y} frame
+    ;         coords  {:x (+ x 100) :y (+ y 100)}]
+        (when app
+            ; (get-info current-win)
+            (table.insert windows-list current-win)
+            (log.f "### app pid : [%s]" (: app :pid))
+            ; (log.w "### app pid : " current-win)
+            (log.f "### windows count : [%d]" (length windows-list ))
+            ; (log.w "### window focuesed app info: [%s]" (hs.inspect app))
+            (log.wf "### window focuesed app info: [%s]"
+                (hs.inspect app))
+            (hs.reload)
+        )
+    )
+
+)
+
+
+(hs.hotkey.bind
+  [:ctrl :cmd] "/" nil
+  (fn []
+      (change-before-focused)
+      (log.d (.. "************** ::: bind"))
+      (->> windows-list
+        (map (fn [win]
+            (
+             (get-info win)
+             (log.w "### app pid : " (: win :application :pid))
+            ))
+        )
+      )
+      (log.f "### windows count : [%d]" (length windows-list ))
+  )
+)
 
 (fn watch-files
   [dir]

@@ -33,7 +33,7 @@
         prev        (hs.pasteboard.changeCount)
         _           (hs.eventtap.keyStroke [:cmd] :c)
         next        (hs.pasteboard.changeCount)]
-    (when (= prev next)         ; Pasteboard was not updated so no text was selected
+    (when current-app
       (hs.eventtap.keyStroke [:cmd] :a)  ; select all and then copy
       (hs.eventtap.keyStroke [:cmd] :c))
     (io.popen run-str)
