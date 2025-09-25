@@ -324,12 +324,14 @@
          :items media-bindings}
         {:key   :x
          :title "Emacs"
-         :items emacs-bindings}])
+         :items emacs-bindings}
+  ])
 
 (local common-keys
        [{:mods [:alt :shift]
          :key :space
-         :action "lib.modal:activate-modal"}
+         :action "lib.modal:activate-modal"
+         :repeat true}
         {:mods [:ctrl]
          :key :tab
          :action "apps:next-app"}
@@ -341,7 +343,8 @@
          :action hs.toggleConsole}
         {:mods [:cmd :ctrl]
          :key :o
-         :action "emacs:edit-with-emacs"}])
+         :action "emacs:edit-with-emacs"}
+])
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; App Specific Config

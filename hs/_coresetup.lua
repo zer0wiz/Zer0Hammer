@@ -310,7 +310,9 @@ coroutine.applicationYield = hs.coroutineApplicationYield
       return _G["spoon"][name]
     end
 
+    print("================================")
     print("-- Loading Spoon: "..name)
+    print("--------------------------------")
 
     -- First, find the full path of the Spoon
     local spoonFile = package.searchpath(name, package.path)
@@ -453,7 +455,9 @@ coroutine.applicationYield = hs.coroutineApplicationYield
     setmetatable(hs, {
       __index = function(_, key)
         if hs._extensions[key] ~= nil then
+          print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
           print("-- Loading extension: "..key)
+          print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
           hs[key] = require("hs."..key)
           return hs[key]
         else

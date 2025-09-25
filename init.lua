@@ -100,8 +100,7 @@ spoon.SpoonInstall:andUse('ModalMgr')
 -- spoon.ModalMgr.supervisor:bind('alt', 'L', 'Lock Screen', function() hs.caffeinate.lockScreen() end)
 spoon.ModalMgr.supervisor:bind('alt', 'Z', 'Toggle Hammerspoon Console', function() hs.toggleConsole() end)
 
-require("YabaiM")
-
+YabaiM = hs.loadSpoon("YabaiM")
 spoon.ModalMgr.supervisor:enter()
 
 KSheet = hs.loadSpoon("KSheet")

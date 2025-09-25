@@ -74,8 +74,7 @@ switching menus in one place which is then powered by config.fnl.
   modal on screen)
   Side effectful
   "
-  (print "################11111")
-  (print menu-key)
+  (elog.dbgf "################activate-modal :::: %s" menu-key)
   (fsm.send :activate menu-key))
 
 (fn enter-modal
@@ -89,6 +88,7 @@ switching menus in one place which is then powered by config.fnl.
   specific menu key.
   Side effectful
   "
+  (elog.dbgf "################enter-modal :::: %s" menu-key)
   (fsm.send :enter menu-key))
 
 
@@ -99,6 +99,7 @@ switching menus in one place which is then powered by config.fnl.
   Takes no arguments.
   Side effectful
   "
+  (elog.dbgf "################deactivate-modal")
   (fsm.send :deactivate))
 
 
@@ -148,10 +149,15 @@ switching menus in one place which is then powered by config.fnl.
   Returns a function to execute the action-fn async.
   "
   (print "create-action-trigger")
-  ; (print timeout)
+  ; (print (hs.inspect repeatable))
   (let [action-fn (action->fn action)]
     (fn []
+      ; (print "timer ....")
+      ; (print (hs.inspect action))
+      ; (print (hs.inspect repeatable))
+      ; (print (hs.inspect timeout))
       (if (and repeatable (~= timeout false))
+          ; (print "start-modal-timeout")
           (start-modal-timeout)
           (not repeatable)
           (deactivate-modal))
@@ -180,7 +186,9 @@ switching menus in one place which is then powered by config.fnl.
   Takes a menu item from config.fnl
   Returns a function to perform the action associated with menu item.
   "
-  ; (prints.inspect item)
+  ; (print "select-trigger")
+  ; (print item.timeout)
+  ; (print item.repeatable)
   (if (and item.action (= item.action :previous))
       previous-modal
       item.action
@@ -280,7 +288,20 @@ switching menus in one place which is then powered by config.fnl.
   "
   (lifecycle.enter-menu state.context.menu)
   (modal-alert state.context.menu)
-  (print "show-modal-menu")
+  (print "#######show-modal-menu")
+  (print "#######lifecycle.enter-menu")
+  (print (hs.inspect lifecycle.enter-menu))
+  (print "#######lifecycle.exit-menu")
+  (print (hs.inspect lifecycle.exit-menu))
+  (print "#######lifecycle.launch-app")
+  (print (hs.inspect lifecycle.launch-app))
+  (print "#######lifecycle.close-app")
+  (print (hs.inspect lifecycle.close-app))
+  (print "#######lifecycle.deactivate-app")
+  (print (hs.inspect lifecycle.deactivate-app))
+  (print "#######state.current-state")
+  (print (hs.inspect state.current-state))
+
   (let [unbind-keys (bind-menu-keys state.context.menu.items)
         stop-timeout state.context.stop-timeout]
     (fn []
@@ -340,6 +361,7 @@ switching menus in one place which is then powered by config.fnl.
   Kicks off an effect to close the modal, stop the timeout, and unbind keys
   Returns updated modal state machine state table.
   "
+  (print "active->idle")
   {:state  {:current-state :idle
             :context (merge state.context {:menu :nil
                                            :history []})}
@@ -355,12 +377,19 @@ switching menus in one place which is then powered by config.fnl.
   menu otherwise results in no operation
   Returns new modal state
   "
+  (print ":::->enter-app")
+  (print (hs.inspect apps))
+  (print (hs.inspect state.current-state))
   (let [{:config config
          :menu prev-menu} state.context
         app-menu (apps.get-app)
         menu (if (and app-menu (has-some? app-menu.items))
                  app-menu
                  config)]
+    (print "--->menu.key")
+    (print (hs.inspect menu.key))
+    (print "--->prev-menu.key")
+    (print (hs.inspect prev-menu.key))
     (if (= menu.key prev-menu.key)
         ; nil transition object means keep all state
         nil
@@ -377,6 +406,9 @@ switching menus in one place which is then powered by config.fnl.
   Takes the current modal state table.
   Returns new updated modal state if we are leaving the current app.
   "
+  (print ":::active->leave-app")
+  (print (hs.inspect atom))
+  (print (hs.inspect state.current-state))
   (let [{:config config
         :menu prev-menu} state.context]
     (if (= prev-menu.key config.key)
@@ -396,6 +428,9 @@ switching menus in one place which is then powered by config.fnl.
   Takes the current modal state table.
   Returns a the old state with a :stop-timeout added
   "
+  (print "add-timeout-transition")
+  (print (hs.inspect timeout))
+  (print (hs.inspect state.current-state))
   {:state {:current-state state.current-state
            :context
            (merge state.context {:stop-timeout (timeout deactivate-modal)})}
@@ -473,7 +508,17 @@ switching menus in one place which is then powered by config.fnl.
   Executes a side-effect
   Returns nil
   "
-  (print "proxy-app-action --- fsm.send action data")
+  (print ">>>>>>>>>>>>>> proxy-app-action --- fsm.send action data")
+  (print "###### " (hs.inspect action))
+  ; (if (not data) nil
+  ;   (do
+  ;     (print "###### key::")
+  ;     (print (hs.inspect data.key))
+  ;     (print "###### data")
+  ;     (print (hs.inspect data))
+  ;   ))
+  ; (print "###### atom.watchers")
+  ; (print (hs.inspect atom.watchers))
   (fsm.send action data))
 
 
@@ -503,8 +548,11 @@ switching menus in one place which is then powered by config.fnl.
     (set fsm (statemachine.new template))
     (print "fsm.subscribe modal-effect")
     (fsm.subscribe modal-effect)
-    (elog.dbgf "start-logger fsm")
+    (print "start-logger fsm")
     (start-logger fsm)
+    (print "fsm.state.current-state")
+    (print (hs.inspect fsm.state.current-state))
+    (print (hs.inspect fsm.states))
     (fn cleanup []
       (unsubscribe))))
 

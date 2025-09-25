@@ -314,7 +314,7 @@ function elogger.new(id,loglevel)
     r.dbgf("#######################################")
     r.dbgf("###### id :: %s", id)
     r.dbgf("###### loglevel :: %s", loglevel)
-    r.dbgf("###### elogger :: %s", r)
+    r.dbgf("###### elogger :: %s", r.config)
     r.dbgf("#######################################")
 
     instances[r]=true
