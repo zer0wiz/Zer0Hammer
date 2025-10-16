@@ -1,11 +1,5 @@
 local obj = {}
 
-local function loadModule(module)
-  local dirname = debug.getinfo(2, "S").source:sub(2):match("(.*/)")
-  local f = dofile(dirname .. module .. ".lua")
-  return f
-end
-
 local view = loadModule("view")
 local styledtext = hs.styledtext.new
 local styledtextMeta = hs.getObjectMetatable("hs.styledtext")

@@ -60,6 +60,12 @@ function tap (a)
   return a
 end
 
+loadModule = function (module)
+  local dirname = debug.getinfo(2, "S").source:sub(2):match("(.*/)")
+  local f = dofile(dirname .. module .. ".lua")
+  return f
+end
+
 ---------------------------------------------------------
 -- Extension of native objects and modules
 ---------------------------------------------------------

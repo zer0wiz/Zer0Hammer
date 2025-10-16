@@ -273,10 +273,10 @@ end
 
 local function setConfig(loglevel, id, config)
     local result = merge(elogger.config, config)
-    dbglf(loglevel, DEBUG, id, "\n##### input config ##### \n%s"
-                     .."\n##### orgin config ::: %s #####"
-                     .."\n##### merge config ::: %s #####"
-                       , config, elogger.config, result)
+    -- dbglf(loglevel, DEBUG, id, "\n##### input config ##### \n%s"
+    --                  .."\n##### orgin config ::: %s #####"
+    --                  .."\n##### merge config ::: %s #####"
+    --                    , config, elogger.config, result)
 end
 
 
@@ -310,12 +310,19 @@ function elogger.new(id,loglevel)
     }
     r.log=r.i r.logf=r.f
     r = merge(r,elogger, originLogger)
-
-    r.dbgf("#######################################")
-    r.dbgf("###### id :: %s", id)
-    r.dbgf("###### loglevel :: %s", loglevel)
-    r.dbgf("###### elogger :: %s", r.config)
-    r.dbgf("#######################################")
+    -- local t = "\n"
+    --         .."\n################# ["..elogger.getLogLevelString(loglevel).."] trace ####################"
+    --         .."\n######### ["..id.."]"
+    --         -- .."\n######### elogger :: %s"
+    --         .."\n####################################################"
+    --         .."\n"
+    -- r.dbgf("###### id :: %s", id)
+    -- print(debug.traceback())
+    -- print("#################################### trace END #####")
+    -- r.dbgf(t)
+    -- r.dbgf("###### loglevel :: %s", loglevel)
+    -- r.dbgf("###### elogger :: %s", r.config)
+    -- r.dbgf("#######################################")
 
     instances[r]=true
     return setmetatable(r,{

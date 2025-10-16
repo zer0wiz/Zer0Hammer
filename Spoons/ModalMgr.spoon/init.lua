@@ -304,17 +304,16 @@ function obj:highlightScreen(cscreen)
     }):show():delete(highlightFadeOutDuration)
 end
 
-function obj:activate(idList, trayColor, showKeys)
+function obj:activate(idList, trayColor, showKeys, trayText)
     for _, val in ipairs(idList) do
         obj.modal_list[val]:enter()
         obj.active_list[val] = obj.modal_list[val]
     end
     if trayColor then
-
         local cscreen = hs.screen.mainScreen()
-
         obj:highlightScreen(cscreen)
-        obj:toggleModalTray(cscreen, trayColor, "Yabai Control Mode!")
+        local text = trayText or "Modal Active!"
+        obj:toggleModalTray(cscreen, trayColor, text)
     end
     if showKeys then
         obj:toggleCheatsheet(idList, true)

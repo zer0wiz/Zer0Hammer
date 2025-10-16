@@ -1,6 +1,8 @@
 require("hs.ipc")
 hs.ipc.cliInstall("/opt/homebrew")
 
+hs.console.clearConsole()
+
 -- Support upcoming 5.4 release and also use luarocks' local path
 package.path = package.path .. ";" .. os.getenv("HOME") .. "/.luarocks/share/lua/5.4/?.lua;" .. os.getenv("HOME") .. "/.luarocks/share/lua/5.4/?/init.lua"
 package.cpath = package.cpath .. ";" .. os.getenv("HOME") .. "/.luarocks/lib/lua/5.4/?.so"
@@ -100,9 +102,6 @@ spoon.SpoonInstall:andUse('ModalMgr')
 -- spoon.ModalMgr.supervisor:bind('alt', 'L', 'Lock Screen', function() hs.caffeinate.lockScreen() end)
 spoon.ModalMgr.supervisor:bind('alt', 'Z', 'Toggle Hammerspoon Console', function() hs.toggleConsole() end)
 
-YabaiM = hs.loadSpoon("YabaiM")
-spoon.ModalMgr.supervisor:enter()
-
 KSheet = hs.loadSpoon("KSheet")
 hs.hotkey.bind({"alt", "shift"}, "\\", function()
 KSheet:toggle()
@@ -110,6 +109,11 @@ end)
 
 -- dbg(package.path)
 Sbar = hs.loadSpoon('SBar')
+
+YabaiM = hs.loadSpoon("YabaiM")
+SpoonSpace = hs.loadSpoon("SpoonSpace")
+spoon.ModalMgr.supervisor:enter()
+
 -- hs.keycodes.inputSourceChanged(function ()
     -- Sbar:show_input_source()
 -- end)
