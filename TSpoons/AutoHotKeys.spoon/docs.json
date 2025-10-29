@@ -1,0 +1,564 @@
+[
+  {
+    "Command": [],
+    "Constant": [],
+    "Constructor": [],
+    "Deprecated": [],
+    "Field": [],
+    "Function": [
+      {
+        "def": "describeApplicationState()",
+        "desc": "",
+        "doc": "",
+        "name": "describeApplicationState",
+        "signature": "describeApplicationState()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "delinate()",
+        "desc": "",
+        "doc": "",
+        "name": "delinate",
+        "signature": "delinate()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "eventHandler(element, eventName, watcher, includedData)",
+        "desc": "",
+        "doc": "",
+        "name": "eventHandler",
+        "signature": "eventHandler(element, eventName, watcher, includedData)",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "globalEventHandler(applicationName, eventType, application)",
+        "desc": "",
+        "doc": "",
+        "name": "globalEventHandler",
+        "signature": "globalEventHandler(applicationName, eventType, application)",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testInitWithPidFailures()",
+        "desc": "",
+        "doc": "",
+        "name": "testInitWithPidFailures",
+        "signature": "testInitWithPidFailures()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "findApplicationByName(applicationName)",
+        "desc": "",
+        "doc": "",
+        "name": "findApplicationByName",
+        "signature": "findApplicationByName(applicationName)",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testAttributesFromBundleID()",
+        "desc": "",
+        "doc": "",
+        "name": "testAttributesFromBundleID",
+        "signature": "testAttributesFromBundleID()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testBasicAttributes()",
+        "desc": "",
+        "doc": "",
+        "name": "testBasicAttributes",
+        "signature": "testBasicAttributes()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testActiveAttributes()",
+        "desc": "",
+        "doc": "",
+        "name": "testActiveAttributes",
+        "signature": "testActiveAttributes()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testMetaTable()",
+        "desc": "",
+        "doc": "",
+        "name": "testMetaTable",
+        "signature": "testMetaTable()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testFrontmostApplication()",
+        "desc": "",
+        "doc": "",
+        "name": "testFrontmostApplication",
+        "signature": "testFrontmostApplication()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testRunningApplications()",
+        "desc": "",
+        "doc": "",
+        "name": "testRunningApplications",
+        "signature": "testRunningApplications()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testHiding()",
+        "desc": "",
+        "doc": "",
+        "name": "testHiding",
+        "signature": "testHiding()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testHidingValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testHidingValues",
+        "signature": "testHidingValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testKilling()",
+        "desc": "",
+        "doc": "",
+        "name": "testKilling",
+        "signature": "testKilling()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testKillingValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testKillingValues",
+        "signature": "testKillingValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testForceKilling()",
+        "desc": "",
+        "doc": "",
+        "name": "testForceKilling",
+        "signature": "testForceKilling()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testForceKillingValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testForceKillingValues",
+        "signature": "testForceKillingValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testWindows()",
+        "desc": "",
+        "doc": "",
+        "name": "testWindows",
+        "signature": "testWindows()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testWindowsValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testWindowsValues",
+        "signature": "testWindowsValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testMenus()",
+        "desc": "",
+        "doc": "",
+        "name": "testMenus",
+        "signature": "testMenus()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testMenusAsync()",
+        "desc": "",
+        "doc": "",
+        "name": "testMenusAsync",
+        "signature": "testMenusAsync()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testMenusAsyncValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testMenusAsyncValues",
+        "signature": "testMenusAsyncValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testUTI()",
+        "desc": "",
+        "doc": "",
+        "name": "testUTI",
+        "signature": "testUTI()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testLocalizationFunctions()",
+        "desc": "",
+        "doc": "",
+        "name": "testLocalizationFunctions",
+        "signature": "testLocalizationFunctions()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "init()",
+        "desc": "",
+        "doc": "",
+        "name": "init",
+        "signature": "init()",
+        "stripped_doc": "",
+        "type": "Function"
+      }
+    ],
+    "Method": [],
+    "Variable": [
+      {
+        "def": "AutoHotKeys.logger",
+        "desc": "Logger object used within the Spoon.",
+        "doc": "Logger object used within the Spoon.",
+        "name": "logger",
+        "signature": "AutoHotKeys.logger",
+        "stripped_doc": "",
+        "type": "Variable"
+      },
+      {
+        "def": "AutoHotKeys.version",
+        "desc": "Spoon version.",
+        "doc": "Spoon version.",
+        "name": "version",
+        "signature": "AutoHotKeys.version",
+        "stripped_doc": "",
+        "type": "Variable"
+      },
+      {
+        "def": "AutoHotKeys.homepage",
+        "desc": "Project homepage URL.",
+        "doc": "Project homepage URL.",
+        "name": "homepage",
+        "signature": "AutoHotKeys.homepage",
+        "stripped_doc": "",
+        "type": "Variable"
+      },
+      {
+        "def": "AutoHotKeys.license",
+        "desc": "License information.",
+        "doc": "License information.",
+        "name": "license",
+        "signature": "AutoHotKeys.license",
+        "stripped_doc": "",
+        "type": "Variable"
+      }
+    ],
+    "desc": "AutoHotKeys Spoon",
+    "doc": "",
+    "items": [
+      {
+        "def": "AutoHotKeys.logger",
+        "desc": "Logger object used within the Spoon.",
+        "doc": "Logger object used within the Spoon.",
+        "name": "logger",
+        "signature": "AutoHotKeys.logger",
+        "stripped_doc": "",
+        "type": "Variable"
+      },
+      {
+        "def": "AutoHotKeys.version",
+        "desc": "Spoon version.",
+        "doc": "Spoon version.",
+        "name": "version",
+        "signature": "AutoHotKeys.version",
+        "stripped_doc": "",
+        "type": "Variable"
+      },
+      {
+        "def": "AutoHotKeys.homepage",
+        "desc": "Project homepage URL.",
+        "doc": "Project homepage URL.",
+        "name": "homepage",
+        "signature": "AutoHotKeys.homepage",
+        "stripped_doc": "",
+        "type": "Variable"
+      },
+      {
+        "def": "AutoHotKeys.license",
+        "desc": "License information.",
+        "doc": "License information.",
+        "name": "license",
+        "signature": "AutoHotKeys.license",
+        "stripped_doc": "",
+        "type": "Variable"
+      },
+      {
+        "def": "describeApplicationState()",
+        "desc": "",
+        "doc": "",
+        "name": "describeApplicationState",
+        "signature": "describeApplicationState()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "delinate()",
+        "desc": "",
+        "doc": "",
+        "name": "delinate",
+        "signature": "delinate()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "eventHandler(element, eventName, watcher, includedData)",
+        "desc": "",
+        "doc": "",
+        "name": "eventHandler",
+        "signature": "eventHandler(element, eventName, watcher, includedData)",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "globalEventHandler(applicationName, eventType, application)",
+        "desc": "",
+        "doc": "",
+        "name": "globalEventHandler",
+        "signature": "globalEventHandler(applicationName, eventType, application)",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testInitWithPidFailures()",
+        "desc": "",
+        "doc": "",
+        "name": "testInitWithPidFailures",
+        "signature": "testInitWithPidFailures()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "findApplicationByName(applicationName)",
+        "desc": "",
+        "doc": "",
+        "name": "findApplicationByName",
+        "signature": "findApplicationByName(applicationName)",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testAttributesFromBundleID()",
+        "desc": "",
+        "doc": "",
+        "name": "testAttributesFromBundleID",
+        "signature": "testAttributesFromBundleID()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testBasicAttributes()",
+        "desc": "",
+        "doc": "",
+        "name": "testBasicAttributes",
+        "signature": "testBasicAttributes()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testActiveAttributes()",
+        "desc": "",
+        "doc": "",
+        "name": "testActiveAttributes",
+        "signature": "testActiveAttributes()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testMetaTable()",
+        "desc": "",
+        "doc": "",
+        "name": "testMetaTable",
+        "signature": "testMetaTable()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testFrontmostApplication()",
+        "desc": "",
+        "doc": "",
+        "name": "testFrontmostApplication",
+        "signature": "testFrontmostApplication()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testRunningApplications()",
+        "desc": "",
+        "doc": "",
+        "name": "testRunningApplications",
+        "signature": "testRunningApplications()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testHiding()",
+        "desc": "",
+        "doc": "",
+        "name": "testHiding",
+        "signature": "testHiding()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testHidingValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testHidingValues",
+        "signature": "testHidingValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testKilling()",
+        "desc": "",
+        "doc": "",
+        "name": "testKilling",
+        "signature": "testKilling()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testKillingValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testKillingValues",
+        "signature": "testKillingValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testForceKilling()",
+        "desc": "",
+        "doc": "",
+        "name": "testForceKilling",
+        "signature": "testForceKilling()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testForceKillingValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testForceKillingValues",
+        "signature": "testForceKillingValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testWindows()",
+        "desc": "",
+        "doc": "",
+        "name": "testWindows",
+        "signature": "testWindows()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testWindowsValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testWindowsValues",
+        "signature": "testWindowsValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testMenus()",
+        "desc": "",
+        "doc": "",
+        "name": "testMenus",
+        "signature": "testMenus()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testMenusAsync()",
+        "desc": "",
+        "doc": "",
+        "name": "testMenusAsync",
+        "signature": "testMenusAsync()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testMenusAsyncValues()",
+        "desc": "",
+        "doc": "",
+        "name": "testMenusAsyncValues",
+        "signature": "testMenusAsyncValues()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testUTI()",
+        "desc": "",
+        "doc": "",
+        "name": "testUTI",
+        "signature": "testUTI()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "testLocalizationFunctions()",
+        "desc": "",
+        "doc": "",
+        "name": "testLocalizationFunctions",
+        "signature": "testLocalizationFunctions()",
+        "stripped_doc": "",
+        "type": "Function"
+      },
+      {
+        "def": "init()",
+        "desc": "",
+        "doc": "",
+        "name": "init",
+        "signature": "init()",
+        "stripped_doc": "",
+        "type": "Function"
+      }
+    ],
+    "name": "AutoHotKeys",
+    "stripped_doc": "",
+    "submodules": [],
+    "type": "Module"
+  }
+]
+
+
