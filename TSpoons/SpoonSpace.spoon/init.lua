@@ -9,18 +9,24 @@ obj.homepage = "https://github.com/zer0wiz/SpoonSpace"
 obj.license = "MIT"
 
 local modalManager = spoon.ModalMgr
+
+-- 모듈 로드 함수
+local function loadModule(moduleName)
+    return dofile(hs.spoons.resourcePath(moduleName .. ".lua"))
+end
+
 local modal = loadModule("modal")
 local keymaps = loadModule("keymaps")
+local webview = loadModule("webview")
+
+-- webview 모듈을 외부에서 접근할 수 있도록 노출
+obj.webview = webview
 
 dbg(obj)
 
 if not modalManager then
     error("ModalMgr spoon을 로드할 수 없습니다")
 end
--- modalManager:init()
--- function obj:new(id)
---     modal_list[id] = hs.hotkey.modal.new()
--- end
 
 function obj:move_to_space(space_number)
     dbg(hs.window.focusedWindow())
@@ -156,34 +162,39 @@ function obj:show_monitor_info()
     local screens = hs.screen.allScreens()
     print("=== 현재 모니터 정보 ===")
     for i, screen in ipairs(screens) do
-        print(string.format("모니터 %d: %s (UUID: %s)", i, screen:name(), screen:spacesUUID()))
-        print(string.format("  해상도: %dx%d", screen:frame().w, screen:frame().h))
-        print(string.format("  위치: x=%d, y=%d", screen:frame().x, screen:frame().y))
+        print(hs.inspect(screen:id()))
+        
+        -- print(hs.inspect(hs.spaces.spacesForScreen(screen:id())))
+        -- print(hs.inspect(hs.spaces.data_managedDisplaySpaces()))
+        -- print(hs.inspect(hs.spaces.allSpaces()))
+        print(hs.spaces.activeSpaceOnScreen(screen:id()))
+        for _, space in ipairs(hs.spaces.activeSpaces()) do
+            print(hs.inspect(space))
+        end
+            -- print(hs.inspect(space))
+            -- print(hs.inspect(hs.spaces.spaceForIdentifier(space)))
+            -- print(hs.inspect(hs.spaces.spaceForIdentifier(space):id()))
+            -- print(hs.inspect(hs.spaces.spaceForIdentifier(space):name()))
+            -- print(hs.inspect(hs.spaces.spaceForIdentifier(space):type()))
+            -- print(hs.inspect(hs.spaces.spaceForIdentifier(space):typeId()))
+            -- print(hs.inspect(hs.spaces.spaceForIdentifier(space):typeId()))
+        -- print(string.format("모니터 %d: %s (UUID: %s)", i, screen:name(), screen:spacesUUID()))
+        -- print(string.format("  해상도: %dx%d", screen:frame().w, screen:frame().h))
+        -- print(string.format("  위치: x=%d, y=%d", screen:frame().x, screen:frame().y))
     end
     print("========================")
 end
 
-function obj:bind_key()
+function obj:bind_key(modal)
     print("SpoonSpace bind_key")
-    local spoonSpaceModal = modal.create(modalManager, 'spoonSpace')
+    local spoonSpaceModal = modal
     keymaps.setup(spoonSpaceModal, modalManager, obj)
 end
 
-function obj:init()
-    print("SpoonSpace init")
-    
-    -- Modal 초기화 및 확장 기능 추가
-    modal.init(modalManager, obj)
-    
+function obj:start(spoonSpaceModal, modalManagerParam)
+    print("SpoonSpace start")
+    if modalManagerParam then modalManager = modalManagerParam end
     -- 키바인딩 설정
-    obj:bind_key()
-    
-    -- Supervisor 키바인딩 설정
-    keymaps.setupSupervisor(modalManager, obj)
-    
-    print("SpoonSpace 초기화 완료")
-    
-    self._init_done = true
-    return self
+    obj:bind_key(spoonSpaceModal)
 end
 return obj

@@ -1,5 +1,6 @@
 local obj = {}
 local modalmgr = hs.loadSpoon("ModalMgr")
+local spoonSpace = hs.loadSpoon("SpoonSpace")
 
 -- Metadata
 obj.name = "YabaiM"
@@ -14,8 +15,16 @@ local function trim(str)
 end
 
 local function splitCmd(commands)
-  args = hs.fnutils.split(trim(commands), " ")
-  return args
+  if type(commands) == "table" then
+    -- 이미 테이블인 경우 그대로 반환
+    return commands
+  elseif type(commands) == "string" then
+    -- 문자열인 경우 공백으로 분할
+    return hs.fnutils.split(trim(commands), " ")
+  else
+    -- 다른 타입인 경우 빈 테이블 반환
+    return {}
+  end
 end
 
 local function log(msg, args)
@@ -54,10 +63,10 @@ end
 -- # focus window after active display changes
 -- yabai -m signal --add event=display_changed action="yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id)"
 -- ##################################################
-function obj:init()
-  print("Init yabaiM")
-  modalmgr:new('yabaiM')
-  local cmodal = modalmgr.modal_list['yabaiM']
+function obj:start(modal, modalManager)
+  print("Start yabaiM")
+  local cmodal = modal
+  if modalManager then modalmgr = modalManager end
 
   local function ycMap(modalStr, mods, key, commands, completion)
     cmodal:bind(mods, key, modalStr, function()
@@ -183,27 +192,39 @@ function obj:init()
   ycMap('Toggle split type', {}, 'e', { "-m window --toggle split" })
   -- ycMap('Toggle split type - fouce display all windows', {}, 'e',{ "-m window --toggle split" })
   cmodal:bind('', 'tab', 'Toggle Cheatsheet', function() modalmgr:toggleCheatsheet() end)
+ 
+  -- 기존 정보 표시 기능들
   cmodal:bind('', 'd', 'Toggle zoom parent',
     function() sendMsg_and_exit_modal({ '-m', 'window', '--toggle', 'zoom-parent' }) end)
   cmodal:bind('', 'f', 'Toggle fullscreen',
     function() sendMsg_and_exit_modal({ '-m', 'window', '--toggle', 'zoom-fullscreen' }) end)
-  cmodal:bind('', 'space', 'Toggle float', function()
+  cmodal:bind('', 'space', 'Toggle float', function(out, err)
     sendMsg("-m window --toggle float")
     sendMsg("-m window --grid 1:1:0:0:1:1")
+    sendMsg("-m query --windows --window", function(out, err)
+      print("out: " .. out)
+    local data = hs.json.decode(out)
+    if type(data) == "table" then
+      local isFloating = data["is-floating"]  -- 점 표기 불가, 대괄호+문자열 키 사용
+      print("is-floating:", isFloating and "true" or "false")
+      alert("floating: " .. tostring(isFloating))
+    else
+      print("decode failed", err)
+    end
+  end)
     modalmgr:deactivate({ 'yabaiM' })
   end)
 
-  cmodal:bind('shift', 'space', 'Toggle float-Fouce display All', function()
-    sendMsg("-m query --windows --window", function(out, err)
-      modalmgr:viewInfoModal(out)
-      print("widonw--###########################")
-      local json = hs.json.decode(out)
-      print(out)
-      print("completion::" .. json.id)
-      dbg(json.frame)
-      print(err)
-    end)
-  end)
+  -- cmodal:bind('shift', 'space', 'Toggle float-Fouce display All', function()
+  --   sendMsg("-m query --windows --window", function(out, err)
+  --     -- modalmgr:viewInfoModal(out)
+  --     print("widonw--###########################")
+  --     local json = hs.json.decode(out)
+  --     print("completion::" .. json.id)
+  --     dbg(json.frame)
+  --     print(err)
+  --   end)
+  -- end)
 
 
 
@@ -252,32 +273,98 @@ function obj:init()
   end)
 
 
+    --- query ---
+  -- [추가] alt+i → 1/2/3 선택 서브 모달
+  cmodal:bind({ 'alt' }, 'i', 'Current Info Query (Console Output)', function()
+    local sid = 'yabaiM_info'
+    if not modalmgr.modal_list[sid] then
+      local smodal = modalmgr:new(sid)
+      smodal = modalmgr.modal_list[sid]
+
+      smodal:bind('', '1', 'Displays info', function()
+        sendMsg("-m query --displays --display", function(out) 
+          modalmgr:deactivate({ sid })
+          print(out) 
+          obj:showYabaiInfo("Yabai Displays", out)
+        end)
+      end)
+
+      smodal:bind('', '2', 'Spaces info', function()
+        sendMsg("-m query --spaces --space", function(out) 
+          modalmgr:deactivate({ sid })
+          print(out) 
+          obj:showYabaiInfo("Yabai Spaces", out)
+        end)
+      end)
+
+      smodal:bind('', '3', 'Windows info', function()
+        sendMsg("-m query --windows --window", function(out) 
+          modalmgr:deactivate({ sid })
+          print(out) 
+          obj:showYabaiInfo("Yabai Windows", out)
+        end)
+      end)
+
+      smodal:bind('', 'escape', 'Cancel', function()
+        modalmgr:deactivate({ sid })
+      end)
+    end
+
+    -- 정보 선택 모달
+    modalmgr:viewInfoModal({ sid }, '1:Displays  2:Spaces  3:Windows', { 
+                                              width = 600, height = 100,
+                                              alpha = 0.9, color = '#F0F0F0',
+                                              padding_top = 400, padding_left = 0, 
+                                              margin_top = 0, margin_left = 0, 
+                                              font_size = 18, show_webview = true })
+  end)
+
 
   --- command ---
 
   cmodal:bind('alt', 'r', 'Restart Yabai Service', function()
     sendMsg("--restart-service", function(out, err)
       print("### Yabai Service Restart!! ")
-      print(out)
-      local json = hs.json.decode(out)
-      print("completion::" .. json.id)
-      dbg(json.frame)
-      print(err)
     end)
   end)
 
   cmodal:bind('', 'escape', 'Exit yabaiM', function() modalmgr:deactivate({ 'yabaiM' }) end)
-  -- cmodal:bind('', 'e', 'Toggle split type', function() sendMsg_and_exit_modal({ '-m', 'window', '--toggle', 'split' }) end)
-
-  modalmgr.supervisor:bind('alt', 'y', 'Enter yabaiM', function()
-    print("### YabaiM Enter")
-    modalmgr:deactivateAll()
-    modalmgr:activate({ 'yabaiM' }, '#74BB67', nil, 'Yabai Control Mode!')
-  end)
 
   altMap("r", {}, function()
     m_window_center()
   end)
+end
+
+function obj:init()
+  print("Init yabaiM")
+end
+
+-- Yabai 정보 표시 통합 함수 (데이터를 직접 받아서 처리)
+function obj:showYabaiInfo(displayName, data, options)
+  if not spoonSpace or not spoonSpace.webview then
+    print("SpoonSpace webview not available")
+    return
+  end
+  
+  -- 기본 옵션 설정 (투명도 포함)
+  options = options or {}
+  options.alpha = options.alpha or 0.9  -- 기본 투명도 90%
+  
+  local webview = spoonSpace.webview.showAsyncData(displayName, "Loading info...", options)
+  
+  -- 받은 데이터를 즉시 처리
+  if data and data ~= "" then
+    local content = spoonSpace.webview.formatJSON(data)
+    spoonSpace.webview.updateContent(webview, displayName, content)
+    -- 콘솔에도 출력
+    print("=== " .. displayName .. " ===")
+    print(data)
+  else
+    spoonSpace.webview.updateContent(webview, displayName, "No data available")
+    print("No data available")
+  end
+  
+  return webview
 end
 
 function obj:window_focused_event(windowId)

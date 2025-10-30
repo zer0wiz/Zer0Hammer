@@ -26,7 +26,7 @@ hotkey.setLogLevel=log.setLogLevel
 ---  * None
 ---
 --- Returns:
----  * The log level of the hotkey logger as a number between 0 and 5
+---  * The log level of the hotkey logger as a number betweebindn 0 and 5
 hotkey.getLogLevel=log.getLogLevel
 
 local tonumber,pairs,ipairs,type,tremove,tinsert,tconcat,tsort = tonumber,pairs,ipairs,type,table.remove,table.insert,table.concat,table.sort

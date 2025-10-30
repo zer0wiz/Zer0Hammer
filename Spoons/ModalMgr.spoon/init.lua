@@ -64,6 +64,7 @@ end
 
 function obj:new(id)
     obj.modal_list[id] = hs.hotkey.modal.new()
+    return obj.modal_list[id]
 end
 
 
@@ -72,12 +73,12 @@ end
 -- by default, it fills by row
 -- but it can be customized to fill by column
 function insertIntoSheet(position, st, row, column, n)
-    dbg("row::")
-    dbg(row)
-    dbg("column::")
-    dbg(row)
-    dbg("n:::")
-    dbg(n)
+    -- dbg("row::")
+    -- dbg(row)
+    -- dbg("column::")
+    -- dbg(row)
+    -- dbg("n:::")
+    -- dbg(n)
    local textAlign = "left"
    local xpos
    local ypos
@@ -235,19 +236,31 @@ function obj:toggleModalTray(cscreen, trayColor, text)
 end
 
 function obj:toggleInfoModalTray(cscreen, trayColor, text)
+    obj:toggleInfoModalTrayWithOptions(cscreen, trayColor, text, {
+        width = 600,
+        height = 600,
+        padding_top = 100,
+        padding_left = 0,
+        alpha = 0.9,
+        color = trayColor,
+        margin_top = 0,
+        margin_left = 0,
+        font_size = 18
+    })
+end
 
+function obj:toggleInfoModalTrayWithOptions(cscreen, trayColor, text, options)
     local cres = cscreen:fullFrame()
 -- tray_width -[ 0 ~ 1 ] screen rate
-    local tray_width = 600
-    local tray_height = 600
-    local tray_padding_top = 100
-    local tray_padding_left = 0
-    local tray_alpha = 0.9
-    local tray_color = trayColor
-    local tray_margin_top = 0
-    local tray_margin_left = 0
-    local font_size = 18
-
+    local tray_width = options.width or 600
+    local tray_height = options.height or 600
+    local tray_padding_top = options.padding_top or 100
+    local tray_padding_left = options.padding_left or 0
+    local tray_alpha = options.alpha or 0.9
+    local tray_color = options.color or trayColor
+    local tray_margin_top = options.margin_top or 0
+    local tray_margin_left = options.margin_left or 0
+    local font_size = options.font_size or 18
 
     obj.modal_tray:frame({
         w = tray_width,
@@ -320,9 +333,26 @@ function obj:activate(idList, trayColor, showKeys, trayText)
     end
 end
 
-function obj:viewInfoModal(text)
-    local cscreen = hs.screen.mainScreen()
-    obj:toggleInfoModalTray(cscreen, "#F0F0F0", text)
+function obj:modalListInfo(id)
+    print("### activateDebug")
+        dbg(obj.modal_list[id])
+        -- print("### "..val)
+        -- print("### "..obj.modal_list[id])
+        -- print("### "..obj.active_list[id])
+        -- print("### "..obj.supervisor[id])
+        -- print("### "..obj.modal_tray[id])
+        -- print("### "..obj.which_key[id])
+end
+
+function obj:viewInfoModal(idList, text, options)
+    for _, val in ipairs(idList) do
+        obj.modal_list[val]:enter()
+        obj.active_list[val] = obj.modal_list[val]
+    end
+    
+    local focusedWindow = hs.window.focusedWindow()
+    local cscreen = focusedWindow:screen()
+    obj:toggleInfoModalTrayWithOptions(cscreen, "#F0F0F0", text, options or {})
 end
 
 --- ModalMgr:deactivate(idList)

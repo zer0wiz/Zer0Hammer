@@ -27,6 +27,9 @@ local menu = loadModule("menu")
 local execution = loadModule("execution")
 local watchers = loadModule("watchers")
 local hotkeys = loadModule("hotkeys")
+local shortcut_preview = loadModule("shortcut_preview")
+local recorder = loadModule("recorder")
+local playback = loadModule("playback")
 
 -- 모듈들을 외부에서 접근할 수 있도록 노출
 obj.context = context
@@ -37,6 +40,12 @@ obj.menu = menu
 obj.execution = execution
 obj.watchers = watchers
 obj.hotkeys = hotkeys
+obj.shortcutPreview = shortcut_preview
+obj.recorder = recorder
+obj.playback = playback
+
+-- playback 모듈에 execution 참조 설정
+playback.setExecution(execution)
 
 function obj:start()
     -- Storage 초기화

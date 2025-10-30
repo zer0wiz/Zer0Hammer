@@ -332,12 +332,12 @@
          :key :space
          :action "lib.modal:activate-modal"
          :repeat true}
-        {:mods [:ctrl]
-         :key :tab
-         :action "apps:next-app"}
-        {:mods [:ctrl :shift]
-         :key :tab
-         :action "apps:prev-app"}
+     ;   {:mods [:ctrl]
+     ;    :key :tab
+     ;    :action "apps:next-app"}
+     ;   {:mods [:ctrl :shift]
+     ;    :key :tab
+     ;    :action "apps:prev-app"}
         {:mods [:cmd :ctrl]
          :key "`"
          :action hs.toggleConsole}
