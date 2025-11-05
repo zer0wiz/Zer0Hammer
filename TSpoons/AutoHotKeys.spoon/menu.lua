@@ -6,6 +6,204 @@ local winmod = hs.window
 local dialog = hs.dialog
 local eventtap = hs.eventtap
 local event = eventtap.event
+local screenmod = hs.screen
+local json = hs.json
+local fs = hs.fs
+
+menu.menuList = {}
+
+-- 메뉴 설정 로드
+local menuConfig = nil
+local function loadMenuConfig()
+    if menuConfig then
+        return menuConfig
+    end
+    
+    -- Spoon 디렉토리 찾기
+    local spoonPath = debug.getinfo(2, "S").source:match("@(.*/AutoHotKeys%.spoon/)")
+    if not spoonPath then
+        -- 대안: 상대 경로로 찾기
+        spoonPath = hs.configdir .. "/TSpoons/AutoHotKeys.spoon/"
+    end
+    
+    local configPath = spoonPath .. "assets/menu.json"
+    if fs.attributes(configPath) then
+        local file = io.open(configPath, "r")
+        if file then
+            local content = file:read("*a")
+            file:close()
+            menuConfig = json.decode(content)
+        end
+    end
+    
+    -- 기본값 반환 (JSON 파일이 없을 경우)
+    if not menuConfig then
+        menuConfig = {}
+    end
+    
+    return menuConfig
+end
+
+-- 플레이스홀더 치환 헬퍼 함수
+local function resolvePlaceholder(value, vars)
+    if type(value) == "string" then
+        -- {{변수명}} 패턴 치환
+        local result = value:gsub("{{([^}]+)}}", function(expr)
+            -- 수식 계산 (예: w - 80)
+            local trimmed = expr:match("^%s*(.-)%s*$")
+            -- 먼저 직접 변수 참조 확인
+            if vars[trimmed] ~= nil then
+                return vars[trimmed]
+            end
+            -- 수식이 있는 경우
+            if trimmed:match("^[%w%s%-%+%*%/%(%)%.]+$") then
+                -- 변수 치환
+                local exprWithVars = trimmed:gsub("([%w_][%w_]*)", function(var)
+                    if vars[var] ~= nil then
+                        return tostring(vars[var])
+                    end
+                    return var
+                end)
+                -- 수식 평가
+                local func = load("return " .. exprWithVars)
+                if func then
+                    local ok, result = pcall(func)
+                    if ok then
+                        -- 숫자는 숫자로, 문자열은 문자열로 반환
+                        return result
+                    end
+                end
+            end
+            -- 치환 실패 시 빈 문자열 반환 (원래 값을 반환하면 플레이스홀더가 그대로 남음)
+            return ""
+        end)
+        -- 전체가 숫자 문자열인 경우에만 숫자로 변환
+        if type(result) == "string" and result:match("^%s*%-?%d+%.?%d*%s*$") then
+            local num = tonumber(result)
+            if num then
+                return num
+            end
+        end
+        return result
+    elseif type(value) == "table" then
+        local result = {}
+        for k, v in pairs(value) do
+            local newKey = resolvePlaceholder(k, vars)
+            local newValue = resolvePlaceholder(v, vars)
+            -- 숫자 키는 그대로 유지
+            if type(k) == "number" then
+                result[k] = newValue
+            else
+                result[newKey] = newValue
+            end
+        end
+        return result
+    end
+    return value
+end
+
+-- JSON 요소를 canvas 요소로 변환
+local function createCanvasElement(elementDef, vars)
+    local element = {}
+    
+    for k, v in pairs(elementDef) do
+        if k == "index" then
+            -- index는 건너뛰기 (나중에 사용)
+        elseif k == "template" then
+            -- template은 건너뛰기
+        else
+            local resolved = resolvePlaceholder(v, vars)
+            
+            -- frame의 숫자 값이 문자열로 남아있는지 확인 및 변환
+            if k == "frame" and type(resolved) == "table" then
+                for fk, fv in pairs(resolved) do
+                    if type(fv) == "string" then
+                        local num = tonumber(fv)
+                        if num then
+                            resolved[fk] = num
+                        end
+                    end
+                end
+            end
+            
+            -- roundedRectRadii의 숫자 값 확인 및 변환
+            if k == "roundedRectRadii" and type(resolved) == "table" then
+                for rk, rv in pairs(resolved) do
+                    if type(rv) == "string" then
+                        local num = tonumber(rv)
+                        if num then
+                            resolved[rk] = num
+                        end
+                    end
+                end
+            end
+            
+            -- coordinates 배열의 숫자 값 확인 및 변환
+            if k == "coordinates" and type(resolved) == "table" then
+                for i, coord in ipairs(resolved) do
+                    if type(coord) == "table" then
+                        for ck, cv in pairs(coord) do
+                            if type(cv) == "string" then
+                                local num = tonumber(cv)
+                                if num then
+                                    coord[ck] = num
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            
+            -- 숫자 필드들 확인 및 변환
+            if k == "textSize" or k == "strokeWidth" or k == "radius" then
+                if type(resolved) == "string" then
+                    local num = tonumber(resolved)
+                    if num then
+                        resolved = num
+                    end
+                end
+            end
+            
+            -- center의 숫자 값 확인 및 변환
+            if k == "center" and type(resolved) == "table" then
+                for ck, cv in pairs(resolved) do
+                    if type(cv) == "string" then
+                        local num = tonumber(cv)
+                        if num then
+                            resolved[ck] = num
+                        end
+                    end
+                end
+            end
+            
+            -- fillColor의 alpha 값 확인 및 변환
+            if k == "fillColor" and type(resolved) == "table" then
+                for fck, fcv in pairs(resolved) do
+                    if fck == "alpha" and type(fcv) == "string" then
+                        local num = tonumber(fcv)
+                        if num then
+                            resolved[fck] = num
+                        end
+                    elseif type(fcv) == "string" then
+                        local num = tonumber(fcv)
+                        if num then
+                            resolved[fck] = num
+                        end
+                    end
+                end
+            end
+            
+            element[k] = resolved
+        end
+    end
+    
+    -- 필수 필드 확인
+    if not element.type then
+        return nil -- 타입이 없으면 유효하지 않은 요소
+    end
+    
+    return element
+end
 
 -- 메뉴 토글
 function menu.toggle(obj)
@@ -30,6 +228,12 @@ end
 
 -- 메뉴 표시
 function menu.show(obj)
+    -- 이미 메뉴가 표시되어 있으면 토글 (숨기기)
+    if obj.menuShowing and obj.menuCanvas then
+        menu.hide(obj)
+        return
+    end
+    
     if obj.menuCanvas then
         obj.menuCanvas:delete()
         obj.menuCanvas = nil
@@ -39,6 +243,12 @@ function menu.show(obj)
     if obj.menuDragEventHandler then
         obj.menuDragEventHandler:stop()
         obj.menuDragEventHandler = nil
+    end
+    
+    -- 이전 포커스 감지 정리
+    if obj.menuFocusWatcher then
+        obj.menuFocusWatcher:stop()
+        obj.menuFocusWatcher = nil
     end
     
     -- 현재 컨텍스트 가져오기
@@ -56,18 +266,46 @@ function menu.show(obj)
     end
     
     local win = winmod.frontmostWindow()
-    local base = win and win:frame() or hs.geometry({x = 200, y = 200, w = 400, h = 300})
-    local w, h = 280, 185
+    local menuConfig = loadMenuConfig()
+    local mainMenuConfig = menuConfig.mainMenu or {}
+    local w = mainMenuConfig.size and mainMenuConfig.size.w or 280
+    local h = mainMenuConfig.size and mainMenuConfig.size.h or 185
     
-    -- 저장된 위치가 있으면 사용, 없으면 기본 위치
-    local config = obj.storage.loadConfig()
-    local x, y
-    if config.menu.position.x and config.menu.position.y then
-        x = config.menu.position.x
-        y = config.menu.position.y
-    else
-        x = base.x + base.w/2 - w/2
-        y = base.y + 80
+    -- 항상 현재 마우스 위치를 왼쪽 상단 모서리로 사용
+    local mousePos = hs.mouse.absolutePosition()
+    local x = mousePos.x
+    local y = mousePos.y
+    
+    -- 마우스가 있는 화면 찾기
+    local mouseScreen = hs.mouse.getCurrentScreen()
+    if not mouseScreen then
+        mouseScreen = screenmod.primaryScreen()
+    end
+    local screenFrame = mouseScreen:frame()
+    
+    -- 화면 하단을 넘지 않도록 Y 위치 조정
+    -- y + h가 화면 하단(screenFrame.y + screenFrame.h)을 넘지 않도록
+    local maxY = (screenFrame.y + screenFrame.h) - h
+    if y > maxY then
+        y = maxY
+    end
+    
+    -- 화면 상단을 넘지 않도록 (안전장치)
+    local minY = screenFrame.y
+    if y < minY then
+        y = minY
+    end
+    
+    -- 화면 우측을 넘지 않도록 X 위치도 조정
+    local maxX = (screenFrame.x + screenFrame.w) - w
+    if x > maxX then
+        x = maxX
+    end
+    
+    -- 화면 좌측을 넘지 않도록 (안전장치)
+    local minX = screenFrame.x
+    if x < minX then
+        x = minX
     end
     
     local c = canvas.new({
@@ -79,99 +317,106 @@ function menu.show(obj)
     
     c:level(canvas.windowLevels.popUpMenu)
     
-    -- 배경
-    c[1] = {
-        type = "rectangle",
-        action = "fill",
-        fillColor = {alpha = 0.95, white = 0.08},
-        roundedRectRadii = {xRadius = 8, yRadius = 8}
-    }
-    
-    -- 앱 이름 (좌측 상단)
+    -- 변수 준비
     local appName = ctx.appName or "앱 없음"
-    c[2] = {
-        type = "text",
-        text = appName,
-        textSize = 14,
-        textColor = {white = 1},
-        frame = {x = 15, y = 12, w = w - 80, h = 20},
-        textAlignment = "left"
-    }
-    
-    -- Enabled 토글 버튼 (우측 상단)
     local appId = getAppId(ctx)
     local appConfig = appId and obj.storage.loadAppConfig(appId) or nil
     local enabled = appConfig and appConfig.enabled or false
+    local storageConfig = obj.storage.loadConfig()
+    local overlayEnabled = storageConfig.overlay and storageConfig.overlay.enabled or false
     
-    c[3] = {
-        id = "btnToggle",
-        type = "rectangle",
-        action = "fillStroke",
-        fillColor = enabled and {alpha = 0.8, red = 0.2, green = 0.8, blue = 0.2} or {alpha = 0.3, white = 0.5},
-        strokeColor = {white = 1, alpha = 0.8},
-        strokeWidth = 1,
-        frame = {x = w - 60, y = 10, w = 45, h = 24},
-        roundedRectRadii = {xRadius = 4, yRadius = 4},
-        trackMouseUp = true
+    -- 토글 스위치 계산 변수
+    local enabledToggleWidth = 44
+    local enabledToggleHeight = 24
+    local enabledToggleX = w - enabledToggleWidth - 15
+    local enabledToggleY = 10
+    local enabledThumbRadius = 10
+    local enabledTogglePadding = 2
+    local enabledThumbX = enabled and (enabledToggleX + enabledToggleWidth - enabledThumbRadius - enabledTogglePadding) or (enabledToggleX + enabledThumbRadius + enabledTogglePadding)
+    local enabledThumbY = enabledToggleY + enabledToggleHeight / 2
+    
+    local overlayToggleWidth = 44
+    local overlayToggleHeight = 24
+    local overlayToggleX = w - overlayToggleWidth - 20
+    local overlayToggleY = 120
+    local overlayThumbRadius = 10
+    local overlayTogglePadding = 2
+    local overlayThumbX = overlayEnabled and (overlayToggleX + overlayToggleWidth - overlayThumbRadius - overlayTogglePadding) or (overlayToggleX + overlayThumbRadius + overlayTogglePadding)
+    local overlayThumbY = overlayToggleY + overlayToggleHeight / 2
+    
+    local vars = {
+        w = w,
+        h = h,
+        appName = appName,
+        enabledText = enabled and "ON" or "OFF",
+        overlayStatus = overlayEnabled and "ON" or "OFF",
+        enabledAlpha = enabled and 1.0 or 0.0,
+        enabledThumbX = enabledThumbX,
+        overlayAlpha = overlayEnabled and 1.0 or 0.0,
+        overlayThumbX = overlayThumbX
     }
     
-    -- Enabled 텍스트
-    c[4] = {
-        type = "text",
-        text = enabled and "ON" or "OFF",
-        textSize = 11,
-        textColor = {white = 1},
-        frame = {x = w - 60, y = 10, w = 45, h = 24},
-        textAlignment = "center"
-    }
-    
-    -- 메뉴 항목: 단축키
-    c[5] = {
-        id = "btnShortcuts",
-        type = "text",
-        text = "단축키",
-        textSize = 13,
-        textColor = {white = 1},
-        frame = {x = 20, y = 50, w = w - 40, h = 32},
-        trackMouseUp = true
-    }
-    
-    -- 메뉴 항목: 매크로
-    c[6] = {
-        id = "btnMacros",
-        type = "text",
-        text = "매크로",
-        textSize = 13,
-        textColor = {white = 1},
-        frame = {x = 20, y = 85, w = w - 40, h = 32},
-        trackMouseUp = true
-    }
-    
-    -- 메뉴 항목: 오버레이 표시 토글
-    local config = obj.storage.loadConfig()
-    local overlayEnabled = config.overlay and config.overlay.enabled or false
-    
-    c[7] = {
-        id = "btnOverlay",
-        type = "text",
-        text = "오버레이: " .. (overlayEnabled and "ON" or "OFF"),
-        textSize = 13,
-        textColor = overlayEnabled and {red = 0.2, green = 0.8, blue = 0.2} or {white = 0.7},
-        frame = {x = 20, y = 120, w = w - 40, h = 32},
-        trackMouseUp = true
-    }
-    
-    -- 구분선
-    c[8] = {
-        type = "segments",
-        action = "stroke",
-        strokeColor = {white = 1, alpha = 0.2},
-        strokeWidth = 1,
-        coordinates = {
-            {x = 15, y = 48},
-            {x = w - 15, y = 48}
+    -- JSON에서 요소 생성
+    local elements = mainMenuConfig.elements or {}
+    if not elements or next(elements) == nil then
+        -- JSON 로드 실패 시 기본 canvas 요소 생성
+        c[1] = {
+            type = "rectangle",
+            action = "fill",
+            fillColor = {alpha = 0.95, white = 0.08},
+            roundedRectRadii = {xRadius = 8, yRadius = 8}
         }
-    }
+        c[2] = {
+            type = "text",
+            text = appName,
+            textSize = 14,
+            textColor = {white = 1},
+            frame = {x = 15, y = 12, w = w - 80, h = 20},
+            textAlignment = "left"
+        }
+    else
+        -- JSON에서 요소 생성
+        -- 인덱스 순서대로 정렬하여 할당 (canvas는 연속된 인덱스를 요구함)
+        local sortedElements = {}
+        for elementName, elementDef in pairs(elements) do
+            if elementDef and elementDef.index then
+                local idx = tonumber(elementDef.index)
+                if idx and idx > 0 then
+                    table.insert(sortedElements, {name = elementName, def = elementDef, index = idx})
+                end
+            end
+        end
+        
+        -- 인덱스 순서대로 정렬
+        table.sort(sortedElements, function(a, b) return a.index < b.index end)
+        
+        -- 순차적으로 할당
+        for _, item in ipairs(sortedElements) do
+            local canvasElement = createCanvasElement(item.def, vars)
+            -- 유효한 요소인지 확인
+            if canvasElement and canvasElement.type then
+                -- fillColor alpha 처리 (enabledToggleActive, overlayToggleActive)
+                if item.name == "enabledToggleActive" and canvasElement.fillColor then
+                    canvasElement.fillColor.alpha = enabled and 1.0 or 0.0
+                elseif item.name == "overlayToggleActive" and canvasElement.fillColor then
+                    canvasElement.fillColor.alpha = overlayEnabled and 1.0 or 0.0
+                end
+                -- center x 처리 (enabledToggleThumb, overlayToggleThumb)
+                if item.name == "enabledToggleThumb" and canvasElement.center then
+                    canvasElement.center.x = enabledThumbX
+                elseif item.name == "overlayToggleThumb" and canvasElement.center then
+                    canvasElement.center.x = overlayThumbX
+                end
+                -- canvas 요소 할당 (안전하게)
+                local success, err = pcall(function()
+                    c[item.index] = canvasElement
+                end)
+                if not success then
+                    hs.alert.show("Canvas 요소 생성 실패: " .. (item.name or "unknown") .. " (index: " .. item.index .. ") - " .. (tostring(err) or "알 수 없는 오류"), 2.0)
+                end
+            end
+        end
+    end
     
     -- 드래그 모드 상태
     obj.menuDragMode = false
@@ -212,7 +457,7 @@ function menu.show(obj)
         end
         
         if msg == "mouseUp" then
-            if id == "btnToggle" then
+            if id == "btnToggle" or id == "enabledToggleTrack" then
                 -- Enabled 토글
                 local appId = getAppId(ctx)
                 if appId then
@@ -223,6 +468,7 @@ function menu.show(obj)
                 end
             elseif id == "btnShortcuts" then
                 -- 단축키 메뉴
+                menu.hide(obj) -- 메뉴 닫기
                 if obj.shortcutPreview then
                     obj.shortcutPreview.show(obj, ctx)
                 else
@@ -231,7 +477,7 @@ function menu.show(obj)
             elseif id == "btnMacros" then
                 -- 매크로 목록 표시
                 menu.showMacroList(obj)
-            elseif id == "btnOverlay" then
+            elseif id == "overlayToggle" or id == "overlayToggleTrack" then
                 -- 오버레이 토글
                 local config = obj.storage.loadConfig()
                 config.overlay = config.overlay or {}
@@ -315,12 +561,50 @@ function menu.show(obj)
         return false
     end)
     
+    -- 키 입력 감지하여 메뉴 닫기
+    c:canvasKeyEvents(true)
+    c:keyCallback(function(canvas_obj, msg, id)
+        if msg == "keyDown" then
+            menu.hide(obj) -- 메뉴 즉시 닫기
+        end
+    end)
+    
+    -- 포커스 손실 감지하여 메뉴 닫기
+    obj.menuFocusWatcher = hs.window.filter.new()
+    obj.menuFocusWatcher:subscribe(hs.window.filter.windowFocused, function(_, _, _)
+        -- 다른 윈도우로 포커스 이동 시 메뉴 닫기
+        -- canvas는 일반적으로 포커스를 받지 않으므로
+        -- 어떤 윈도우든 포커스를 받으면 메뉴를 닫음
+        hs.timer.doAfter(0.05, function()
+            if obj.menuCanvas and obj.menuCanvas:isShowing() then
+                local frontmost = winmod.frontmostWindow()
+                if frontmost then
+                    -- 메뉴가 표시되어 있지만 다른 윈도우가 포커스를 받으면 닫기
+                    menu.hide(obj)
+                end
+            end
+        end)
+    end)
+    
     obj.menuCanvas = c
     obj.menuShowing = true
 end
 
 -- 메뉴 숨김
+function menu.hideAll()
+    for _, menu in ipairs(menu.menuList) do
+        menu.hide(menu)
+    end
+end
+
+-- 메뉴 숨김
 function menu.hide(obj)
+    -- 포커스 감지 정리
+    if obj.menuFocusWatcher then
+        obj.menuFocusWatcher:stop()
+        obj.menuFocusWatcher = nil
+    end
+    
     if obj.menuDragEventHandler then
         obj.menuDragEventHandler:stop()
         obj.menuDragEventHandler = nil
@@ -339,8 +623,6 @@ function menu.showMacroList(obj)
     menu.hide(obj)
     
     local macros = obj.storage.listMacros()
-    local win = winmod.frontmostWindow()
-    local base = win and win:frame() or hs.geometry({x = 200, y = 200, w = 500, h = 400})
     
     local itemHeight = 40
     local headerHeight = 50
@@ -349,14 +631,41 @@ function menu.showMacroList(obj)
     local w = 400
     local h = headerHeight + (itemCount * itemHeight)
     
-    local config = obj.storage.loadConfig()
-    local x, y
-    if config.menu.position.x and config.menu.position.y then
-        x = config.menu.position.x
-        y = config.menu.position.y
-    else
-        x = base.x + base.w/2 - w/2
-        y = base.y + 80
+    -- 항상 현재 마우스 위치를 왼쪽 상단 모서리로 사용
+    local mousePos = hs.mouse.absolutePosition()
+    local x = mousePos.x
+    local y = mousePos.y
+    
+    -- 마우스가 있는 화면 찾기
+    local mouseScreen = hs.mouse.getCurrentScreen()
+    if not mouseScreen then
+        mouseScreen = screenmod.primaryScreen()
+    end
+    local screenFrame = mouseScreen:frame()
+    
+    -- 화면 하단을 넘지 않도록 Y 위치 조정
+    -- y + h가 화면 하단(screenFrame.y + screenFrame.h)을 넘지 않도록
+    local maxY = (screenFrame.y + screenFrame.h) - h
+    if y > maxY then
+        y = maxY
+    end
+    
+    -- 화면 상단을 넘지 않도록 (안전장치)
+    local minY = screenFrame.y
+    if y < minY then
+        y = minY
+    end
+    
+    -- 화면 우측을 넘지 않도록 X 위치도 조정
+    local maxX = (screenFrame.x + screenFrame.w) - w
+    if x > maxX then
+        x = maxX
+    end
+    
+    -- 화면 좌측을 넘지 않도록 (안전장치)
+    local minX = screenFrame.x
+    if x < minX then
+        x = minX
     end
     
     local c = canvas.new({
