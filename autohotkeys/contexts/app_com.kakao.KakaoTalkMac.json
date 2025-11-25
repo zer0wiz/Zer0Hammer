@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.kakao.KakaoTalkMac",
+    "bundleId" : "com.kakao.KakaoTalkMac",
+    "updatedAt" : 1763694613,
+    "type" : "APP",
+    "createdAt" : 1763694613,
+    "configPath" : "contexts\/app_com.kakao.KakaoTalkMac.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

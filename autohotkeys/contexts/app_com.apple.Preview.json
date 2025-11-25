@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.Preview",
+    "bundleId" : "com.apple.Preview",
+    "updatedAt" : 1763682424,
+    "type" : "APP",
+    "createdAt" : 1763682424,
+    "configPath" : "contexts\/app_com.apple.Preview.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

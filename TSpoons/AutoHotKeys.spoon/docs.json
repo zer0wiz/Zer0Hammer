@@ -7,8 +7,8 @@
   "description": "Windows AutoHotkey 스타일의 매크로 및 단축키 자동화 기능을 제공하는 Hammerspoon Spoon",
   "download_url": "",
   "tags": ["automation", "macro", "hotkey", "productivity"],
-  "items": [
-    {
+    "items": [
+      {
       "name": "start",
       "type": "Method",
       "desc": "AutoHotKeys 스푼을 시작합니다. 스토리지를 초기화하고, 감시자를 시작하며, 오버레이와 단축키를 설정합니다.",
@@ -24,12 +24,12 @@
       "signature": "AutoHotKeys:stop()"
     },
     {
-      "name": "menutoggle",
+      "name": "menuToggle",
       "type": "Method",
       "desc": "AutoHotKeys 메뉴를 토글합니다.",
       "signature": "AutoHotKeys:menutoggle()"
-    },
-    {
+      },
+      {
       "name": "recorder",
       "type": "Module",
       "desc": "매크로 녹화 모듈. 마우스와 키보드 이벤트를 캡처하여 재생 가능한 매크로로 저장합니다."
@@ -47,8 +47,8 @@
         "success (boolean) - 녹화 시작 성공 여부",
         "error (string) - 실패 시 에러 메시지"
       ]
-    },
-    {
+      },
+      {
       "name": "recorder.stop",
       "type": "Function",
       "desc": "매크로 녹화를 중지하고 결과를 반환합니다.",
@@ -78,8 +78,8 @@
       "parameters": [
         "obj - AutoHotKeys 스푼 객체"
       ]
-    },
-    {
+      },
+      {
       "name": "recorder.isRecording",
       "type": "Function",
       "desc": "현재 녹화 중인지 확인합니다.",
@@ -119,8 +119,8 @@
       "parameters": [
         "obj - AutoHotKeys 스푼 객체"
       ]
-    },
-    {
+      },
+      {
       "name": "playback.isPlaying",
       "type": "Function",
       "desc": "현재 재생 중인지 확인합니다.",
@@ -195,6 +195,6 @@
       "returns": [
         "boolean - 삭제 성공 여부"
       ]
-    }
-  ]
+  }
+]
 }

@@ -1,0 +1,12 @@
+# Cursor IDE Rules for Zer0Hammer
+
+## General Rules
+- Always answer in Korean. (항상 한글로 답변할 것)
+
+## Auto-apply edits for common file types
+Always apply edits to these file types without confirmation:
+- *.lua files
+- *.md files  
+- *.fnl files
+
+This workspace is configured to automatically apply all edits made by the AI assistant.

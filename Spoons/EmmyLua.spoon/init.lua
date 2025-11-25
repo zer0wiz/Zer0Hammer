@@ -4,8 +4,6 @@
 --- under ~/.hammerspoon/Spoons/EmmyLua.spoon/annotations.
 --- Annotations will only be generated if they don't exist yet or are out of date.
 ---
---- Note: Load this Spoon before any pathwatchers are defined to avoid unintended behaviour (for example multiple reloads when the annotions are created).
----
 --- In order to get auto completion in your editor, you need to have one of the following LSP servers properly configured:
 --- * [lua-language-server](https://github.com/sumneko/lua-language-server) (recommended)
 --- * [EmmyLua-LanguageServer](https://github.com/EmmyLua/EmmyLua-LanguageServer)
@@ -27,14 +25,9 @@ M.name = "EmmyLua"
 M.version = "1.0"
 M.author = "http://github.com/folke"
 M.license = "MIT - https://opensource.org/licenses/MIT"
-M.logger = hs.logger.new("EmmyLua")
-
 
 local options = {
   annotations = hs.spoons.resourcePath("annotations"),
-  timestampsFilename = hs.spoons.resourcePath("annotations").."/timestamps.json",
-  timestamps = {},
-  timestampsChanged = false,
   types = {
     bool = "boolean",
     boolean = "boolean",
@@ -190,69 +183,28 @@ function M.create(jsonDocs, prefix)
     module.name = prefix .. module.name
     local fname = options.annotations .. "/" .. module.name .. ".lua"
     local fmtime = hs.fs.attributes(fname, "modification")
-
     if fmtime == nil or mtime > fmtime then
-      M.logger.i("creating " .. fname)
+      -- print("creating " .. fname)
       local fd = io.open(fname, "w+")
       io.output(fd)
       M.processModule(module)
       io.close(fd)
-    else
-      M.logger.i("skipping " .. fname)
     end
   end
 end
 
-function M.createWhenChanged(jsonDocs, prefix)
-  local mtime = hs.fs.attributes(jsonDocs, "modification")
-  local timestamp = options.timestamps[jsonDocs]
-
-  if(timestamp == nil or mtime ~= timestamp) then
-    M.logger.i("reading "..jsonDocs)
-    M.create(jsonDocs, prefix)
-    options.timestamps[jsonDocs] = mtime
-    options.timestampsChanged = true
-  else
-    M.logger.i("skipping "..jsonDocs)
-  end
-end
-
-function M.readTimestamps()
-  timestamps = hs.json.read(options.timestampsFilename)
-
-  if timestamps then
-    options.timestamps = timestamps
-  end
-
-  M.logger.d(hs.inspect(options.timestamps))
-end
-
-function M.writeTimestamps()
-  M.logger.d(hs.inspect(options.timestamps))
-  if options.timestampsChanged then
-    hs.json.write(options.timestamps, options.timestampsFilename, true, true)
-  end
-end
-
 function M:init()
-
   hs.fs.mkdir(options.annotations)
-
-  M.readTimestamps()
-
   -- Load hammerspoon docs
-  M.createWhenChanged(hs.docstrings_json_file)
+  M.create(hs.docstrings_json_file)
 
   -- Load Spoons
   for _, spoon in ipairs(hs.spoons.list()) do
     local doc = hs.configdir .. "/Spoons/" .. spoon.name .. ".spoon/docs.json"
     if hs.fs.attributes(doc, "modification") then
-      M.createWhenChanged(doc, "spoon.")
+      M.create(doc, "spoon.")
     end
   end
-
-  M.writeTimestamps()
-
 end
 
 return M

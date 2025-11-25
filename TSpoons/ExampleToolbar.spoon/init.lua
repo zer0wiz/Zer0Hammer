@@ -11,9 +11,10 @@ obj.license = "MIT - https://opensource.org/licenses/MIT"
 obj.logger = hs.logger.new("ExampleToolbar")
 
 -- Configuration
-obj.hotkey = obj.hotkey or {{"alt", "shift"}, "w"}
+obj.hotkey = {{"alt", "shift"}, "w"}
 obj.webView = nil
 obj.toolbar = nil
+obj.toolbarId = nil  -- 현재 toolbar 식별자 추적
 
 -- WebView Toolbar 예제 생성 함수
 function obj:createToolbarExample()
@@ -25,20 +26,23 @@ function obj:createToolbarExample()
     -- WebView 생성 (타이틀바가 있는 창)
     local rect = hs.geometry.rect(400, 300, 800, 600)
     self.webView = hs.webview.new(rect):windowStyle(1+4+8) -- 타이틀바, 닫기, 최소화 버튼 포함
-        :title("WebView Toolbar 예제")
+        :windowTitle("WebView Toolbar 예제")
         :url("about:blank")
-        :windowBackgroundColor({white=1, alpha=0.98})
         :bringToFront(true)
     
-    -- Toolbar 생성
+    -- Toolbar 생성 (고유 식별자 사용)
     local toolbarModule = require("hs.webview.toolbar")
     
-    self.toolbar = toolbarModule.new("exampleToolbar", {
+    -- 고유 식별자 생성 (timestamp 사용)
+    self.toolbarId = "exampleToolbar_" .. os.time() .. "_" .. math.random(1000)
+    
+    self.toolbar = toolbarModule.new(self.toolbarId, {
         -- Selectable 아이템들
         {
             id = "view1",
             label = "View 1",
-            selectable = ovarian = hs.image.imageFromName("NSStatusAvailable"),
+            selectable = true,
+            image = hs.image.imageFromName("NSStatusAvailable"),
             tooltip = "View Mode 1"
         },
         {
@@ -101,7 +105,8 @@ function obj:createToolbarExample()
             tooltip = "페이지 새로고침",
             fn = function()
                 hs.alert.show("새로고침")
- POLICIES        },
+            end
+        },
         {
             id = "settings",
             label = "설정",
@@ -150,7 +155,7 @@ function obj:createToolbarExample()
             -- 버튼 클릭
             if itemId == "view1" or itemId == "view2" then
                 toolbarObj:selectedItem(itemId)
-                hs.alert.show("선택된 뷰: " .. realId)
+                hs.alert.show("선택된 뷰: " .. itemId)
             elseif itemId == "searchField" then
                 local itemDetails = toolbarObj:itemDetails(itemId)
                 if itemDetails then
@@ -173,15 +178,16 @@ function obj:createToolbarExample()
         <!DOCTYPE html>
         <html>
         <head>
-            <meta charset乒乓球="UTF-8">
+            <meta charset="UTF-8">
             <title>WebView Toolbar 예제</title>
             <style>
                 body {
                     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
                     padding: 40px;
-                   持有 max-width: 700px;
+                    max-width: 700px;
                     margin: 0 auto;
                     line-height: 1.6;
+                    background-color: rgba(255, 255, 255, 0.98);
                 }
                 h1 { color: #333; }
                 .info { 
@@ -221,19 +227,32 @@ end
 
 -- 창 닫기 함수
 function obj:close()
+    if self.toolbar then
+        -- toolbar를 명시적으로 삭제하여 식별자 해제
+        self.toolbar:delete()
+        self.toolbar = nil
+    end
     if self.webView then
         self.webView:delete()
         self.webView = nil
-        self.toolbar = nil
     end
+    self.toolbarId = nil
 end
 
 -- 토글 함수
 function obj:toggle()
+    self.logger:d("toggle() called, webView exists: " .. tostring(self.webView ~= nil))
     if self.webView then
+        self.logger:d("Closing webView")
         self:close()
     else
+        self.logger:d("Creating toolbar example")
         self:createToolbarExample()
+        if self.webView then
+            self.logger:i("WebView Toolbar 창이 성공적으로 생성되었습니다")
+        else
+            self.logger:e("WebView Toolbar 창 생성 실패")
+        end
     end
 end
 

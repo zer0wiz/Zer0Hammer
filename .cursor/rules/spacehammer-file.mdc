@@ -1,10 +1,11 @@
 ---
-description: 
-globs: *.lua, *.md, *.fnl
-alwaysApply: false
+description: Auto-apply edits for Lua, Markdown, and Fennel files
+globs: ["**/*.lua", "**/*.md", "**/*.fnl"]
+alwaysApply: true
 ---
 
-# Your rule content
+# AutoHotKeys Spoon Rules
 
-- You can @ files here
-- You can use markdown but dont have to
+This rule automatically applies all edits made by the AI assistant to Lua, Markdown, and Fennel files without requiring manual confirmation.
+
+You can @ files here for context.

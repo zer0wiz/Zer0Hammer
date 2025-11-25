@@ -1,0 +1,301 @@
+﻿// curl 'https://api.hw-assist.com/gifts' \
+//   -H 'accept: application/json, text/plain, */*' \
+//   -H 'accept-language: ko,en-US;q=0.9,en;q=0.8,ru;q=0.7' \
+//   -H 'authorization: -s-1GyvQs2ZJFww5-1Ye0vyRnUZ-qTXR6qOEKzzQp.Mj3S5' \
+//   -H 'cache-control: no-cache' \
+//   -b '_ga=GA1.1.2082073982.1756111354; _gcl_au=1.1.1876219828.1756111354; _ym_uid=1756111481405529953; _ym_d=1756111481; __stripe_mid=fef1e1eb-11e5-47ce-a0ff-86716256a930784156; _ga_K4T03NFCGG=GS2.1.s1762831136$o6$g1$t1762831292$j32$l0$h0' \
+//   -H 'pragma: no-cache' \
+//   -H 'priority: u=1, i' \
+//   -H 'sec-ch-ua: "Not)A;Brand";v="8", "Chromium";v="138", "Opera";v="122"' \
+//   -H 'sec-ch-ua-mobile: ?0' \
+//   -H 'sec-ch-ua-platform: "macOS"' \
+//   -H 'sec-fetch-dest: empty' \
+//   -H 'sec-fetch-mode: cors' \
+//   -H 'sec-fetch-site: none' \
+//   -H 'sec-fetch-storage-access: active' \
+//   -H 'timeout: 20000' \
+//   -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 OPR/122.0.0.0'
+
+
+[
+    {
+        "id": "wb_fe14466fc6785cd2822c1e3a1740a1da",
+        "giftId": "fe14466fc6785cd2822c1e3a1740a1da",
+        "platform": "wb",
+        "referrer": "group_posting",
+        "ts": 1762365654946,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 2587360541,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "wb_BeG7dYkixU",
+        "giftId": "BeG7dYkixU",
+        "platform": "wb",
+        "referrer": "group_posting",
+        "ts": 1762416087366,
+        "reward": "{\"stamina\":500}",
+        "reward_id": 2359278071,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "wb_4168c722cde2bf44dd59df470c381172",
+        "giftId": "4168c722cde2bf44dd59df470c381172",
+        "platform": "wb",
+        "referrer": "group_posting",
+        "ts": 1762452031867,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 2359636127,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "wb_3393951780b7ccbf97b156785a784f72",
+        "giftId": "3393951780b7ccbf97b156785a784f72",
+        "platform": "wb",
+        "referrer": "group_posting",
+        "ts": 1762538458012,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 2360517375,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "wb_e6547a8a8116791a141c4ff74ac87f8a",
+        "giftId": "e6547a8a8116791a141c4ff74ac87f8a",
+        "platform": "wb",
+        "referrer": "group_posting_boxweb",
+        "ts": 1762624883692,
+        "reward": "{\"consumable\":{\"55\":\"5\",\"148\":\"3\"}}",
+        "reward_id": 2487389648,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "wb_vmJ3lkKkpO",
+        "giftId": "vmJ3lkKkpO",
+        "platform": "wb",
+        "referrer": "group_posting",
+        "ts": 1762675245507,
+        "reward": "{\"stamina\":500}",
+        "reward_id": 2639924637,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "wb_a28500bb3a76ded2924cd454853d7213",
+        "giftId": "a28500bb3a76ded2924cd454853d7213",
+        "platform": "wb",
+        "referrer": "group_posting",
+        "ts": 1762711250731,
+        "reward": "{\"consumable\":{\"55\":\"5\",\"148\":\"3\"}}",
+        "reward_id": 2635700498,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "wb_ByFfM3BRWn",
+        "giftId": "ByFfM3BRWn",
+        "platform": "wb",
+        "referrer": "group_posting",
+        "ts": 1762761698257,
+        "reward": "{\"stamina\":500}",
+        "reward_id": 2362621101,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "wb_8f30dfdcb01f27c9bb231936fb49d2c5",
+        "giftId": "8f30dfdcb01f27c9bb231936fb49d2c5",
+        "platform": "wb",
+        "referrer": "group_posting",
+        "ts": 1762797679192,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 2636637662,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "wb_1b08b6c4b29867a026aef342b6d061e4",
+        "giftId": "1b08b6c4b29867a026aef342b6d061e4",
+        "platform": "wb",
+        "referrer": "group_posting",
+        "ts": 1762884040510,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 2490414843,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_fe14466fc6785cd2822c1e3a1740a1da",
+        "giftId": "fe14466fc6785cd2822c1e3a1740a1da",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762365685954,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 1228297418,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_BeG7dYkixU",
+        "giftId": "BeG7dYkixU",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762416060483,
+        "reward": "{\"stamina\":500}",
+        "reward_id": 1860965441,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_4168c722cde2bf44dd59df470c381172",
+        "giftId": "4168c722cde2bf44dd59df470c381172",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762452878641,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 1861140949,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_3393951780b7ccbf97b156785a784f72",
+        "giftId": "3393951780b7ccbf97b156785a784f72",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762538489951,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 1229019903,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_e6547a8a8116791a141c4ff74ac87f8a",
+        "giftId": "e6547a8a8116791a141c4ff74ac87f8a",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762624975850,
+        "reward": "{\"consumable\":{\"55\":\"5\",\"148\":\"3\"}}",
+        "reward_id": 1861916858,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_vmJ3lkKkpO",
+        "giftId": "vmJ3lkKkpO",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762675258041,
+        "reward": "{\"stamina\":500}",
+        "reward_id": 1853681580,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_a28500bb3a76ded2924cd454853d7213",
+        "giftId": "a28500bb3a76ded2924cd454853d7213",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762711289792,
+        "reward": "{\"consumable\":{\"55\":\"5\",\"148\":\"3\"}}",
+        "reward_id": 1853832154,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_ByFfM3BRWn",
+        "giftId": "ByFfM3BRWn",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762761701827,
+        "reward": "{\"stamina\":500}",
+        "reward_id": 1853976578,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_8f30dfdcb01f27c9bb231936fb49d2c5",
+        "giftId": "8f30dfdcb01f27c9bb231936fb49d2c5",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762798270305,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 1230024802,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    },
+    {
+        "id": "fb_1b08b6c4b29867a026aef342b6d061e4",
+        "giftId": "1b08b6c4b29867a026aef342b6d061e4",
+        "platform": "fb",
+        "referrer": "group_posting",
+        "ts": 1762884200828,
+        "reward": "{\"consumable\":{\"148\":3}}",
+        "reward_id": 1862905177,
+        "type": "freebie",
+        "startTime": null,
+        "endTime": null,
+        "descImgLink": null,
+        "descLink": null
+    }
+]

@@ -10,6 +10,12 @@ obj.homepage = "https://github.com/zer0wiz/spacehammer"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 obj.logger = hs.logger.new("AutoHotKeys")
 
+-- Add Spoon path to package.path to allow requiring internal modules
+local spoonPath = hs.spoons.resourcePath("")
+if not string.find(package.path, spoonPath, 1, true) then
+    package.path = package.path .. ";" .. spoonPath .. "/?.lua"
+end
+
 -- Configuration
 obj.hotkey = obj.hotkey or {{"shift", "cmd"}, "k"}
 
@@ -19,62 +25,70 @@ local function loadModule(moduleName)
 end
 
 -- 핵심 모듈 로드
-local context = loadModule("context")
-local storage = loadModule("storage")
-local overlay = loadModule("overlay")
-local menu = loadModule("menu")
--- local capture = loadModule("capture")
-local execution = loadModule("execution")
-local watchers = loadModule("watchers")
-local hotkeys = loadModule("hotkeys")
-local shortcut_preview = loadModule("shortcut_preview")
-local recorder = loadModule("recorder")
-local playback = loadModule("playback")
+obj.menu = loadModule("menu")
+obj.context = loadModule("contextInfo")
+obj.storage = loadModule("storage")
+obj.overlay = loadModule("overlay")
+obj.execution = loadModule("execution")
+obj.watchers = loadModule("watchers")
+obj.hotkeys = loadModule("hotkeys")
+obj.shortcutPreview = loadModule("shortcut_preview")
+obj.recorder = loadModule("recorder")
+obj.playback = loadModule("playback")
+obj.mouse = loadModule("mouse")
+obj.hotkeyValidator = loadModule("hotkeyValidator")
+
+-- 모듈 간 참조 설정
+obj.menu.context = obj.context
+
+
+-- 토글된 컨텍스트 추적 (컨텍스트 ID를 키로 사용)
+obj.activeContexts = {}
 
 -- 모듈들을 외부에서 접근할 수 있도록 노출
-obj.context = context
-obj.storage = storage
-obj.overlay = overlay
-obj.menu = menu
 -- obj.capture = capture
-obj.execution = execution
-obj.watchers = watchers
-obj.hotkeys = hotkeys
-obj.shortcutPreview = shortcut_preview
-obj.recorder = recorder
-obj.playback = playback
 
 -- playback 모듈에 execution 참조 설정
-playback.setExecution(execution)
+obj.playback.setExecution(obj.execution)
 
 function obj:start()
     -- Storage 초기화
-    storage.init()
+    obj.storage.init()
+    
+    -- 기존 설정 파일 마이그레이션 (최초 1회만 실행)
+    local contextList = obj.storage.loadContextList()
+    print('#### contextList')
+    dbg(contextList)
     
     -- Watchers 시작
-    watchers.start(self)
+    obj.watchers.start(self)
     
     -- Overlay 생성
-    overlay.init(self)
+    obj.overlay.init(self)
     
     -- Capture 등록
     -- capture.register(self)
     
     -- Hotkeys 바인딩
-    hotkeys.bind(self)
+    obj.hotkeys.bind(self)
     
     return self
 end
 
 function obj:stop()
-    overlay.stop(self)
-    watchers.stop(self)
+    obj.overlay.stop(self)
+    obj.watchers.stop(self)
     -- capture.stop(self)
-    hotkeys.unbind(self)
+    obj.hotkeys.unbind(self)
 end
 
-function obj:menutoggle()
-    menu.toggle(self)
+function obj:menuToggle()
+    local ctx = obj.context.current()
+    dbg(ctx)
+    -- obj.menu.create("TestMenu")
+    dbg(obj.menu.menuList)
+    
+    obj.menu.toggle(self)
 end 
 
 function obj:init()

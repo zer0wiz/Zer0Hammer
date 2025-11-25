@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.systempreferences",
+    "bundleId" : "com.apple.systempreferences",
+    "updatedAt" : 1763705233,
+    "type" : "APP",
+    "createdAt" : 1763705233,
+    "configPath" : "contexts\/app_com.apple.systempreferences.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

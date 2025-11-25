@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "web:com.google.Chrome",
+    "bundleId" : "com.google.Chrome",
+    "updatedAt" : 1763626264,
+    "type" : "WEB",
+    "createdAt" : 1763626264,
+    "configPath" : "contexts\/web_com.google.Chrome.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

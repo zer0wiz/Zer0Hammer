@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.LocalAuthentication.UIAgent",
+    "bundleId" : "com.apple.LocalAuthentication.UIAgent",
+    "updatedAt" : 1763966059,
+    "type" : "APP",
+    "createdAt" : 1763966059,
+    "configPath" : "contexts\/app_com.apple.LocalAuthentication.UIAgent.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

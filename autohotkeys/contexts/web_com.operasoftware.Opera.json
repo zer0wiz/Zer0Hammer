@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "web:com.operasoftware.Opera",
+    "bundleId" : "com.operasoftware.Opera",
+    "updatedAt" : 1763631311,
+    "type" : "WEB",
+    "createdAt" : 1763631311,
+    "configPath" : "contexts\/web_com.operasoftware.Opera.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

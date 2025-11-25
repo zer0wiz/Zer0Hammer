@@ -1,314 +1,194 @@
--- AutoHotKeys 스토리지 관리 모듈
+-- AutoHotKeys 스토리지 관리 모듈 (Facade)
 local storage = {}
 
-local json = hs.json
-local fs = hs.fs
+local ConfigManager = require("data.ConfigManager")
+local ContextManager = require("data.ContextManager")
+local MacroRepository = require("data.MacroRepository")
 
--- 저장소 디렉터리
-local STORAGE_DIR = hs.configdir .. "/autohotkeys"
-local CONFIG_FILE = STORAGE_DIR .. "/config.json"
-local MACROS_DIR = STORAGE_DIR .. "/_macros"
-
--- 파일명 안전 처리
-local function sanitizeFilename(s)
-    return (s:gsub("[^%w%._-]", "_"))
-end
-
--- 저장소 디렉터리 생성
+-- 초기화
 function storage.init()
-    if not fs.attributes(STORAGE_DIR, "mode") then
-        fs.mkdir(STORAGE_DIR)
-    end
-    if not fs.attributes(MACROS_DIR, "mode") then
-        fs.mkdir(MACROS_DIR)
-    end
+    ConfigManager.init()
+    ContextManager.init()
+    MacroRepository.init()
 end
 
--- 기본 config 설정
-local defaultConfig = {
-    shortcutPreview = {
-        circle = {
-            radius = 20,
-            strokeWidth = 2,
-            strokeColor = "#FF5733",
-            fillColor = "#FF5733",
-            fillAlpha = 0.7
-        },
-        text = {
-            size = 14,
-            color = "#FFFFFF",
-            font = "Arial Bold"
-        },
-        overlay = {
-            color = "#000000",
-            alpha = 0.3
-        }
-    },
-    menu = {
-        position = {
-            x = nil,
-            y = nil
-        },
-        saved = false
-    },
-    overlay = {
-        enabled = false  -- 오버레이 기본값: 숨김
-    },
-    excludedApps = {
-        "com.hammerspoon.Hammerspoon"  -- Hammerspoon 자체는 제외
-    }
-}
-
--- 컨텍스트별 저장 경로
-function storage.pathForContext(contextId)
-    storage.init()
-    return string.format("%s/%s.json", STORAGE_DIR, sanitizeFilename(contextId))
-end
-
--- 단축키 로드
-function storage.load(contextId)
-    local path = storage.pathForContext(contextId)
-    if not fs.attributes(path) then return {} end
-    
-    local fh = io.open(path, "r")
-    if not fh then return {} end
-    
-    local content = fh:read("*a")
-    fh:close()
-    
-    local ok, data = pcall(function() return json.decode(content) end)
-    if ok and type(data) == "table" and type(data.shortcuts) == "table" then
-        return data.shortcuts
-    end
-    return {}
-end
-
--- 단축키 저장
-function storage.save(context, shortcuts)
-    local path = storage.pathForContext(context.id)
-    local payload = {
-        context = context,
-        shortcuts = shortcuts or {}
-    }
-    
-    local fh = io.open(path, "w")
-    if not fh then return false end
-    
-    fh:write(json.encode(payload, true))
-    fh:close()
-    return true
-end
-
--- Config 파일 관리
+-- ============================================
+-- Config 관리
+-- ============================================
 function storage.loadConfig()
-    storage.init()
-    
-    if not fs.attributes(CONFIG_FILE) then
-        storage.saveConfig(defaultConfig)
-        return defaultConfig
-    end
-    
-    local fh = io.open(CONFIG_FILE, "r")
-    if not fh then return defaultConfig end
-    
-    local content = fh:read("*a")
-    fh:close()
-    
-    local ok, data = pcall(function() return json.decode(content) end)
-    if ok and type(data) == "table" then
-        -- 기본값과 병합
-        local merged = {}
-        for k, v in pairs(defaultConfig) do
-            merged[k] = data[k] or v
-        end
-        return merged
-    end
-    
-    return defaultConfig
+    return ConfigManager.load()
 end
 
 function storage.saveConfig(config)
-    storage.init()
-    
-    local fh = io.open(CONFIG_FILE, "w")
-    if not fh then return false end
-    
-    fh:write(json.encode(config, true))
-    fh:close()
-    return true
+    return ConfigManager.save(config)
 end
 
 function storage.getConfigValue(path)
-    local config = storage.loadConfig()
-    local parts = {}
-    for part in string.gmatch(path, "([^.]+)") do
-        table.insert(parts, part)
+    return ConfigManager.getValue(path)
+end
+
+-- ============================================
+-- Context 관리
+-- ============================================
+function storage.loadContextList()
+    return ContextManager.loadList()
+end
+
+function storage.saveContextList(contextList)
+    return ContextManager.saveList(contextList)
+end
+
+function storage.findContext(contextId)
+    return ContextManager.find(contextId)
+end
+
+function storage.addContext(contextData)
+    return ContextManager.add(contextData)
+end
+
+function storage.updateContext(contextId, updates)
+    return ContextManager.update(contextId, updates)
+end
+
+function storage.removeContext(contextId)
+    return ContextManager.remove(contextId)
+end
+
+function storage.loadContextConfig(contextId)
+    return ContextManager.loadConfig(contextId)
+end
+
+function storage.saveContextConfig(contextId, config)
+    return ContextManager.saveConfig(contextId, config)
+end
+
+-- 레거시 호환성: 앱별 설정 (ContextConfig로 통합됨)
+function storage.loadAppConfig(appId)
+    return ContextManager.loadConfig(appId)
+end
+
+function storage.saveAppConfig(appId, config)
+    return ContextManager.saveConfig(appId, config)
+end
+
+function storage.pathForContext(contextId)
+    return ContextManager.pathForConfig(contextId)
+end
+
+function storage.pathForApp(appId)
+    return ContextManager.pathForConfig(appId)
+end
+
+-- 컨텍스트 통합 설정 가져오기
+function storage.getContextConfig(contextId)
+    local ctx = ContextManager.find(contextId)
+    if not ctx then return nil end
+
+    local config = ContextManager.loadConfig(contextId)
+    if not config then
+        config = { context = ctx, shortcuts = {} }
+        ContextManager.saveConfig(contextId, config)
     end
-    
-    local value = config
-    for _, part in ipairs(parts) do
-        if type(value) == "table" then
-            value = value[part]
-        else
-            return nil
+
+    local result = {}
+    for k, v in pairs(ctx) do result[k] = v end
+    for k, v in pairs(config) do
+        if k ~= "context" or not result.context then
+            result[k] = v
         end
     end
-    
-    return value
-end
-
--- 앱별 설정 파일 경로
-function storage.pathForApp(appId)
-    storage.init()
-    return string.format("%s/%s.json", STORAGE_DIR, sanitizeFilename(appId))
-end
-
--- 앱별 설정 로드 (enabled, shortcuts 포함)
-function storage.loadAppConfig(appId)
-    local path = storage.pathForApp(appId)
-    
-    if not fs.attributes(path) then
-        return nil
-    end
-    
-    local fh = io.open(path, "r")
-    if not fh then return nil end
-    
-    local content = fh:read("*a")
-    fh:close()
-    
-    local ok, data = pcall(function() return json.decode(content) end)
-    if ok and type(data) == "table" then
-        return data
-    end
-    
-    return nil
-end
-
--- 앱별 설정 저장
-function storage.saveAppConfig(appId, config)
-    local path = storage.pathForApp(appId)
-    
-    local fh = io.open(path, "w")
-    if not fh then return false end
-    
-    fh:write(json.encode(config, true))
-    fh:close()
-    return true
-end
-
--- 앱별 단축키 저장
-function storage.saveAppShortcut(appId, key, position, appName, bundleId)
-    local config = storage.loadAppConfig(appId) or {
-        enabled = true,
-        appName = appName or "",
-        bundleId = bundleId or appId,
-        shortcuts = {}
-    }
-    
-    config.shortcuts = config.shortcuts or {}
-    config.shortcuts[key] = {
-        type = "click",
-        position = position,
-        windowRelative = true
-    }
-    
-    return storage.saveAppConfig(appId, config)
+    return result
 end
 
 -- 앱의 enabled 상태 토글
-function storage.toggleAppEnabled(appId, appName, bundleId)
-    local config = storage.loadAppConfig(appId) or {
-        enabled = false,
-        appName = appName or "",
-        bundleId = bundleId or appId,
-        shortcuts = {}
-    }
-    
-    config.enabled = not config.enabled
-    config.appName = appName or config.appName
-    config.bundleId = bundleId or config.bundleId
-    
-    return storage.saveAppConfig(appId, config)
-end
+function storage.toggleAppEnabled(contextId, appName, bundleId)
+    local contextList = ContextManager.loadList()
+    if not contextList or not contextList.contexts then return false end
 
--- 매크로 저장
-function storage.saveMacro(macroName, macroData)
-    storage.init()
-    
-    local filename = sanitizeFilename(macroName) .. ".json"
-    local path = MACROS_DIR .. "/" .. filename
-    
-    local fh = io.open(path, "w")
-    if not fh then return false end
-    
-    fh:write(json.encode(macroData, true))
-    fh:close()
-    return true
-end
-
--- 매크로 로드
-function storage.loadMacro(macroName)
-    storage.init()
-    
-    local filename = sanitizeFilename(macroName) .. ".json"
-    local path = MACROS_DIR .. "/" .. filename
-    
-    if not fs.attributes(path) then return nil end
-    
-    local fh = io.open(path, "r")
-    if not fh then return nil end
-    
-    local content = fh:read("*a")
-    fh:close()
-    
-    local ok, data = pcall(function() return json.decode(content) end)
-    if ok and type(data) == "table" then
-        return data
-    end
-    
-    return nil
-end
-
--- 매크로 목록
-function storage.listMacros()
-    storage.init()
-    
-    local macros = {}
-    if not fs.attributes(MACROS_DIR, "mode") then
-        return macros
-    end
-    
-    for file in fs.dir(MACROS_DIR) do
-        if file:match("%.json$") then
-            local macroName = file:gsub("%.json$", "")
-            local macro = storage.loadMacro(macroName)
-            if macro then
-                table.insert(macros, {
-                    name = macroName,
-                    data = macro
-                })
-            end
+    for _, ctx in ipairs(contextList.contexts) do
+        if ctx.id == contextId then
+            ctx.enabled = not ctx.enabled
+            ctx.updatedAt = os.time()
+            return ContextManager.saveList(contextList)
         end
     end
-    
-    return macros
-end
-
--- 매크로 삭제
-function storage.deleteMacro(macroName)
-    storage.init()
-    
-    local filename = sanitizeFilename(macroName) .. ".json"
-    local path = MACROS_DIR .. "/" .. filename
-    
-    if fs.attributes(path) then
-        os.remove(path)
-        return true
-    end
-    
     return false
 end
 
-return storage
+-- 단축키 로드 (레거시 호환)
+function storage.load(contextId)
+    local config = ContextManager.loadConfig(contextId)
+    return config and config.shortcuts or {}
+end
 
+-- 단축키 저장 (레거시 호환)
+function storage.save(context, shortcuts)
+    local config = ContextManager.loadConfig(context.id) or { context = context, shortcuts = {} }
+    config.shortcuts = shortcuts
+    return ContextManager.saveConfig(context.id, config)
+end
+
+-- 앱 단축키 저장 (shortcut_preview에서 사용)
+function storage.saveAppShortcut(contextId, contextType, keyChar, relativePos, appName, bundleId, shortcutData)
+    -- 1. 컨텍스트 확인
+    local ctx = ContextManager.find(contextId)
+
+    if not ctx then
+        -- 컨텍스트가 없으면 생성
+        local success, result = ContextManager.add({
+            id = contextId,
+            type = contextType or "app",
+            appName = appName,
+            bundleId = bundleId,
+            enabled = true
+        })
+
+        if not success then
+            print("Error creating context: " .. tostring(result))
+            return false
+        end
+        ctx = result
+    end
+
+    -- 2. Config 로드
+    local config = ContextManager.loadConfig(contextId)
+    if not config then
+        config = { context = ctx, shortcuts = {} }
+    end
+
+    if not config.shortcuts then config.shortcuts = {} end
+
+    -- 3. 단축키 업데이트
+    config.shortcuts[keyChar] = shortcutData
+
+    -- 4. 저장
+    return ContextManager.saveConfig(contextId, config)
+end
+
+-- ============================================
+-- Macro 관리
+-- ============================================
+function storage.saveMacro(macroName, macroData)
+    return MacroRepository.save(macroName, macroData)
+end
+
+function storage.loadMacro(macroName)
+    return MacroRepository.load(macroName)
+end
+
+function storage.listMacros()
+    return MacroRepository.list()
+end
+
+function storage.deleteMacro(macroName)
+    return MacroRepository.delete(macroName)
+end
+
+-- ============================================
+-- 기타
+-- ============================================
+function storage.clearCache()
+    -- 각 매니저의 캐시 초기화 기능이 필요하다면 추가 구현
+end
+
+return storage

@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.SecurityAgent",
+    "bundleId" : "com.apple.SecurityAgent",
+    "updatedAt" : 1763971106,
+    "type" : "APP",
+    "createdAt" : 1763971106,
+    "configPath" : "contexts\/app_com.apple.SecurityAgent.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

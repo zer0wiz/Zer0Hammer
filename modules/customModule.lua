@@ -1,10 +1,10 @@
 
-function getApplication(name)
+function getApplication(appName)
     for _, app in pairs(hs.application.runningApplications()) do
         -- dbgf("app name :: %s",app:name())
         -- dbgf("app pid :: %s",app:pid())
         if app:pid() then
-            if name == app:name() then
+            if appName == app:name() then
                 return app
             end
         end

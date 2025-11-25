@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.ContinuityCaptureOnboardingUI",
+    "bundleId" : "com.apple.ContinuityCaptureOnboardingUI",
+    "updatedAt" : 1763631300,
+    "type" : "APP",
+    "createdAt" : 1763631300,
+    "configPath" : "contexts\/app_com.apple.ContinuityCaptureOnboardingUI.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

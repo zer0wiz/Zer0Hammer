@@ -3,6 +3,28 @@ local hotkeys = {}
 
 local hotkey = hs.hotkey
 
+-- 핫키 바인딩 헬퍼 (충돌 감지 포함)
+local function bindHotkey(obj, keyName, mods, key, fn)
+    -- hotkeyValidator가 있으면 사용
+    if obj.hotkeyValidator then
+        local conflict, err = obj.hotkeyValidator.checkConflict(mods, key)
+        if conflict then
+            obj.logger.w("핫키 충돌 감지: " .. keyName .. " - " .. (err or "알 수 없음"))
+            -- 충돌이 있어도 기본 방식으로 등록 시도
+        end
+        
+        local success, hotkeyObj = obj.hotkeyValidator.register(mods, key, fn)
+        if success then
+            return hotkeyObj
+        else
+            -- validator 실패 시 기본 방식으로 시도
+            obj.logger.w("핫키 validator 실패, 기본 방식으로 시도: " .. keyName)
+        end
+    end
+    
+    -- 기본 핫키 바인딩
+    return hotkey.bind(mods, key, fn)
+end
 -- Hotkeys 바인딩
 function hotkeys.bind(obj)
     if obj.menuHotkey then
@@ -10,7 +32,7 @@ function hotkeys.bind(obj)
     end
     
     -- ctrl + cmd + k로 메뉴 토글
-    obj.menuHotkey = hotkey.bind({"ctrl", "cmd"}, "k", function()
+    obj.menuHotkey = bindHotkey(obj, "menuToggle", {"ctrl", "cmd"}, "k", function()
         obj.menu.toggle(obj)
     end)
     
@@ -19,7 +41,7 @@ function hotkeys.bind(obj)
         obj.recordingHotkey:delete()
     end
     
-    obj.recordingHotkey = hotkey.bind({"ctrl", "cmd"}, "r", function()
+    obj.recordingHotkey = bindHotkey(obj, "recording", {"ctrl", "cmd"}, "r", function()
         if obj.recorder and obj.recorder.isRecording(obj) then
             -- 녹화 중지
             local success, macro = obj.recorder.stop(obj)
@@ -64,15 +86,34 @@ function hotkeys.bind(obj)
         obj.macroListHotkey:delete()
     end
     
-    obj.macroListHotkey = hotkey.bind({"ctrl", "cmd"}, "m", function()
+    obj.macroListHotkey = bindHotkey(obj, "macroList", {"ctrl", "cmd"}, "m", function()
         if obj.menu then
             obj.menu.showMacroList(obj)
         end
     end)
+    
+    -- -- ESC 키로 메뉴 숨기기 (메뉴가 포커스되었을 때만)
+    -- if obj.escapeHotkey then
+    --     obj.escapeHotkey:delete()
+    -- end
+    
+    -- obj.escapeHotkey = hotkey.bind({}, "escape", function()
+    --     -- 메뉴가 포커스되었을 때만 ESC 동작
+    --     if obj.menu and obj.menuShowing then
+    --         obj.menu.hide(obj)
+    --     end
+    -- end)
 end
 
 -- Hotkeys 해제
 function hotkeys.unbind(obj)
+    -- hotkeyValidator를 사용한 경우 해제
+    if obj.hotkeyValidator then
+        obj.hotkeyValidator.unregister({"ctrl", "cmd"}, "k")
+        obj.hotkeyValidator.unregister({"ctrl", "cmd"}, "r")
+        obj.hotkeyValidator.unregister({"ctrl", "cmd"}, "m")
+    end
+    
     if obj.menuHotkey then
         obj.menuHotkey:delete()
         obj.menuHotkey = nil
@@ -87,6 +128,11 @@ function hotkeys.unbind(obj)
         obj.macroListHotkey:delete()
         obj.macroListHotkey = nil
     end
+    
+    -- if obj.escapeHotkey then
+    --     obj.escapeHotkey:delete()
+    --     obj.escapeHotkey = nil
+    -- end
 end
 
 return hotkeys

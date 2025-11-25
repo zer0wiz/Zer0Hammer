@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.loginwindow",
+    "bundleId" : "com.apple.loginwindow",
+    "updatedAt" : 1763627282,
+    "type" : "APP",
+    "createdAt" : 1763627282,
+    "configPath" : "contexts\/app_com.apple.loginwindow.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

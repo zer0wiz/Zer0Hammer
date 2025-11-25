@@ -22,7 +22,7 @@ local webview = loadModule("webview")
 -- webview 모듈을 외부에서 접근할 수 있도록 노출
 obj.webview = webview
 
-dbg(obj)
+-- dbg(obj)
 
 if not modalManager then
     error("ModalMgr spoon을 로드할 수 없습니다")

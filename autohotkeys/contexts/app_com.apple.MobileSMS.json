@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.MobileSMS",
+    "bundleId" : "com.apple.MobileSMS",
+    "updatedAt" : 1763634293,
+    "type" : "APP",
+    "createdAt" : 1763634293,
+    "configPath" : "contexts\/app_com.apple.MobileSMS.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

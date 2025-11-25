@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "web:com.microsoft.edgemac",
+    "bundleId" : "com.microsoft.edgemac",
+    "updatedAt" : 1763707560,
+    "type" : "WEB",
+    "createdAt" : 1763707560,
+    "configPath" : "contexts\/web_com.microsoft.edgemac.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

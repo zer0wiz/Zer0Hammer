@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.dwarvesv.minimalbar",
+    "bundleId" : "com.dwarvesv.minimalbar",
+    "updatedAt" : 1764035882,
+    "type" : "APP",
+    "createdAt" : 1764035882,
+    "configPath" : "contexts\/app_com.dwarvesv.minimalbar.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

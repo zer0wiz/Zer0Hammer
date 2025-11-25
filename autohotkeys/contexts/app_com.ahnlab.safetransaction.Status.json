@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.ahnlab.safetransaction.Status",
+    "bundleId" : "com.ahnlab.safetransaction.Status",
+    "updatedAt" : 1763944238,
+    "type" : "APP",
+    "createdAt" : 1763944238,
+    "configPath" : "contexts\/app_com.ahnlab.safetransaction.Status.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

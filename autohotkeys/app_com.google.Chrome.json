@@ -1,8 +1,0 @@
-{
-  "appName" : "Google Chrome",
-  "enabled" : false,
-  "shortcuts" : [
-
-  ],
-  "bundleId" : "com.google.Chrome"
-}
