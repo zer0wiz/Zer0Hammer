@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.microsoft.VSCode",
+    "bundleId" : "com.microsoft.VSCode",
+    "updatedAt" : 1764124736,
+    "createdAt" : 1764124736,
+    "type" : "APP",
+    "configPath" : "contexts\/app_com.microsoft.VSCode.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

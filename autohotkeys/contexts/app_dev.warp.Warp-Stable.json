@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:dev.warp.Warp-Stable",
+    "bundleId" : "dev.warp.Warp-Stable",
+    "updatedAt" : 1764125683,
+    "type" : "APP",
+    "createdAt" : 1764125683,
+    "configPath" : "contexts\/app_dev.warp.Warp-Stable.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

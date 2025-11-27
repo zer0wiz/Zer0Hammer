@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.accessibility.universalAccessAuthWarn",
+    "bundleId" : "com.apple.accessibility.universalAccessAuthWarn",
+    "updatedAt" : 1764125732,
+    "type" : "APP",
+    "createdAt" : 1764125732,
+    "configPath" : "contexts\/app_com.apple.accessibility.universalAccessAuthWarn.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

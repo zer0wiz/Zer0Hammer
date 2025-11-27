@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.dock",
+    "bundleId" : "com.apple.dock",
+    "updatedAt" : 1764212110,
+    "createdAt" : 1764212110,
+    "type" : "APP",
+    "configPath" : "contexts\/app_com.apple.dock.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

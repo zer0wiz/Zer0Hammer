@@ -3,8 +3,8 @@
   "contexts" : [
     {
       "enabled" : true,
-      "appName" : "Vivaldi",
       "id" : "web:com.vivaldi.Vivaldi",
+      "appName" : "Vivaldi",
       "bundleId" : "com.vivaldi.Vivaldi",
       "updatedAt" : 1763447281,
       "type" : "WEB",
@@ -13,8 +13,8 @@
     },
     {
       "enabled" : true,
-      "appName" : "Hammerspoon",
       "id" : "app:org.hammerspoon.Hammerspoon",
+      "appName" : "Hammerspoon",
       "bundleId" : "org.hammerspoon.Hammerspoon",
       "updatedAt" : 1763448664,
       "type" : "APP",
@@ -23,8 +23,8 @@
     },
     {
       "enabled" : false,
-      "appName" : "Cursor",
       "id" : "app:com.todesktop.230313mzl4w4u92",
+      "appName" : "Cursor",
       "bundleId" : "com.todesktop.230313mzl4w4u92",
       "updatedAt" : 1763448104,
       "type" : "APP",
@@ -36,8 +36,8 @@
       "id" : "app:com.google.antigravity",
       "bundleId" : "com.google.antigravity",
       "updatedAt" : 1763626174,
-      "createdAt" : 1763626174,
       "type" : "APP",
+      "createdAt" : 1763626174,
       "configPath" : "contexts\/app_com.google.antigravity.json"
     },
     {
@@ -45,8 +45,8 @@
       "id" : "web:com.google.Chrome",
       "bundleId" : "com.google.Chrome",
       "updatedAt" : 1763626264,
-      "createdAt" : 1763626264,
       "type" : "WEB",
+      "createdAt" : 1763626264,
       "configPath" : "contexts\/web_com.google.Chrome.json"
     },
     {
@@ -54,8 +54,8 @@
       "id" : "app:com.apple.ActivityMonitor",
       "bundleId" : "com.apple.ActivityMonitor",
       "updatedAt" : 1763626434,
-      "createdAt" : 1763626434,
       "type" : "APP",
+      "createdAt" : 1763626434,
       "configPath" : "contexts\/app_com.apple.ActivityMonitor.json"
     },
     {
@@ -63,8 +63,8 @@
       "id" : "app:com.apple.loginwindow",
       "bundleId" : "com.apple.loginwindow",
       "updatedAt" : 1763627282,
-      "createdAt" : 1763627282,
       "type" : "APP",
+      "createdAt" : 1763627282,
       "configPath" : "contexts\/app_com.apple.loginwindow.json"
     },
     {
@@ -72,8 +72,8 @@
       "id" : "app:com.apple.ContinuityCaptureOnboardingUI",
       "bundleId" : "com.apple.ContinuityCaptureOnboardingUI",
       "updatedAt" : 1763631300,
-      "createdAt" : 1763631300,
       "type" : "APP",
+      "createdAt" : 1763631300,
       "configPath" : "contexts\/app_com.apple.ContinuityCaptureOnboardingUI.json"
     },
     {
@@ -81,8 +81,8 @@
       "id" : "web:com.operasoftware.Opera",
       "bundleId" : "com.operasoftware.Opera",
       "updatedAt" : 1763631311,
-      "createdAt" : 1763631311,
       "type" : "WEB",
+      "createdAt" : 1763631311,
       "configPath" : "contexts\/web_com.operasoftware.Opera.json"
     },
     {
@@ -90,8 +90,8 @@
       "id" : "app:com.openai.chat",
       "bundleId" : "com.openai.chat",
       "updatedAt" : 1763631347,
-      "createdAt" : 1763631347,
       "type" : "APP",
+      "createdAt" : 1763631347,
       "configPath" : "contexts\/app_com.openai.chat.json"
     },
     {
@@ -99,8 +99,8 @@
       "id" : "app:ai.perplexity.comet",
       "bundleId" : "ai.perplexity.comet",
       "updatedAt" : 1763631381,
-      "createdAt" : 1763631381,
       "type" : "APP",
+      "createdAt" : 1763631381,
       "configPath" : "contexts\/app_ai.perplexity.comet.json"
     },
     {
@@ -108,8 +108,8 @@
       "id" : "app:com.apple.MobileSMS",
       "bundleId" : "com.apple.MobileSMS",
       "updatedAt" : 1763634293,
-      "createdAt" : 1763634293,
       "type" : "APP",
+      "createdAt" : 1763634293,
       "configPath" : "contexts\/app_com.apple.MobileSMS.json"
     },
     {
@@ -117,8 +117,8 @@
       "id" : "app:com.apple.finder",
       "bundleId" : "com.apple.finder",
       "updatedAt" : 1763682409,
-      "createdAt" : 1763682409,
       "type" : "APP",
+      "createdAt" : 1763682409,
       "configPath" : "contexts\/app_com.apple.finder.json"
     },
     {
@@ -126,8 +126,8 @@
       "id" : "app:com.apple.Preview",
       "bundleId" : "com.apple.Preview",
       "updatedAt" : 1763682424,
-      "createdAt" : 1763682424,
       "type" : "APP",
+      "createdAt" : 1763682424,
       "configPath" : "contexts\/app_com.apple.Preview.json"
     },
     {
@@ -135,8 +135,8 @@
       "id" : "app:com.dooray.messenger",
       "bundleId" : "com.dooray.messenger",
       "updatedAt" : 1763685880,
-      "createdAt" : 1763685880,
       "type" : "APP",
+      "createdAt" : 1763685880,
       "configPath" : "contexts\/app_com.dooray.messenger.json"
     },
     {
@@ -144,8 +144,8 @@
       "id" : "app:com.kakao.KakaoTalkMac",
       "bundleId" : "com.kakao.KakaoTalkMac",
       "updatedAt" : 1763694613,
-      "createdAt" : 1763694613,
       "type" : "APP",
+      "createdAt" : 1763694613,
       "configPath" : "contexts\/app_com.kakao.KakaoTalkMac.json"
     },
     {
@@ -153,8 +153,8 @@
       "id" : "app:com.apple.clock",
       "bundleId" : "com.apple.clock",
       "updatedAt" : 1763700603,
-      "createdAt" : 1763700603,
       "type" : "APP",
+      "createdAt" : 1763700603,
       "configPath" : "contexts\/app_com.apple.clock.json"
     },
     {
@@ -162,8 +162,8 @@
       "id" : "app:com.apple.systempreferences",
       "bundleId" : "com.apple.systempreferences",
       "updatedAt" : 1763705233,
-      "createdAt" : 1763705233,
       "type" : "APP",
+      "createdAt" : 1763705233,
       "configPath" : "contexts\/app_com.apple.systempreferences.json"
     },
     {
@@ -171,8 +171,8 @@
       "id" : "web:com.microsoft.edgemac",
       "bundleId" : "com.microsoft.edgemac",
       "updatedAt" : 1763707560,
-      "createdAt" : 1763707560,
       "type" : "WEB",
+      "createdAt" : 1763707560,
       "configPath" : "contexts\/web_com.microsoft.edgemac.json"
     },
     {
@@ -180,14 +180,14 @@
       "id" : "app:com.apple.UserNotificationCenter",
       "bundleId" : "com.apple.UserNotificationCenter",
       "updatedAt" : 1763708256,
-      "createdAt" : 1763708256,
       "type" : "APP",
+      "createdAt" : 1763708256,
       "configPath" : "contexts\/app_com.apple.UserNotificationCenter.json"
     },
     {
       "enabled" : true,
-      "appName" : "Vivaldi",
       "id" : "app:com.vivaldi.Vivaldi",
+      "appName" : "Vivaldi",
       "bundleId" : "com.vivaldi.Vivaldi",
       "updatedAt" : 1763941831,
       "type" : "app",
@@ -199,8 +199,8 @@
       "id" : "app:com.ahnlab.safetransaction.Status",
       "bundleId" : "com.ahnlab.safetransaction.Status",
       "updatedAt" : 1763944238,
-      "createdAt" : 1763944238,
       "type" : "APP",
+      "createdAt" : 1763944238,
       "configPath" : "contexts\/app_com.ahnlab.safetransaction.Status.json"
     },
     {
@@ -208,8 +208,8 @@
       "id" : "app:com.apple.MobileDeviceUpdater",
       "bundleId" : "com.apple.MobileDeviceUpdater",
       "updatedAt" : 1763949942,
-      "createdAt" : 1763949942,
       "type" : "APP",
+      "createdAt" : 1763949942,
       "configPath" : "contexts\/app_com.apple.MobileDeviceUpdater.json"
     },
     {
@@ -217,8 +217,8 @@
       "id" : "app:com.apple.ProblemReporter",
       "bundleId" : "com.apple.ProblemReporter",
       "updatedAt" : 1763950053,
-      "createdAt" : 1763950053,
       "type" : "APP",
+      "createdAt" : 1763950053,
       "configPath" : "contexts\/app_com.apple.ProblemReporter.json"
     },
     {
@@ -226,8 +226,8 @@
       "id" : "app:com.apple.LocalAuthentication.UIAgent",
       "bundleId" : "com.apple.LocalAuthentication.UIAgent",
       "updatedAt" : 1763966059,
-      "createdAt" : 1763966059,
       "type" : "APP",
+      "createdAt" : 1763966059,
       "configPath" : "contexts\/app_com.apple.LocalAuthentication.UIAgent.json"
     },
     {
@@ -235,8 +235,8 @@
       "id" : "app:com.apple.SecurityAgent",
       "bundleId" : "com.apple.SecurityAgent",
       "updatedAt" : 1763971106,
-      "createdAt" : 1763971106,
       "type" : "APP",
+      "createdAt" : 1763971106,
       "configPath" : "contexts\/app_com.apple.SecurityAgent.json"
     },
     {
@@ -253,9 +253,99 @@
       "id" : "app:com.apple.iCal",
       "bundleId" : "com.apple.iCal",
       "updatedAt" : 1764036158,
-      "createdAt" : 1764036158,
       "type" : "APP",
+      "createdAt" : 1764036158,
       "configPath" : "contexts\/app_com.apple.iCal.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:com.microsoft.VSCode",
+      "bundleId" : "com.microsoft.VSCode",
+      "updatedAt" : 1764124736,
+      "type" : "APP",
+      "createdAt" : 1764124736,
+      "configPath" : "contexts\/app_com.microsoft.VSCode.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:com.pieces.os",
+      "bundleId" : "com.pieces.os",
+      "updatedAt" : 1764124814,
+      "type" : "APP",
+      "createdAt" : 1764124814,
+      "configPath" : "contexts\/app_com.pieces.os.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:com.forescout.secure_connector",
+      "bundleId" : "com.forescout.secure_connector",
+      "updatedAt" : 1764125590,
+      "type" : "APP",
+      "createdAt" : 1764125590,
+      "configPath" : "contexts\/app_com.forescout.secure_connector.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:org.pqrs.Karabiner-Updater",
+      "bundleId" : "org.pqrs.Karabiner-Updater",
+      "updatedAt" : 1764125616,
+      "type" : "APP",
+      "createdAt" : 1764125616,
+      "configPath" : "contexts\/app_org.pqrs.Karabiner-Updater.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:dev.warp.Warp-Stable",
+      "bundleId" : "dev.warp.Warp-Stable",
+      "updatedAt" : 1764125683,
+      "type" : "APP",
+      "createdAt" : 1764125683,
+      "configPath" : "contexts\/app_dev.warp.Warp-Stable.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:com.apple.accessibility.universalAccessAuthWarn",
+      "bundleId" : "com.apple.accessibility.universalAccessAuthWarn",
+      "updatedAt" : 1764125732,
+      "type" : "APP",
+      "createdAt" : 1764125732,
+      "configPath" : "contexts\/app_com.apple.accessibility.universalAccessAuthWarn.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:net.pulsesecure.Pulse-Secure",
+      "bundleId" : "net.pulsesecure.Pulse-Secure",
+      "updatedAt" : 1764132041,
+      "type" : "APP",
+      "createdAt" : 1764132041,
+      "configPath" : "contexts\/app_net.pulsesecure.Pulse-Secure.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:com.apple.SystemProfiler",
+      "bundleId" : "com.apple.SystemProfiler",
+      "updatedAt" : 1764136532,
+      "type" : "APP",
+      "createdAt" : 1764136532,
+      "configPath" : "contexts\/app_com.apple.SystemProfiler.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:com.apple.dock",
+      "bundleId" : "com.apple.dock",
+      "updatedAt" : 1764212110,
+      "type" : "APP",
+      "createdAt" : 1764212110,
+      "configPath" : "contexts\/app_com.apple.dock.json"
+    },
+    {
+      "enabled" : false,
+      "id" : "app:com.apple.ScreenContinuity",
+      "bundleId" : "com.apple.ScreenContinuity",
+      "updatedAt" : 1764222217,
+      "type" : "APP",
+      "createdAt" : 1764222217,
+      "configPath" : "contexts\/app_com.apple.ScreenContinuity.json"
     }
   ]
 }

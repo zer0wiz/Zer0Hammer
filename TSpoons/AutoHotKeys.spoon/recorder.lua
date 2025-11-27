@@ -1,24 +1,32 @@
--- AutoHotKeys 매크로 녹화 모듈
+-- AutoHotKeys Recorder Module
+-- Consolidated from recorder.lua and capture.lua
 local recorder = {}
 
 local eventtap = hs.eventtap
 local event = eventtap.event
 local timer = hs.timer
 local winmod = hs.window
+local dialog = hs.dialog
 
--- 녹화 시작
+-- Internal dependencies
+local utils = require("utils")
+local storage = require("storage")
+
+-- ============================================================================
+-- Macro Recording
+-- ============================================================================
 function recorder.start(obj, macroName)
     if recorder.isRecording(obj) then return false, "Already recording" end
-    
+
     obj.recording = {
         name = macroName or ("macro_" .. os.time()),
-        context = obj.context.current(),
+        context = utils.Context.current(),
         startTime = timer.absoluteTime(),
         actions = {},
         paused = false,
         pauseStartTime = nil
     }
-    
+
     obj.recordingEventTap = eventtap.new({
         event.types.leftMouseDown, event.types.rightMouseDown, event.types.otherMouseDown,
         event.types.leftMouseUp, event.types.rightMouseUp, event.types.otherMouseUp,
@@ -26,122 +34,110 @@ function recorder.start(obj, macroName)
         event.types.mouseMoved, event.types.keyDown
     }, function(e)
         if not recorder.isRecording(obj) or obj.recording.paused then return false end
-        
+
         local eventType = e:getType()
         local currentTime = timer.absoluteTime()
         local elapsed = (currentTime - obj.recording.startTime) / 1000000000.0
         if obj.recording.pauseTime then elapsed = elapsed - obj.recording.pauseTime end
-        
+
         if eventType == event.types.leftMouseDown or eventType == event.types.rightMouseDown or eventType == event.types.otherMouseDown then
             local position = e:location()
             local win = winmod.windowAtPosition(position)
-            
             local action = {
                 type = "mouseClick",
-                button = eventType == event.types.leftMouseDown and "left" or (eventType == event.types.rightMouseDown and "right" or "middle"),
-                position = {x = position.x, y = position.y},
+                button = eventType == event.types.leftMouseDown and "left" or
+                (eventType == event.types.rightMouseDown and "right" or "middle"),
+                position = { x = position.x, y = position.y },
                 timestamp = elapsed,
                 window = win and {
                     app = win:application():name(),
                     bundleId = win:application():bundleID(),
                     title = win:title(),
-                    frame = {x = win:frame().x, y = win:frame().y, w = win:frame().w, h = win:frame().h}
+                    frame = { x = win:frame().x, y = win:frame().y, w = win:frame().w, h = win:frame().h }
                 } or nil
             }
-            
             if win then
                 local frame = win:frame()
-                action.relativePosition = {dx = position.x - frame.x, dy = position.y - frame.y}
+                action.relativePosition = { dx = position.x - frame.x, dy = position.y - frame.y }
             end
             table.insert(obj.recording.actions, action)
-            
         elseif eventType == event.types.leftMouseDragged or eventType == event.types.rightMouseDragged or eventType == event.types.otherMouseDragged then
             local position = e:location()
             local lastAction = obj.recording.actions[#obj.recording.actions]
-            
+
             if not lastAction or lastAction.type ~= "mouseDrag" then
                 local win = winmod.windowAtPosition(position)
                 local action = {
                     type = "mouseDrag",
-                    startPosition = {x = position.x, y = position.y},
-                    endPosition = {x = position.x, y = position.y},
+                    startPosition = { x = position.x, y = position.y },
+                    endPosition = { x = position.x, y = position.y },
                     duration = 0,
                     timestamp = elapsed,
-                    button = eventType == event.types.leftMouseDragged and "left" or (eventType == event.types.rightMouseDragged and "right" or "middle"),
+                    button = eventType == event.types.leftMouseDragged and "left" or
+                    (eventType == event.types.rightMouseDragged and "right" or "middle"),
                     window = win and {
                         app = win:application():name(),
                         bundleId = win:application():bundleID(),
                         title = win:title(),
-                        frame = {x = win:frame().x, y = win:frame().y, w = win:frame().w, h = win:frame().h}
+                        frame = { x = win:frame().x, y = win:frame().y, w = win:frame().w, h = win:frame().h }
                     } or nil
                 }
                 if win then
                     local frame = win:frame()
-                    action.startRelativePosition = {dx = position.x - frame.x, dy = position.y - frame.y}
-                    action.endRelativePosition = {dx = position.x - frame.x, dy = position.y - frame.y}
+                    action.startRelativePosition = { dx = position.x - frame.x, dy = position.y - frame.y }
+                    action.endRelativePosition = { dx = position.x - frame.x, dy = position.y - frame.y }
                 end
                 table.insert(obj.recording.actions, action)
             else
-                lastAction.endPosition = {x = position.x, y = position.y}
+                lastAction.endPosition = { x = position.x, y = position.y }
                 lastAction.duration = elapsed - lastAction.timestamp
                 if lastAction.window then
                     local win = winmod.windowAtPosition(position)
                     if win then
                         local frame = win:frame()
-                        lastAction.endRelativePosition = {dx = position.x - frame.x, dy = position.y - frame.y}
+                        lastAction.endRelativePosition = { dx = position.x - frame.x, dy = position.y - frame.y }
                     end
                 end
             end
-            
         elseif eventType == event.types.mouseMoved then
             local flags = e:getFlags()
             if not flags.left and not flags.right and not flags.other then
                 local position = e:location()
-                table.insert(obj.recording.actions, {
-                    type = "mouseMove",
-                    position = {x = position.x, y = position.y},
-                    timestamp = elapsed
-                })
+                table.insert(obj.recording.actions,
+                    { type = "mouseMove", position = { x = position.x, y = position.y }, timestamp = elapsed })
             end
-            
         elseif eventType == event.types.keyDown then
             local keyCode = e:getKeyCode()
             local flags = e:getFlags()
             local characters = e:getCharacters()
-            
             local modifiers = {}
             if flags.cmd then table.insert(modifiers, "cmd") end
             if flags.alt then table.insert(modifiers, "alt") end
             if flags.shift then table.insert(modifiers, "shift") end
             if flags.ctrl then table.insert(modifiers, "ctrl") end
-            
+
             table.insert(obj.recording.actions, {
-                type = "keyPress",
-                key = characters or hs.keycodes.map[keyCode],
-                keyCode = keyCode,
-                modifiers = modifiers,
-                timestamp = elapsed
+                type = "keyPress", key = characters or hs.keycodes.map[keyCode], keyCode = keyCode, modifiers = modifiers, timestamp =
+            elapsed
             })
         end
         return false
     end)
-    
     obj.recordingEventTap:start()
     return true
 end
 
 function recorder.stop(obj)
     if not recorder.isRecording(obj) then return false, "Not recording" end
-    
     if obj.recordingEventTap then
         obj.recordingEventTap:stop()
         obj.recordingEventTap = nil
     end
-    
+
     local currentTime = timer.absoluteTime()
     local totalDuration = (currentTime - obj.recording.startTime) / 1000000000.0
     if obj.recording.pauseTime then totalDuration = totalDuration - obj.recording.pauseTime end
-    
+
     local macro = {
         name = obj.recording.name,
         createdAt = os.time(),
@@ -149,7 +145,6 @@ function recorder.stop(obj)
         actions = obj.recording.actions,
         totalDuration = totalDuration
     }
-    
     obj.recording = nil
     return true, macro
 end
@@ -181,7 +176,6 @@ function recorder.getCurrentMacro(obj)
     local currentTime = timer.absoluteTime()
     local totalDuration = (currentTime - obj.recording.startTime) / 1000000000.0
     if obj.recording.pauseTime then totalDuration = totalDuration - obj.recording.pauseTime end
-    
     return {
         name = obj.recording.name,
         context = obj.recording.context,
@@ -189,6 +183,48 @@ function recorder.getCurrentMacro(obj)
         totalDuration = totalDuration,
         paused = obj.recording.paused
     }
+end
+
+-- ============================================================================
+-- Quick Capture (Legacy "capture.lua" functionality)
+-- ============================================================================
+function recorder.startQuickCapture(obj)
+    if obj.mouseTap then return end
+    obj.mouseTap = eventtap.new({ eventtap.event.types.leftMouseDown }, function(e)
+        if not e:getFlags().ctrl then return false end
+
+        local pt = e:location()
+        local win = winmod.frontmostWindow()
+        if not win then return false end
+        local f = win:frame()
+
+        local answer = dialog.blockAlert("Save Position?", string.format("x=%d, y=%d", pt.x, pt.y), "Yes", "No",
+            "informational")
+        if answer ~= "Yes" then return false end
+
+        local _, key = dialog.textPrompt("Enter Hotkey", "Single character key", "", "OK", "Cancel")
+        if not key or key == "" then return true end
+        key = key:sub(1, 1)
+
+        local ctx = utils.Context.current()
+        local dx, dy = pt.x - f.x, pt.y - f.y
+
+        local config = storage.loadContextConfig(ctx.id) or { context = ctx, shortcuts = {} }
+        config.shortcuts[key] = { type = "click", event_type = "ctrl_click", position = { dx = dx, dy = dy }, windowRelative = true }
+        storage.saveContextConfig(ctx.id, config)
+
+        require("ui").overlay.update(obj)
+        require("actions").perform(obj, ctx, key)
+        return true
+    end)
+    obj.mouseTap:start()
+end
+
+function recorder.stopQuickCapture(obj)
+    if obj.mouseTap then
+        obj.mouseTap:stop()
+        obj.mouseTap = nil
+    end
 end
 
 return recorder

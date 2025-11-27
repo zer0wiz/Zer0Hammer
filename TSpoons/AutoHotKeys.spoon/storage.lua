@@ -1,194 +1,183 @@
--- AutoHotKeys 스토리지 관리 모듈 (Facade)
+-- AutoHotKeys Storage Module
+-- Consolidated from ConfigManager, ContextManager, MacroRepository
 local storage = {}
 
-local ConfigManager = require("data.ConfigManager")
-local ContextManager = require("data.ContextManager")
-local MacroRepository = require("data.MacroRepository")
+local json = hs.json
+local fs = hs.fs
 
--- 초기화
-function storage.init()
-    ConfigManager.init()
-    ContextManager.init()
-    MacroRepository.init()
+local STORAGE_DIR = hs.configdir .. "/autohotkeys"
+local CONTEXTS_DIR = STORAGE_DIR .. "/contexts"
+local MACROS_DIR = STORAGE_DIR .. "/_macros"
+local CONFIG_FILE = STORAGE_DIR .. "/config.json"
+local CONTEXT_LIST_FILE = STORAGE_DIR .. "/context-list.json"
+
+-- Ensure directories exist
+local function ensureDirs()
+    if not fs.attributes(STORAGE_DIR, "mode") then fs.mkdir(STORAGE_DIR) end
+    if not fs.attributes(CONTEXTS_DIR, "mode") then fs.mkdir(CONTEXTS_DIR) end
+    if not fs.attributes(MACROS_DIR, "mode") then fs.mkdir(MACROS_DIR) end
 end
 
--- ============================================
--- Config 관리
--- ============================================
+local function sanitizeFilename(s)
+    return (s:gsub("[^%w%._-]", "_"))
+end
+
+local function loadJson(path, default)
+    if not fs.attributes(path) then return default end
+    local fh = io.open(path, "r")
+    if not fh then return default end
+    local content = fh:read("*a")
+    fh:close()
+    local ok, data = pcall(function() return json.decode(content) end)
+    return (ok and type(data) == "table") and data or default
+end
+
+local function saveJson(path, data)
+    ensureDirs()
+    local fh = io.open(path, "w")
+    if not fh then return false end
+    fh:write(json.encode(data, true))
+    fh:close()
+    return true
+end
+
+-- ============================================================================
+-- Configuration
+-- ============================================================================
+local defaultConfig = {
+    shortcutPreview = {
+        circle = { radius = 20, strokeWidth = 2, strokeColor = "#FF5733", fillColor = "#FF5733", fillAlpha = 0.7 },
+        text = { size = 14, color = "#FFFFFF", font = "Arial Bold" },
+        overlay = { color = "#000000", alpha = 0.3 }
+    },
+    menu = { position = { x = nil, y = nil }, saved = false },
+    overlay = { enabled = false },
+    excludedApps = { "com.hammerspoon.Hammerspoon" },
+    clickAnimation = { color = "#FF5733" }
+}
+
 function storage.loadConfig()
-    return ConfigManager.load()
+    local config = loadJson(CONFIG_FILE, defaultConfig)
+    -- Merge defaults
+    for k, v in pairs(defaultConfig) do
+        if config[k] == nil then config[k] = v end
+    end
+    return config
 end
 
 function storage.saveConfig(config)
-    return ConfigManager.save(config)
+    return saveJson(CONFIG_FILE, config)
 end
 
-function storage.getConfigValue(path)
-    return ConfigManager.getValue(path)
-end
-
--- ============================================
--- Context 관리
--- ============================================
+-- ============================================================================
+-- Contexts
+-- ============================================================================
 function storage.loadContextList()
-    return ContextManager.loadList()
+    return loadJson(CONTEXT_LIST_FILE, { version = "1.0", contexts = {} })
 end
 
-function storage.saveContextList(contextList)
-    return ContextManager.saveList(contextList)
+function storage.saveContextList(list)
+    return saveJson(CONTEXT_LIST_FILE, list)
 end
 
 function storage.findContext(contextId)
-    return ContextManager.find(contextId)
-end
-
-function storage.addContext(contextData)
-    return ContextManager.add(contextData)
-end
-
-function storage.updateContext(contextId, updates)
-    return ContextManager.update(contextId, updates)
-end
-
-function storage.removeContext(contextId)
-    return ContextManager.remove(contextId)
+    local list = storage.loadContextList()
+    for _, ctx in ipairs(list.contexts) do
+        if ctx.id == contextId then return ctx end
+    end
+    return nil
 end
 
 function storage.loadContextConfig(contextId)
-    return ContextManager.loadConfig(contextId)
+    local filename = sanitizeFilename(contextId) .. ".json"
+    return loadJson(CONTEXTS_DIR .. "/" .. filename, nil)
 end
 
 function storage.saveContextConfig(contextId, config)
-    return ContextManager.saveConfig(contextId, config)
+    local filename = sanitizeFilename(contextId) .. ".json"
+    return saveJson(CONTEXTS_DIR .. "/" .. filename, config)
 end
 
--- 레거시 호환성: 앱별 설정 (ContextConfig로 통합됨)
-function storage.loadAppConfig(appId)
-    return ContextManager.loadConfig(appId)
-end
-
-function storage.saveAppConfig(appId, config)
-    return ContextManager.saveConfig(appId, config)
-end
-
-function storage.pathForContext(contextId)
-    return ContextManager.pathForConfig(contextId)
-end
-
-function storage.pathForApp(appId)
-    return ContextManager.pathForConfig(appId)
-end
-
--- 컨텍스트 통합 설정 가져오기
-function storage.getContextConfig(contextId)
-    local ctx = ContextManager.find(contextId)
-    if not ctx then return nil end
-
-    local config = ContextManager.loadConfig(contextId)
-    if not config then
-        config = { context = ctx, shortcuts = {} }
-        ContextManager.saveConfig(contextId, config)
+function storage.addContext(contextData)
+    if not contextData.id then return false, "ID required" end
+    local list = storage.loadContextList()
+    for _, ctx in ipairs(list.contexts) do
+        if ctx.id == contextData.id then return false, "Context exists" end
     end
 
-    local result = {}
-    for k, v in pairs(ctx) do result[k] = v end
-    for k, v in pairs(config) do
-        if k ~= "context" or not result.context then
-            result[k] = v
-        end
+    local newContext = {
+        id = contextData.id,
+        type = contextData.type,
+        appName = contextData.appName,
+        bundleId = contextData.bundleId,
+        domain = contextData.domain,
+        enabled = contextData.enabled or false,
+        configPath = "contexts/" .. sanitizeFilename(contextData.id) .. ".json",
+        createdAt = os.time(),
+        updatedAt = os.time()
+    }
+    table.insert(list.contexts, newContext)
+
+    if storage.saveContextList(list) then
+        storage.saveContextConfig(contextData.id, { context = newContext, shortcuts = {} })
+        return true, newContext
     end
-    return result
+    return false, "Save failed"
 end
 
--- 앱의 enabled 상태 토글
-function storage.toggleAppEnabled(contextId, appName, bundleId)
-    local contextList = ContextManager.loadList()
-    if not contextList or not contextList.contexts then return false end
-
-    for _, ctx in ipairs(contextList.contexts) do
+function storage.toggleAppEnabled(contextId)
+    local list = storage.loadContextList()
+    for _, ctx in ipairs(list.contexts) do
         if ctx.id == contextId then
             ctx.enabled = not ctx.enabled
             ctx.updatedAt = os.time()
-            return ContextManager.saveList(contextList)
+            storage.saveContextList(list)
+            return true
         end
     end
     return false
 end
 
--- 단축키 로드 (레거시 호환)
-function storage.load(contextId)
-    local config = ContextManager.loadConfig(contextId)
-    return config and config.shortcuts or {}
+-- ============================================================================
+-- Macros
+-- ============================================================================
+function storage.saveMacro(name, data)
+    local filename = sanitizeFilename(name) .. ".json"
+    return saveJson(MACROS_DIR .. "/" .. filename, data)
 end
 
--- 단축키 저장 (레거시 호환)
-function storage.save(context, shortcuts)
-    local config = ContextManager.loadConfig(context.id) or { context = context, shortcuts = {} }
-    config.shortcuts = shortcuts
-    return ContextManager.saveConfig(context.id, config)
-end
-
--- 앱 단축키 저장 (shortcut_preview에서 사용)
-function storage.saveAppShortcut(contextId, contextType, keyChar, relativePos, appName, bundleId, shortcutData)
-    -- 1. 컨텍스트 확인
-    local ctx = ContextManager.find(contextId)
-
-    if not ctx then
-        -- 컨텍스트가 없으면 생성
-        local success, result = ContextManager.add({
-            id = contextId,
-            type = contextType or "app",
-            appName = appName,
-            bundleId = bundleId,
-            enabled = true
-        })
-
-        if not success then
-            print("Error creating context: " .. tostring(result))
-            return false
-        end
-        ctx = result
-    end
-
-    -- 2. Config 로드
-    local config = ContextManager.loadConfig(contextId)
-    if not config then
-        config = { context = ctx, shortcuts = {} }
-    end
-
-    if not config.shortcuts then config.shortcuts = {} end
-
-    -- 3. 단축키 업데이트
-    config.shortcuts[keyChar] = shortcutData
-
-    -- 4. 저장
-    return ContextManager.saveConfig(contextId, config)
-end
-
--- ============================================
--- Macro 관리
--- ============================================
-function storage.saveMacro(macroName, macroData)
-    return MacroRepository.save(macroName, macroData)
-end
-
-function storage.loadMacro(macroName)
-    return MacroRepository.load(macroName)
+function storage.loadMacro(name)
+    local filename = sanitizeFilename(name) .. ".json"
+    return loadJson(MACROS_DIR .. "/" .. filename, nil)
 end
 
 function storage.listMacros()
-    return MacroRepository.list()
+    ensureDirs()
+    local macros = {}
+    for file in fs.dir(MACROS_DIR) do
+        if file:match("%.json$") then
+            local name = file:gsub("%.json$", "")
+            local data = storage.loadMacro(name)
+            if data then table.insert(macros, { name = name, data = data }) end
+        end
+    end
+    return macros
 end
 
-function storage.deleteMacro(macroName)
-    return MacroRepository.delete(macroName)
+function storage.deleteMacro(name)
+    local filename = sanitizeFilename(name) .. ".json"
+    local path = MACROS_DIR .. "/" .. filename
+    if fs.attributes(path) then
+        os.remove(path); return true
+    end
+    return false
 end
 
--- ============================================
--- 기타
--- ============================================
-function storage.clearCache()
-    -- 각 매니저의 캐시 초기화 기능이 필요하다면 추가 구현
-end
+-- ============================================================================
+-- Legacy / Compatibility
+-- ============================================================================
+function storage.loadAppConfig(appId) return storage.loadContextConfig(appId) end
+
+function storage.saveAppConfig(appId, config) return storage.saveContextConfig(appId, config) end
 
 return storage

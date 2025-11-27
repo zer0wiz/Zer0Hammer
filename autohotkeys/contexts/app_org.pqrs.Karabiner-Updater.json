@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:org.pqrs.Karabiner-Updater",
+    "bundleId" : "org.pqrs.Karabiner-Updater",
+    "updatedAt" : 1764125616,
+    "type" : "APP",
+    "createdAt" : 1764125616,
+    "configPath" : "contexts\/app_org.pqrs.Karabiner-Updater.json"
+  },
+  "shortcuts" : [
+
+  ]
+}
