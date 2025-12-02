@@ -5,9 +5,7 @@ local hotkeys = {}
 local hotkey = hs.hotkey
 local logger = hs.logger.new("AutoHotKeys")
 
--- Internal dependencies
-local storage = require("storage")
-local ui = require("ui")
+-- Note: storage and ui are accessed via obj.storage and obj.ui to avoid circular require issues
 
 -- ============================================================================
 -- Validator / Registry
@@ -70,9 +68,10 @@ end
 function hotkeys.bind(obj)
     hotkeys.reset()
 
-    -- Menu Toggle (Ctrl+Cmd+K)
-    hotkeys.register({ "ctrl", "cmd" }, "k", function()
-        ui.menu.toggle(obj)
+    -- Menu Toggle (Configured, default: Shift+Cmd+K)
+    local mainHotkey = obj.hotkey or { { "shift", "cmd" }, "k" }
+    hotkeys.register(mainHotkey[1], mainHotkey[2], function()
+        obj.ui.menu.toggle(obj)
     end)
 
     -- Recording (Ctrl+Cmd+R)
@@ -83,7 +82,7 @@ function hotkeys.bind(obj)
                 local script = [[
                     tell application "System Events"
                         display dialog "Enter macro name:" default answer "]] ..
-                (macro.name or "") .. [[" buttons {"Cancel", "Save"} default button "Save"
+                    (macro.name or "") .. [[" buttons {"Cancel", "Save"} default button "Save"
                         set result to button returned of result
                         set name to text returned of result
                     end tell
@@ -94,17 +93,17 @@ function hotkeys.bind(obj)
                     local parts = {}
                     for part in string.gmatch(result, "[^|]+") do table.insert(parts, part) end
                     if parts[1] == "Save" and parts[2] and parts[2] ~= "" then
-                        storage.saveMacro(parts[2], macro)
+                        obj.storage.saveMacro(parts[2], macro)
                         hs.alert.show("Macro saved: " .. parts[2], 2.0)
                     end
                 end
             end
-            ui.overlay.update(obj)
+            obj.ui.overlay.update(obj)
         else
             local success, err = obj.recorder.start(obj)
             if success then
                 hs.alert.show("Recording started", 1.0)
-                ui.overlay.update(obj)
+                obj.ui.overlay.update(obj)
             else
                 hs.alert.show("Failed to start recording: " .. (err or "Unknown"), 2.0)
             end
@@ -113,7 +112,7 @@ function hotkeys.bind(obj)
 
     -- Macro List (Ctrl+Cmd+M)
     hotkeys.register({ "ctrl", "cmd" }, "m", function()
-        ui.menu.showMacroList(obj)
+        obj.ui.menu.showMacroList(obj)
     end)
 
     -- Quick Capture (Ctrl+Click) - handled by recorder module, but we can bind a toggle if needed

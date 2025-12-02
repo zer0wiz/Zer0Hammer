@@ -42,14 +42,57 @@ utils.Context.BROWSER_APPS = {
     "Safari", "Google Chrome", "Brave Browser", "Microsoft Edge", "Vivaldi", "Opera", "Arc"
 }
 
+function utils.Context.isHammerspoon(ctx)
+    if not ctx then return false end
+    local bundleId = ctx.bundleId
+    local appName = ctx.appName
+    return (bundleId == "org.hammerspoon.Hammerspoon") or
+        (bundleId == "com.hammerspoon.Hammerspoon") or
+        (appName == "Hammerspoon")
+end
+
 local BROWSER_URL_SCRIPTS = {
     SAFARI = function() return [[tell application "Safari" to get URL of current tab of front window]] end,
-    CHROMIUM = function(appName) return string.format([[tell application "%s" to get URL of active tab of front window]],
-            appName) end,
+    CHROMIUM = function(appName)
+        return string.format([[tell application "%s" to get URL of active tab of front window]],
+            appName)
+    end,
 }
+
+-- Extract URL from window title (Vivaldi shows URL in title like "Page Title - domain.com")
+local function extractURLFromTitle(title)
+    if not title then return nil end
+    -- Try to extract domain from title (common format: "Title - domain.com" or just URL)
+    local domain = title:match("([%w%-%.]+%.%w+)$")
+    if domain then
+        return "https://" .. domain
+    end
+    -- Check if title contains a URL directly
+    local url = title:match("(https?://[^%s]+)")
+    if url then return url end
+    return nil
+end
 
 local function getBrowserActiveURL(appName)
     if not appName then return nil end
+
+    -- For Vivaldi, try to get URL from window title first
+    if appName == "Vivaldi" then
+        local win = winmod.frontmostWindow()
+        if win then
+            local title = win:title()
+            -- Vivaldi title format: "Page Title - www.domain.com"
+            local domain = title and title:match(" %- ([%w%-%.]+%.%w+)$")
+            if domain then
+                return "https://" .. domain
+            end
+            -- Fallback: extract any URL-like pattern
+            local extracted = extractURLFromTitle(title)
+            if extracted then return extracted end
+        end
+    end
+
+    -- For other browsers, use AppleScript
     local script = nil
     if appName == "Safari" then
         script = BROWSER_URL_SCRIPTS.SAFARI()
@@ -93,9 +136,18 @@ function utils.Context.current()
     if info.type == utils.Context.TYPES.WEB then
         info.url = getBrowserActiveURL(info.appName)
         info.host = info.url and info.url:match("^%w+://([^/]+)")
+        if info.host then
+            -- Use domain as ID for web apps
+            info.id = "web:" .. info.host
+            info.domain = info.host
+        else
+            -- Fallback to bundleId if no URL/Host found
+            info.id = "web:" .. info.bundleId
+        end
+    else
+        info.id = "app:" .. info.bundleId
     end
 
-    info.id = info.type:lower() .. ":" .. info.bundleId
     return info
 end
 
