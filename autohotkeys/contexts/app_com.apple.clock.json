@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.clock",
+    "bundleId" : "com.apple.clock",
+    "updatedAt" : 1763700603,
+    "type" : "APP",
+    "createdAt" : 1763700603,
+    "configPath" : "contexts\/app_com.apple.clock.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

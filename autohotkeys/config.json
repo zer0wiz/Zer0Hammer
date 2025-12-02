@@ -1,0 +1,36 @@
+{
+  "overlay": {
+    "enabled": false
+  },
+  "excludedApps": [
+    "com.hammerspoon.Hammerspoon"
+  ],
+  "shortcutPreview": {
+    "overlay": {
+      "color": "#000000",
+      "alpha": 0.29999999999999999
+    },
+    "circle": {
+      "radius": 20,
+      "strokeColor": "#FF5733",
+      "strokeWidth": 2,
+      "fillColor": "#FF5733",
+      "fillAlpha": 0.69999999999999996
+    },
+    "text": {
+      "color": "#FFFFFF",
+      "size": 14,
+      "font": "Arial Bold"
+    }
+  },
+  "clickAnimation": {
+    "color": "#FFFF00"
+  },
+  "menu": {
+    "saved": true,
+    "position": {
+      "x": 4206,
+      "y": -709
+    }
+  }
+}

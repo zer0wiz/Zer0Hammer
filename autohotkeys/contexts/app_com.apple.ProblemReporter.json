@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.ProblemReporter",
+    "bundleId" : "com.apple.ProblemReporter",
+    "updatedAt" : 1763950053,
+    "type" : "APP",
+    "createdAt" : 1763950053,
+    "configPath" : "contexts\/app_com.apple.ProblemReporter.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.ScreenContinuity",
+    "bundleId" : "com.apple.ScreenContinuity",
+    "updatedAt" : 1764222217,
+    "type" : "APP",
+    "createdAt" : 1764222217,
+    "configPath" : "contexts\/app_com.apple.ScreenContinuity.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

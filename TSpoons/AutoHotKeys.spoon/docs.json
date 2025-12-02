@@ -1,564 +1,200 @@
-[
-  {
-    "Command": [],
-    "Constant": [],
-    "Constructor": [],
-    "Deprecated": [],
-    "Field": [],
-    "Function": [
-      {
-        "def": "describeApplicationState()",
-        "desc": "",
-        "doc": "",
-        "name": "describeApplicationState",
-        "signature": "describeApplicationState()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "delinate()",
-        "desc": "",
-        "doc": "",
-        "name": "delinate",
-        "signature": "delinate()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "eventHandler(element, eventName, watcher, includedData)",
-        "desc": "",
-        "doc": "",
-        "name": "eventHandler",
-        "signature": "eventHandler(element, eventName, watcher, includedData)",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "globalEventHandler(applicationName, eventType, application)",
-        "desc": "",
-        "doc": "",
-        "name": "globalEventHandler",
-        "signature": "globalEventHandler(applicationName, eventType, application)",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testInitWithPidFailures()",
-        "desc": "",
-        "doc": "",
-        "name": "testInitWithPidFailures",
-        "signature": "testInitWithPidFailures()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "findApplicationByName(applicationName)",
-        "desc": "",
-        "doc": "",
-        "name": "findApplicationByName",
-        "signature": "findApplicationByName(applicationName)",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testAttributesFromBundleID()",
-        "desc": "",
-        "doc": "",
-        "name": "testAttributesFromBundleID",
-        "signature": "testAttributesFromBundleID()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testBasicAttributes()",
-        "desc": "",
-        "doc": "",
-        "name": "testBasicAttributes",
-        "signature": "testBasicAttributes()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testActiveAttributes()",
-        "desc": "",
-        "doc": "",
-        "name": "testActiveAttributes",
-        "signature": "testActiveAttributes()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testMetaTable()",
-        "desc": "",
-        "doc": "",
-        "name": "testMetaTable",
-        "signature": "testMetaTable()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testFrontmostApplication()",
-        "desc": "",
-        "doc": "",
-        "name": "testFrontmostApplication",
-        "signature": "testFrontmostApplication()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testRunningApplications()",
-        "desc": "",
-        "doc": "",
-        "name": "testRunningApplications",
-        "signature": "testRunningApplications()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testHiding()",
-        "desc": "",
-        "doc": "",
-        "name": "testHiding",
-        "signature": "testHiding()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testHidingValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testHidingValues",
-        "signature": "testHidingValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testKilling()",
-        "desc": "",
-        "doc": "",
-        "name": "testKilling",
-        "signature": "testKilling()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testKillingValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testKillingValues",
-        "signature": "testKillingValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testForceKilling()",
-        "desc": "",
-        "doc": "",
-        "name": "testForceKilling",
-        "signature": "testForceKilling()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testForceKillingValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testForceKillingValues",
-        "signature": "testForceKillingValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testWindows()",
-        "desc": "",
-        "doc": "",
-        "name": "testWindows",
-        "signature": "testWindows()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testWindowsValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testWindowsValues",
-        "signature": "testWindowsValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testMenus()",
-        "desc": "",
-        "doc": "",
-        "name": "testMenus",
-        "signature": "testMenus()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testMenusAsync()",
-        "desc": "",
-        "doc": "",
-        "name": "testMenusAsync",
-        "signature": "testMenusAsync()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testMenusAsyncValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testMenusAsyncValues",
-        "signature": "testMenusAsyncValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testUTI()",
-        "desc": "",
-        "doc": "",
-        "name": "testUTI",
-        "signature": "testUTI()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testLocalizationFunctions()",
-        "desc": "",
-        "doc": "",
-        "name": "testLocalizationFunctions",
-        "signature": "testLocalizationFunctions()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "init()",
-        "desc": "",
-        "doc": "",
-        "name": "init",
-        "signature": "init()",
-        "stripped_doc": "",
-        "type": "Function"
-      }
-    ],
-    "Method": [],
-    "Variable": [
-      {
-        "def": "AutoHotKeys.logger",
-        "desc": "Logger object used within the Spoon.",
-        "doc": "Logger object used within the Spoon.",
-        "name": "logger",
-        "signature": "AutoHotKeys.logger",
-        "stripped_doc": "",
-        "type": "Variable"
-      },
-      {
-        "def": "AutoHotKeys.version",
-        "desc": "Spoon version.",
-        "doc": "Spoon version.",
-        "name": "version",
-        "signature": "AutoHotKeys.version",
-        "stripped_doc": "",
-        "type": "Variable"
-      },
-      {
-        "def": "AutoHotKeys.homepage",
-        "desc": "Project homepage URL.",
-        "doc": "Project homepage URL.",
-        "name": "homepage",
-        "signature": "AutoHotKeys.homepage",
-        "stripped_doc": "",
-        "type": "Variable"
-      },
-      {
-        "def": "AutoHotKeys.license",
-        "desc": "License information.",
-        "doc": "License information.",
-        "name": "license",
-        "signature": "AutoHotKeys.license",
-        "stripped_doc": "",
-        "type": "Variable"
-      }
-    ],
-    "desc": "AutoHotKeys Spoon",
-    "doc": "",
+{
+  "name": "AutoHotKeys",
+  "version": "0.2.0",
+  "author": "zer0wiz <zer0wiz9@gmail.com>",
+  "homepage": "https://github.com/zer0wiz/spacehammer",
+  "license": "MIT",
+  "description": "Windows AutoHotkey 스타일의 매크로 및 단축키 자동화 기능을 제공하는 Hammerspoon Spoon",
+  "download_url": "",
+  "tags": ["automation", "macro", "hotkey", "productivity"],
     "items": [
       {
-        "def": "AutoHotKeys.logger",
-        "desc": "Logger object used within the Spoon.",
-        "doc": "Logger object used within the Spoon.",
-        "name": "logger",
-        "signature": "AutoHotKeys.logger",
-        "stripped_doc": "",
-        "type": "Variable"
+      "name": "start",
+      "type": "Method",
+      "desc": "AutoHotKeys 스푼을 시작합니다. 스토리지를 초기화하고, 감시자를 시작하며, 오버레이와 단축키를 설정합니다.",
+      "signature": "AutoHotKeys:start()",
+      "returns": [
+        "AutoHotKeys 객체"
+      ]
+    },
+    {
+      "name": "stop",
+      "type": "Method",
+      "desc": "AutoHotKeys 스푼을 중지합니다. 모든 감시자와 오버레이를 정리합니다.",
+      "signature": "AutoHotKeys:stop()"
+    },
+    {
+      "name": "menuToggle",
+      "type": "Method",
+      "desc": "AutoHotKeys 메뉴를 토글합니다.",
+      "signature": "AutoHotKeys:menutoggle()"
       },
       {
-        "def": "AutoHotKeys.version",
-        "desc": "Spoon version.",
-        "doc": "Spoon version.",
-        "name": "version",
-        "signature": "AutoHotKeys.version",
-        "stripped_doc": "",
-        "type": "Variable"
+      "name": "recorder",
+      "type": "Module",
+      "desc": "매크로 녹화 모듈. 마우스와 키보드 이벤트를 캡처하여 재생 가능한 매크로로 저장합니다."
+    },
+    {
+      "name": "recorder.start",
+      "type": "Function",
+      "desc": "매크로 녹화를 시작합니다.",
+      "signature": "recorder.start(obj, macroName)",
+      "parameters": [
+        "obj - AutoHotKeys 스푼 객체",
+        "macroName - 매크로 이름 (선택사항, 기본값: macro_타임스탬프)"
+      ],
+      "returns": [
+        "success (boolean) - 녹화 시작 성공 여부",
+        "error (string) - 실패 시 에러 메시지"
+      ]
       },
       {
-        "def": "AutoHotKeys.homepage",
-        "desc": "Project homepage URL.",
-        "doc": "Project homepage URL.",
-        "name": "homepage",
-        "signature": "AutoHotKeys.homepage",
-        "stripped_doc": "",
-        "type": "Variable"
+      "name": "recorder.stop",
+      "type": "Function",
+      "desc": "매크로 녹화를 중지하고 결과를 반환합니다.",
+      "signature": "recorder.stop(obj)",
+      "parameters": [
+        "obj - AutoHotKeys 스푼 객체"
+      ],
+      "returns": [
+        "success (boolean) - 중지 성공 여부",
+        "macro (table) - 녹화된 매크로 데이터"
+      ]
+    },
+    {
+      "name": "recorder.pause",
+      "type": "Function",
+      "desc": "녹화를 일시정지합니다.",
+      "signature": "recorder.pause(obj)",
+      "parameters": [
+        "obj - AutoHotKeys 스푼 객체"
+      ]
+    },
+    {
+      "name": "recorder.resume",
+      "type": "Function",
+      "desc": "일시정지된 녹화를 재개합니다.",
+      "signature": "recorder.resume(obj)",
+      "parameters": [
+        "obj - AutoHotKeys 스푼 객체"
+      ]
       },
       {
-        "def": "AutoHotKeys.license",
-        "desc": "License information.",
-        "doc": "License information.",
-        "name": "license",
-        "signature": "AutoHotKeys.license",
-        "stripped_doc": "",
-        "type": "Variable"
+      "name": "recorder.isRecording",
+      "type": "Function",
+      "desc": "현재 녹화 중인지 확인합니다.",
+      "signature": "recorder.isRecording(obj)",
+      "parameters": [
+        "obj - AutoHotKeys 스푼 객체"
+      ],
+      "returns": [
+        "boolean - 녹화 중이면 true"
+      ]
+    },
+    {
+      "name": "playback",
+      "type": "Module",
+      "desc": "매크로 재생 모듈. 저장된 매크로를 재생하고 관리합니다."
+    },
+    {
+      "name": "playback.play",
+      "type": "Function",
+      "desc": "저장된 매크로를 재생합니다.",
+      "signature": "playback.play(obj, macroName, options)",
+      "parameters": [
+        "obj - AutoHotKeys 스푼 객체",
+        "macroName (string) - 재생할 매크로 이름",
+        "options (table, 선택) - 재생 옵션 {repeatCount=1, speed=1.0, onComplete=function, onError=function}"
+      ],
+      "returns": [
+        "success (boolean) - 재생 시작 성공 여부",
+        "error (string) - 실패 시 에러 메시지"
+      ]
+    },
+    {
+      "name": "playback.stop",
+      "type": "Function",
+      "desc": "현재 재생 중인 매크로를 중지합니다.",
+      "signature": "playback.stop(obj)",
+      "parameters": [
+        "obj - AutoHotKeys 스푼 객체"
+      ]
       },
       {
-        "def": "describeApplicationState()",
-        "desc": "",
-        "doc": "",
-        "name": "describeApplicationState",
-        "signature": "describeApplicationState()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "delinate()",
-        "desc": "",
-        "doc": "",
-        "name": "delinate",
-        "signature": "delinate()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "eventHandler(element, eventName, watcher, includedData)",
-        "desc": "",
-        "doc": "",
-        "name": "eventHandler",
-        "signature": "eventHandler(element, eventName, watcher, includedData)",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "globalEventHandler(applicationName, eventType, application)",
-        "desc": "",
-        "doc": "",
-        "name": "globalEventHandler",
-        "signature": "globalEventHandler(applicationName, eventType, application)",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testInitWithPidFailures()",
-        "desc": "",
-        "doc": "",
-        "name": "testInitWithPidFailures",
-        "signature": "testInitWithPidFailures()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "findApplicationByName(applicationName)",
-        "desc": "",
-        "doc": "",
-        "name": "findApplicationByName",
-        "signature": "findApplicationByName(applicationName)",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testAttributesFromBundleID()",
-        "desc": "",
-        "doc": "",
-        "name": "testAttributesFromBundleID",
-        "signature": "testAttributesFromBundleID()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testBasicAttributes()",
-        "desc": "",
-        "doc": "",
-        "name": "testBasicAttributes",
-        "signature": "testBasicAttributes()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testActiveAttributes()",
-        "desc": "",
-        "doc": "",
-        "name": "testActiveAttributes",
-        "signature": "testActiveAttributes()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testMetaTable()",
-        "desc": "",
-        "doc": "",
-        "name": "testMetaTable",
-        "signature": "testMetaTable()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testFrontmostApplication()",
-        "desc": "",
-        "doc": "",
-        "name": "testFrontmostApplication",
-        "signature": "testFrontmostApplication()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testRunningApplications()",
-        "desc": "",
-        "doc": "",
-        "name": "testRunningApplications",
-        "signature": "testRunningApplications()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testHiding()",
-        "desc": "",
-        "doc": "",
-        "name": "testHiding",
-        "signature": "testHiding()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testHidingValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testHidingValues",
-        "signature": "testHidingValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testKilling()",
-        "desc": "",
-        "doc": "",
-        "name": "testKilling",
-        "signature": "testKilling()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testKillingValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testKillingValues",
-        "signature": "testKillingValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testForceKilling()",
-        "desc": "",
-        "doc": "",
-        "name": "testForceKilling",
-        "signature": "testForceKilling()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testForceKillingValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testForceKillingValues",
-        "signature": "testForceKillingValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testWindows()",
-        "desc": "",
-        "doc": "",
-        "name": "testWindows",
-        "signature": "testWindows()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testWindowsValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testWindowsValues",
-        "signature": "testWindowsValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testMenus()",
-        "desc": "",
-        "doc": "",
-        "name": "testMenus",
-        "signature": "testMenus()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testMenusAsync()",
-        "desc": "",
-        "doc": "",
-        "name": "testMenusAsync",
-        "signature": "testMenusAsync()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testMenusAsyncValues()",
-        "desc": "",
-        "doc": "",
-        "name": "testMenusAsyncValues",
-        "signature": "testMenusAsyncValues()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testUTI()",
-        "desc": "",
-        "doc": "",
-        "name": "testUTI",
-        "signature": "testUTI()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "testLocalizationFunctions()",
-        "desc": "",
-        "doc": "",
-        "name": "testLocalizationFunctions",
-        "signature": "testLocalizationFunctions()",
-        "stripped_doc": "",
-        "type": "Function"
-      },
-      {
-        "def": "init()",
-        "desc": "",
-        "doc": "",
-        "name": "init",
-        "signature": "init()",
-        "stripped_doc": "",
-        "type": "Function"
-      }
-    ],
-    "name": "AutoHotKeys",
-    "stripped_doc": "",
-    "submodules": [],
-    "type": "Module"
+      "name": "playback.isPlaying",
+      "type": "Function",
+      "desc": "현재 재생 중인지 확인합니다.",
+      "signature": "playback.isPlaying(obj)",
+      "parameters": [
+        "obj - AutoHotKeys 스푼 객체"
+      ],
+      "returns": [
+        "boolean - 재생 중이면 true"
+      ]
+    },
+    {
+      "name": "playback.setSpeed",
+      "type": "Function",
+      "desc": "재생 속도를 변경합니다.",
+      "signature": "playback.setSpeed(obj, speed)",
+      "parameters": [
+        "obj - AutoHotKeys 스푼 객체",
+        "speed (number) - 재생 속도 (0.5 ~ 2.0)"
+      ],
+      "returns": [
+        "boolean - 변경 성공 여부"
+      ]
+    },
+    {
+      "name": "storage",
+      "type": "Module",
+      "desc": "데이터 저장/로드 모듈. 매크로와 설정을 JSON 파일로 관리합니다."
+    },
+    {
+      "name": "storage.saveMacro",
+      "type": "Function",
+      "desc": "매크로를 파일에 저장합니다.",
+      "signature": "storage.saveMacro(macroName, macroData)",
+      "parameters": [
+        "macroName (string) - 매크로 이름",
+        "macroData (table) - 매크로 데이터"
+      ],
+      "returns": [
+        "boolean - 저장 성공 여부"
+      ]
+    },
+    {
+      "name": "storage.loadMacro",
+      "type": "Function",
+      "desc": "저장된 매크로를 로드합니다.",
+      "signature": "storage.loadMacro(macroName)",
+      "parameters": [
+        "macroName (string) - 매크로 이름"
+      ],
+      "returns": [
+        "table - 매크로 데이터 또는 nil"
+      ]
+    },
+    {
+      "name": "storage.listMacros",
+      "type": "Function",
+      "desc": "저장된 모든 매크로 목록을 반환합니다.",
+      "signature": "storage.listMacros()",
+      "returns": [
+        "table - 매크로 목록 배열 {{name=string, data=table}, ...}"
+      ]
+    },
+    {
+      "name": "storage.deleteMacro",
+      "type": "Function",
+      "desc": "매크로를 삭제합니다.",
+      "signature": "storage.deleteMacro(macroName)",
+      "parameters": [
+        "macroName (string) - 삭제할 매크로 이름"
+      ],
+      "returns": [
+        "boolean - 삭제 성공 여부"
+      ]
   }
 ]
-
-
+}

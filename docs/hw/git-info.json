@@ -1,0 +1,39 @@
+﻿# curl 'https://api.hw-assist.com/get_info' \
+#   -H 'accept: application/json, text/plain, */*' \
+#   -H 'accept-language: ko,en-US;q=0.9,en;q=0.8,ru;q=0.7' \
+#   -H 'authorization: -s-1GyvQs2ZJFww5-1Ye0vyRnUZ-qTXR6qOEKzzQp.Mj3S5' \
+#   -H 'cache-control: no-cache' \
+#   -b '_ga=GA1.1.2082073982.1756111354; _gcl_au=1.1.1876219828.1756111354; _ym_uid=1756111481405529953; _ym_d=1756111481; __stripe_mid=fef1e1eb-11e5-47ce-a0ff-86716256a930784156; _ga_K4T03NFCGG=GS2.1.s1762831136$o6$g1$t1762831292$j32$l0$h0' \
+#   -H 'pragma: no-cache' \
+#   -H 'priority: u=1, i' \
+#   -H 'sec-ch-ua: "Not)A;Brand";v="8", "Chromium";v="138", "Opera";v="122"' \
+#   -H 'sec-ch-ua-mobile: ?0' \
+#   -H 'sec-ch-ua-platform: "macOS"' \
+#   -H 'sec-fetch-dest: empty' \
+#   -H 'sec-fetch-mode: cors' \
+#   -H 'sec-fetch-site: none' \
+#   -H 'sec-fetch-storage-access: active' \
+#   -H 'user-agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 OPR/122.0.0.0'
+
+  {
+    "status": "OK",
+    "result": {
+        "report1Cost": 10,
+        "discountMultiply": 1,
+        "showSubscribeRequest": false,
+        "id": "ok_910192590195",
+        "idMd5": "83c68d682f45f3d6fe035d65cc5e4efd",
+        "subscribed": true,
+        "parent": null,
+        "balance": 36,
+        "totalDonated": 0,
+        "subType": "week",
+        "subUntil": 1763436125249,
+        "haveMondayFree": true,
+        "shareArenaLogWith": null,
+        "loadArenaLogFrom": null,
+        "email": null,
+        "password": null,
+        "refOf": "784ffbed63498672255e9ccb163b65bb"
+    }
+}

@@ -5,5 +5,26 @@
     ],
     "pieces.cloudCapabilities": "Local",
     "bevel.largeLanguageModel": "LOCAL",
-    "bevel.java": "/Users/aaron.lee/.cursor/extensions/bevel-software.bevel-1.3.0-universal/backend/amazon-corretto-17.jdk/Contents/Home/bin/java"
+    "bevel.java": "/Users/aaron.lee/.cursor/extensions/bevel-software.bevel-1.3.0-universal/backend/amazon-corretto-17.jdk/Contents/Home/bin/java"   
+    // Cursor IDE Auto-run mode allowlist
+    // Automatically approve and apply all edits for specified file types
+    "cursor.autoRun.allowlist": [
+        "**/*.lua",
+        "**/*.md",
+        "**/*.fnl"
+    ],
+    
+    // Alternative setting names (try if above doesn't work)
+    "cursor.ai.autoRun.allowlist": [
+        "**/*.lua",
+        "**/*.md",
+        "**/*.fnl"
+    ],
+    
+    // Composer allowlist (for Cursor Composer feature)
+    "cursor.composer.allowlist": [
+        "**/*.lua",
+        "**/*.md",
+        "**/*.fnl"
+    ]
 }

@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.SystemProfiler",
+    "bundleId" : "com.apple.SystemProfiler",
+    "updatedAt" : 1764136532,
+    "type" : "APP",
+    "createdAt" : 1764136532,
+    "configPath" : "contexts\/app_com.apple.SystemProfiler.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

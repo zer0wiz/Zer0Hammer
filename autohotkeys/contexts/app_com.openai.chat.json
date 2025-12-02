@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.openai.chat",
+    "bundleId" : "com.openai.chat",
+    "updatedAt" : 1763631347,
+    "type" : "APP",
+    "createdAt" : 1763631347,
+    "configPath" : "contexts\/app_com.openai.chat.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

@@ -1,29 +1,127 @@
--- AutoHotKeys Hotkeys 모듈
+-- AutoHotKeys Hotkeys Module
+-- Consolidated from hotkeys.lua and hotkeyValidator.lua
 local hotkeys = {}
 
 local hotkey = hs.hotkey
+local logger = hs.logger.new("AutoHotKeys")
 
--- Hotkeys 바인딩
-function hotkeys.bind(obj)
-    if obj.menuHotkey then
-        obj.menuHotkey:delete()
-    end
-    
-    -- obj.hotkey 설정이 있으면 사용, 없으면 기본값 사용
-    local modifiers, key = table.unpack(obj.hotkey or {{"alt", "shift", "cmd"}, "k"})
-    
-    obj.menuHotkey = hotkey.bind(modifiers, key, function()
-        obj.menu.toggle(obj)
-    end)
+-- Note: storage and ui are accessed via obj.storage and obj.ui to avoid circular require issues
+
+-- ============================================================================
+-- Validator / Registry
+-- ============================================================================
+hotkeys.registered = {}
+
+local function hotkeyToString(mods, key)
+    local modStrings = {}
+    for _, mod in ipairs(mods) do table.insert(modStrings, mod) end
+    return table.concat(modStrings, "+") .. "+" .. key
 end
 
--- Hotkeys 해제
-function hotkeys.unbind(obj)
-    if obj.menuHotkey then
-        obj.menuHotkey:delete()
-        obj.menuHotkey = nil
+function hotkeys.checkConflict(mods, key)
+    local keyString = hotkeyToString(mods, key)
+    if hotkeys.registered[keyString] then
+        return true, "Hotkey already registered: " .. keyString
     end
+    return false
+end
+
+function hotkeys.register(mods, key, fn)
+    local keyString = hotkeyToString(mods, key)
+    if hotkeys.registered[keyString] then
+        logger.w("Hotkey conflict: " .. keyString)
+        return false, "Already registered"
+    end
+
+    local success, hk = pcall(function() return hotkey.bind(mods, key, fn) end)
+    if success and hk then
+        hotkeys.registered[keyString] = { mods = mods, key = key, hotkey = hk }
+        return true, hk
+    else
+        logger.w("Failed to bind hotkey: " .. keyString)
+        return false, "Bind failed"
+    end
+end
+
+function hotkeys.unregister(mods, key)
+    local keyString = hotkeyToString(mods, key)
+    if hotkeys.registered[keyString] then
+        if hotkeys.registered[keyString].hotkey then
+            hotkeys.registered[keyString].hotkey:delete()
+        end
+        hotkeys.registered[keyString] = nil
+        return true
+    end
+    return false
+end
+
+function hotkeys.reset()
+    for _, data in pairs(hotkeys.registered) do
+        if data.hotkey then data.hotkey:delete() end
+    end
+    hotkeys.registered = {}
+end
+
+-- ============================================================================
+-- Bindings
+-- ============================================================================
+function hotkeys.bind(obj)
+    hotkeys.reset()
+
+    -- Menu Toggle (Configured, default: Shift+Cmd+K)
+    local mainHotkey = obj.hotkey or { { "shift", "cmd" }, "k" }
+    hotkeys.register(mainHotkey[1], mainHotkey[2], function()
+        obj.ui.menu.toggle(obj)
+    end)
+
+    -- Recording (Ctrl+Cmd+R)
+    hotkeys.register({ "ctrl", "cmd" }, "r", function()
+        if obj.recorder and obj.recorder.isRecording(obj) then
+            local success, macro = obj.recorder.stop(obj)
+            if success and macro then
+                local script = [[
+                    tell application "System Events"
+                        display dialog "Enter macro name:" default answer "]] ..
+                    (macro.name or "") .. [[" buttons {"Cancel", "Save"} default button "Save"
+                        set result to button returned of result
+                        set name to text returned of result
+                    end tell
+                    return result & "|" & name
+                ]]
+                local ok, result = hs.osascript.applescript(script)
+                if ok and result then
+                    local parts = {}
+                    for part in string.gmatch(result, "[^|]+") do table.insert(parts, part) end
+                    if parts[1] == "Save" and parts[2] and parts[2] ~= "" then
+                        obj.storage.saveMacro(parts[2], macro)
+                        hs.alert.show("Macro saved: " .. parts[2], 2.0)
+                    end
+                end
+            end
+            obj.ui.overlay.update(obj)
+        else
+            local success, err = obj.recorder.start(obj)
+            if success then
+                hs.alert.show("Recording started", 1.0)
+                obj.ui.overlay.update(obj)
+            else
+                hs.alert.show("Failed to start recording: " .. (err or "Unknown"), 2.0)
+            end
+        end
+    end)
+
+    -- Macro List (Ctrl+Cmd+M)
+    hotkeys.register({ "ctrl", "cmd" }, "m", function()
+        obj.ui.menu.showMacroList(obj)
+    end)
+
+    -- Quick Capture (Ctrl+Click) - handled by recorder module, but we can bind a toggle if needed
+    -- For now, it's enabled via menu or other means, or we can auto-enable it if configured.
+    -- The original code didn't bind a hotkey for this, but had a function to enable it.
+end
+
+function hotkeys.unbind(obj)
+    hotkeys.reset()
 end
 
 return hotkeys
-

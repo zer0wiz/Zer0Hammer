@@ -1,0 +1,445 @@
+{
+  "mainMenu": {
+    "size": {
+      "w": 280,
+      "h": 185
+    },
+    "elements": {
+      "background": {
+        "index": 1,
+        "type": "rectangle",
+        "action": "fill",
+        "fillColor": {
+          "alpha": 0.95,
+          "white": 0.08
+        },
+        "roundedRectRadii": {
+          "xRadius": 8,
+          "yRadius": 8
+        }
+      },
+      "appName": {
+        "index": 2,
+        "type": "text",
+        "text": "{{appName}}",
+        "textSize": 14,
+        "textColor": {
+          "white": 1
+        },
+        "frame": {
+          "x": 15,
+          "y": 12,
+          "w": "{{w - 80}}",
+          "h": 20
+        },
+        "textAlignment": "left"
+      },
+      "enabledToggleTrack": {
+        "index": 3,
+        "id": "btnToggle",
+        "type": "rectangle",
+        "action": "fill",
+        "fillColor": {
+          "white": 0.2,
+          "alpha": 1.0
+        },
+        "frame": {
+          "x": "{{w - 60}}",
+          "y": 10,
+          "w": 44,
+          "h": 24
+        },
+        "roundedRectRadii": {
+          "xRadius": 12,
+          "yRadius": 12
+        },
+        "trackMouseUp": true
+      },
+      "enabledToggleActive": {
+        "index": 4,
+        "type": "rectangle",
+        "action": "fill",
+        "fillColor": {
+          "red": 0.2,
+          "green": 0.8,
+          "blue": 0.2,
+          "alpha": "{{enabledAlpha}}"
+        },
+        "frame": {
+          "x": "{{w - 60}}",
+          "y": 10,
+          "w": 44,
+          "h": 24
+        },
+        "roundedRectRadii": {
+          "xRadius": 12,
+          "yRadius": 12
+        }
+      },
+      "enabledToggleThumb": {
+        "index": 5,
+        "type": "circle",
+        "action": "fill",
+        "fillColor": {
+          "white": 1.0,
+          "alpha": 1.0
+        },
+        "center": {
+          "x": "{{enabledThumbX}}",
+          "y": 22
+        },
+        "radius": 10
+      },
+      "btnShortcuts": {
+        "index": 6,
+        "id": "btnShortcuts",
+        "type": "text",
+        "text": "단축키",
+        "textSize": 13,
+        "textColor": {
+          "white": 1
+        },
+        "frame": {
+          "x": 20,
+          "y": 50,
+          "w": "{{w - 40}}",
+          "h": 32
+        },
+        "trackMouseUp": true
+      },
+      "btnMacros": {
+        "index": 7,
+        "id": "btnMacros",
+        "type": "text",
+        "text": "매크로",
+        "textSize": 13,
+        "textColor": {
+          "white": 1
+        },
+        "frame": {
+          "x": 20,
+          "y": 85,
+          "w": "{{w - 40}}",
+          "h": 32
+        },
+        "trackMouseUp": true
+      },
+      "overlayLabel": {
+        "index": 8,
+        "type": "text",
+        "text": "오버레이",
+        "textSize": 13,
+        "textColor": {
+          "white": 1.0,
+          "alpha": 1.0
+        },
+        "frame": {
+          "x": 20,
+          "y": 120,
+          "w": "{{w - 80}}",
+          "h": 32
+        },
+        "textAlignment": "left"
+      },
+      "overlayToggleTrack": {
+        "index": 9,
+        "id": "overlayToggle",
+        "type": "rectangle",
+        "action": "fill",
+        "fillColor": {
+          "white": 0.2,
+          "alpha": 1.0
+        },
+        "frame": {
+          "x": "{{w - 60}}",
+          "y": 120,
+          "w": 44,
+          "h": 24
+        },
+        "roundedRectRadii": {
+          "xRadius": 12,
+          "yRadius": 12
+        },
+        "trackMouseUp": true
+      },
+      "overlayToggleActive": {
+        "index": 10,
+        "type": "rectangle",
+        "action": "fill",
+        "fillColor": {
+          "red": 0.2,
+          "green": 0.8,
+          "blue": 0.2,
+          "alpha": "{{overlayAlpha}}"
+        },
+        "frame": {
+          "x": "{{w - 60}}",
+          "y": 120,
+          "w": 44,
+          "h": 24
+        },
+        "roundedRectRadii": {
+          "xRadius": 12,
+          "yRadius": 12
+        }
+      },
+      "overlayToggleThumb": {
+        "index": 11,
+        "type": "circle",
+        "action": "fill",
+        "fillColor": {
+          "white": 1.0,
+          "alpha": 1.0
+        },
+        "center": {
+          "x": "{{overlayThumbX}}",
+          "y": 132
+        },
+        "radius": 10
+      },
+      "divider": {
+        "index": 12,
+        "type": "segments",
+        "action": "stroke",
+        "strokeColor": {
+          "white": 1,
+          "alpha": 0.2
+        },
+        "strokeWidth": 1,
+        "coordinates": [
+          {
+            "x": 15,
+            "y": 48
+          },
+          {
+            "x": "{{w - 15}}",
+            "y": 48
+          }
+        ]
+      }
+    }
+  },
+  "macroList": {
+    "size": {
+      "w": 400,
+      "defaultH": 50
+    },
+    "layout": {
+      "itemHeight": 40,
+      "headerHeight": 50,
+      "maxHeight": 500
+    },
+    "elements": {
+      "background": {
+        "index": 1,
+        "type": "rectangle",
+        "action": "fill",
+        "fillColor": {
+          "alpha": 0.95,
+          "white": 0.08
+        },
+        "roundedRectRadii": {
+          "xRadius": 8,
+          "yRadius": 8
+        }
+      },
+      "header": {
+        "index": 2,
+        "type": "text",
+        "text": "매크로 목록",
+        "textSize": 16,
+        "textColor": {
+          "white": 1
+        },
+        "frame": {
+          "x": 15,
+          "y": 15,
+          "w": "{{w - 80}}",
+          "h": 30
+        },
+        "textAlignment": "left"
+      },
+      "btnClose": {
+        "index": 3,
+        "id": "btnClose",
+        "type": "rectangle",
+        "action": "fillStroke",
+        "fillColor": {
+          "alpha": 0.3,
+          "white": 0.5
+        },
+        "strokeColor": {
+          "white": 1,
+          "alpha": 0.8
+        },
+        "strokeWidth": 1,
+        "frame": {
+          "x": "{{w - 60}}",
+          "y": 12,
+          "w": 45,
+          "h": 26
+        },
+        "roundedRectRadii": {
+          "xRadius": 4,
+          "yRadius": 4
+        },
+        "trackMouseUp": true
+      },
+      "btnCloseText": {
+        "index": 4,
+        "type": "text",
+        "text": "닫기",
+        "textSize": 11,
+        "textColor": {
+          "white": 1
+        },
+        "frame": {
+          "x": "{{w - 60}}",
+          "y": 12,
+          "w": 45,
+          "h": 26
+        },
+        "textAlignment": "center"
+      },
+      "macroItem": {
+        "template": true,
+        "background": {
+          "type": "rectangle",
+          "action": "fillStroke",
+          "fillColor": {
+            "alpha": 0.1,
+            "white": 0.1
+          },
+          "strokeColor": {
+            "white": 1,
+            "alpha": 0.1
+          },
+          "strokeWidth": 1,
+          "frame": {
+            "x": 15,
+            "y": "{{yPos}}",
+            "w": "{{w - 30}}",
+            "h": "{{itemHeight - 5}}"
+          },
+          "roundedRectRadii": {
+            "xRadius": 4,
+            "yRadius": 4
+          },
+          "trackMouseUp": true
+        },
+        "name": {
+          "type": "text",
+          "text": "{{macroName}}",
+          "textSize": 13,
+          "textColor": {
+            "white": 1
+          },
+          "frame": {
+            "x": 25,
+            "y": "{{yPos + 5}}",
+            "w": "{{w - 200}}",
+            "h": 18
+          },
+          "textAlignment": "left"
+        },
+        "info": {
+          "type": "text",
+          "text": "{{infoText}}",
+          "textSize": 10,
+          "textColor": {
+            "white": 0.7
+          },
+          "frame": {
+            "x": 25,
+            "y": "{{yPos + 22}}",
+            "w": "{{w - 200}}",
+            "h": 12
+          },
+          "textAlignment": "left"
+        },
+        "btnPlay": {
+          "type": "rectangle",
+          "action": "fillStroke",
+          "fillColor": {
+            "alpha": 0.8,
+            "red": 0.2,
+            "green": 0.8,
+            "blue": 0.2
+          },
+          "strokeColor": {
+            "white": 1,
+            "alpha": 0.8
+          },
+          "strokeWidth": 1,
+          "frame": {
+            "x": "{{w - 110}}",
+            "y": "{{yPos + 8}}",
+            "w": 35,
+            "h": 24
+          },
+          "roundedRectRadii": {
+            "xRadius": 4,
+            "yRadius": 4
+          },
+          "trackMouseUp": true
+        },
+        "btnPlayText": {
+          "type": "text",
+          "text": "▶",
+          "textSize": 12,
+          "textColor": {
+            "white": 1
+          },
+          "frame": {
+            "x": "{{w - 110}}",
+            "y": "{{yPos + 8}}",
+            "w": 35,
+            "h": 24
+          },
+          "textAlignment": "center"
+        },
+        "btnDelete": {
+          "type": "rectangle",
+          "action": "fillStroke",
+          "fillColor": {
+            "alpha": 0.8,
+            "red": 0.8,
+            "green": 0.2,
+            "blue": 0.2
+          },
+          "strokeColor": {
+            "white": 1,
+            "alpha": 0.8
+          },
+          "strokeWidth": 1,
+          "frame": {
+            "x": "{{w - 65}}",
+            "y": "{{yPos + 8}}",
+            "w": 35,
+            "h": 24
+          },
+          "roundedRectRadii": {
+            "xRadius": 4,
+            "yRadius": 4
+          },
+          "trackMouseUp": true
+        },
+        "btnDeleteText": {
+          "type": "text",
+          "text": "✗",
+          "textSize": 12,
+          "textColor": {
+            "white": 1
+          },
+          "frame": {
+            "x": "{{w - 65}}",
+            "y": "{{yPos + 8}}",
+            "w": 35,
+            "h": 24
+          },
+          "textAlignment": "center"
+        }
+      }
+    }
+  }
+}

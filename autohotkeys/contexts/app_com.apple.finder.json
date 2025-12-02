@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.finder",
+    "bundleId" : "com.apple.finder",
+    "updatedAt" : 1763682409,
+    "type" : "APP",
+    "createdAt" : 1763682409,
+    "configPath" : "contexts\/app_com.apple.finder.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

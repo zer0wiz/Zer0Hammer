@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.MobileDeviceUpdater",
+    "bundleId" : "com.apple.MobileDeviceUpdater",
+    "updatedAt" : 1763949942,
+    "type" : "APP",
+    "createdAt" : 1763949942,
+    "configPath" : "contexts\/app_com.apple.MobileDeviceUpdater.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

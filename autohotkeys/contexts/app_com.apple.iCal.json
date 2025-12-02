@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.apple.iCal",
+    "bundleId" : "com.apple.iCal",
+    "updatedAt" : 1764036158,
+    "createdAt" : 1764036158,
+    "type" : "APP",
+    "configPath" : "contexts\/app_com.apple.iCal.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

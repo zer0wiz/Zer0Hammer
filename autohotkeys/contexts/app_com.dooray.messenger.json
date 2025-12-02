@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.dooray.messenger",
+    "bundleId" : "com.dooray.messenger",
+    "updatedAt" : 1763685880,
+    "type" : "APP",
+    "createdAt" : 1763685880,
+    "configPath" : "contexts\/app_com.dooray.messenger.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

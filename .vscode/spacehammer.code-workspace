@@ -6,5 +6,11 @@
 		{
 			"path": "../../.hammerspoon"
 		}
-	]
+	],
+	"settings": {
+		"Lua.workspace.library": [
+			"${workspaceFolder}/Zer0Hammer/modules",
+			"/Users/aaron.lee/github/Zer0Hammer/Spoons/EmmyLua.spoon/annotations"
+		]
+	}
 }

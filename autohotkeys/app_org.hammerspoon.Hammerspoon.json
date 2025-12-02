@@ -1,0 +1,8 @@
+{
+  "appName" : "Hammerspoon",
+  "enabled" : false,
+  "shortcuts" : [
+
+  ],
+  "bundleId" : "org.hammerspoon.Hammerspoon"
+}

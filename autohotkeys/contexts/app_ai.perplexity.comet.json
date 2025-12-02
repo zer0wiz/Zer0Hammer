@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:ai.perplexity.comet",
+    "bundleId" : "ai.perplexity.comet",
+    "updatedAt" : 1763631381,
+    "type" : "APP",
+    "createdAt" : 1763631381,
+    "configPath" : "contexts\/app_ai.perplexity.comet.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

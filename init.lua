@@ -119,8 +119,18 @@ Sbar = hs.loadSpoon('SBar')
 
 AutoHotKeys = hs.loadSpoon('AutoHotKeys')
 hs.hotkey.bind({"shift", "cmd"}, "k", function()
-    AutoHotKeys:menutoggle()
+    AutoHotKeys:menuToggle()
 end)
+
+
+-- ExampleToolbar Spoon 로드 및 시작
+ExampleToolbar = hs.loadSpoon('ExampleToolbar')
+if ExampleToolbar then
+    ExampleToolbar:start()
+    hs.printf("ExampleToolbar loaded and started. Press Alt+Shift+W to toggle.\n")
+else
+    hs.printf("ERROR: ExampleToolbar failed to load!\n")
+end
 -- function setWindowTransparency(appName, opacity)
 --     local script = string.format([[
 --         tell application "System Events"

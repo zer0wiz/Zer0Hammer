@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.pieces.os",
+    "bundleId" : "com.pieces.os",
+    "updatedAt" : 1764124814,
+    "createdAt" : 1764124814,
+    "type" : "APP",
+    "configPath" : "contexts\/app_com.pieces.os.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

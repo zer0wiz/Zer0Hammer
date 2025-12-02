@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:net.pulsesecure.Pulse-Secure",
+    "bundleId" : "net.pulsesecure.Pulse-Secure",
+    "updatedAt" : 1764132041,
+    "type" : "APP",
+    "createdAt" : 1764132041,
+    "configPath" : "contexts\/app_net.pulsesecure.Pulse-Secure.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

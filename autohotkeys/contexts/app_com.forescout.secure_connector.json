@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.forescout.secure_connector",
+    "bundleId" : "com.forescout.secure_connector",
+    "updatedAt" : 1764125590,
+    "type" : "APP",
+    "createdAt" : 1764125590,
+    "configPath" : "contexts\/app_com.forescout.secure_connector.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

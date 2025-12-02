@@ -1,0 +1,46 @@
+{
+  "appName" : "Vivaldi",
+  "shortcuts" : {
+    "5" : {
+      "type" : "click",
+      "position" : {
+        "dy" : 535.55859375,
+        "dx" : 935.86328125
+      },
+      "windowRelative" : true
+    },
+    "3" : {
+      "type" : "click",
+      "position" : {
+        "dy" : 458.72265625,
+        "dx" : 548.6484375
+      },
+      "windowRelative" : true
+    },
+    "c" : {
+      "windowRelative" : true,
+      "modifiers" : [
+
+      ],
+      "keyCode" : 8,
+      "position" : {
+        "dy" : 537.75390625,
+        "dx" : 525.25
+      },
+      "type" : "click"
+    },
+    " " : {
+      "windowRelative" : true,
+      "modifiers" : [
+
+      ],
+      "type" : "click",
+      "position" : {
+        "dy" : 584.546875,
+        "dx" : 476.74609375
+      },
+      "keyCode" : 49
+    }
+  },
+  "bundleId" : "com.vivaldi.Vivaldi"
+}

@@ -1,0 +1,26 @@
+{
+  "context" : {
+    "enabled" : true,
+    "id" : "app:com.vivaldi.Vivaldi",
+    "appName" : "Vivaldi",
+    "bundleId" : "com.vivaldi.Vivaldi",
+    "updatedAt" : 1763941831,
+    "type" : "app",
+    "createdAt" : 1763941831,
+    "configPath" : "contexts\/app_com.vivaldi.Vivaldi.json"
+  },
+  "shortcuts" : {
+    "c" : {
+      "windowRelative" : true,
+      "modifiers" : [
+
+      ],
+      "keyCode" : 8,
+      "position" : {
+        "dy" : 537.19921875,
+        "dx" : 509.7109375
+      },
+      "type" : "click"
+    }
+  }
+}

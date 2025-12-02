@@ -1,0 +1,14 @@
+{
+  "context" : {
+    "enabled" : false,
+    "id" : "app:com.google.antigravity",
+    "bundleId" : "com.google.antigravity",
+    "updatedAt" : 1763626174,
+    "type" : "APP",
+    "createdAt" : 1763626174,
+    "configPath" : "contexts\/app_com.google.antigravity.json"
+  },
+  "shortcuts" : [
+
+  ]
+}

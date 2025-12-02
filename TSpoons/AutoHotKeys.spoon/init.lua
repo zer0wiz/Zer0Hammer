@@ -1,75 +1,62 @@
 local obj = {}
-
 obj.__index = obj
 
 -- Metadata
 obj.name = "AutoHotKeys"
-obj.version = "0.2.0"
+obj.version = "0.3.0"
 obj.author = "zer0wiz<zer0wiz9@gmail.com>"
 obj.homepage = "https://github.com/zer0wiz/spacehammer"
 obj.license = "MIT - https://opensource.org/licenses/MIT"
 obj.logger = hs.logger.new("AutoHotKeys")
 
--- Configuration
-obj.hotkey = obj.hotkey or {{"shift", "cmd"}, "k"}
-
--- 모듈 로드 함수
-local function loadModule(moduleName)
-    return dofile(hs.spoons.resourcePath(moduleName .. ".lua"))
+-- Add Spoon path to package.path
+local spoonPath = hs.spoons.resourcePath("")
+if not string.find(package.path, spoonPath, 1, true) then
+    package.path = package.path .. ";" .. spoonPath .. "/?.lua"
 end
 
--- 핵심 모듈 로드
-local context = loadModule("context")
-local storage = loadModule("storage")
-local overlay = loadModule("overlay")
-local menu = loadModule("menu")
--- local capture = loadModule("capture")
-local execution = loadModule("execution")
-local watchers = loadModule("watchers")
-local hotkeys = loadModule("hotkeys")
+-- Load Modules
+obj.utils = require("utils")
+obj.storage = require("storage")
+obj.actions = require("actions")
+obj.recorder = require("recorder")
+obj.ui = require("ui")
+obj.hotkeys = require("hotkeys")
+obj.watchers = require("watchers")
 
--- 모듈들을 외부에서 접근할 수 있도록 노출
-obj.context = context
-obj.storage = storage
-obj.overlay = overlay
-obj.menu = menu
--- obj.capture = capture
-obj.execution = execution
-obj.watchers = watchers
-obj.hotkeys = hotkeys
+-- Configuration
+obj.hotkey = obj.hotkey or { { "shift", "cmd" }, "k" }
+obj.activeContexts = {}
 
 function obj:start()
-    -- Storage 초기화
-    storage.init()
-    
-    -- Watchers 시작
-    watchers.start(self)
-    
-    -- Overlay 생성
-    overlay.init(self)
-    
-    -- Capture 등록
-    -- capture.register(self)
-    
-    -- Hotkeys 바인딩
-    hotkeys.bind(self)
-    
+    -- Watchers
+    obj.watchers.start(self)
+
+    -- Initial update
+    local ctx = obj.utils.Context.current()
+    obj.contextObj = ctx
+    obj.ui.overlay.update(obj)
+
+    -- Hotkeys
+    obj.hotkeys.bind(self)
+
     return self
 end
 
 function obj:stop()
-    overlay.stop(self)
-    watchers.stop(self)
-    -- capture.stop(self)
-    hotkeys.unbind(self)
+    obj.watchers.stop(self)
+    obj.ui.overlay.stop(self)
+    obj.hotkeys.unbind(self)
+    obj.actions.stopKeyTap(self)
+    return self
 end
 
-function obj:menutoggle()
-    menu.toggle(self)
-end 
+function obj:menuToggle()
+    obj.ui.menu.toggle(self)
+end
 
 function obj:init()
-    obj:start( )
+    obj:start()
 end
 
 return obj
